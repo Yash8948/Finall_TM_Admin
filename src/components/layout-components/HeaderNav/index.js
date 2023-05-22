@@ -91,10 +91,29 @@ export const HeaderNav = props => {
 								{navCollapsed || isMobile ? <MenuUnfoldOutlined className="nav-icon" /> : <MenuFoldOutlined className="nav-icon" />}
 							</div>
 						</NavItem>
+						{isMobile ?
+                            <div className="ant-menu-item ant-menu-item-only-child" onClick={() => {onSearchActive()}}>
+                                <SearchOutlined />
+                            </div>
+                            :
+                            <div className="ant-menu-item ant-menu-item-only-child" style={{cursor: 'auto'}}>
+                                <SearchInput mode={navMode} isMobile={isMobile} />
+                            </div>
+                        }
 					</NavEdge>
 					<NavEdge right>
+						<NavNotification mode={navMode} />
+						<NavLanguage mode={navMode} />
+						<NavPanel direction={direction} mode={navMode} />
 						<NavProfile mode={navMode} />
 					</NavEdge>
+					<NavSearch 
+						active={searchActive} 
+						close={onSearchClose} 
+						headerNavColor={headerNavColor}
+						currentTheme={currentTheme}
+						mode={navMode}
+					/>
 				</Nav>
 			</HeaderWrapper>
 		</Header>

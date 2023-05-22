@@ -148,25 +148,25 @@ export const DefaultDashboard = () => {
               ))
             }
           </Row>
-          <Row gutter={16}>
+          {/* <Row gutter={16}>
             <Col span={24}>
                 <ChartWidget title="Unique Visitors" series={visitorChartData.series} xAxis={visitorChartData.categories} height={'400px'} direction={direction} />
             </Col>
-          </Row>
+          </Row> */}
         </Col>
         <Col xs={24} sm={24} md={24} lg={6}>
           <GoalWidget title="Monthly Target" value={87} subtitle="You need abit more effort to hit monthly target" extra={<Button type="primary">Learn More</Button>} />
-          <StatisticWidget 
+          {/* <StatisticWidget 
             title={
               <MembersChart options={memberChartOption} series={activeMembersData} height={145} />
             }
             value='17,329'
             status={3.7}
             subtitle="Active members"
-          />
+          /> */}
         </Col>
       </Row>
-      {/* <Row gutter={16}>
+      <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={7}>
           <Card title="New Join Member" extra={<CardDropdown items={newJoinMemberOptions} />}>
             <div className="mt-3">
@@ -182,8 +182,8 @@ export const DefaultDashboard = () => {
               }
             </div>
           </Card>
-        </Col> */}
-        {/* <Col xs={24} sm={24} md={24} lg={17}>
+        </Col>
+        <Col xs={24} sm={24} md={24} lg={17}>
           <Card title="Latest Transactions" extra={<CardDropdown items={latestTransactionOption} />}>
             <Table 
               className="no-border-last" 
@@ -193,8 +193,8 @@ export const DefaultDashboard = () => {
               pagination={false}
             />
           </Card>
-        </Col> */}
-      {/* </Row> */}
+        </Col>
+      </Row>
     </>
   )
 }
