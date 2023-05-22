@@ -61,6 +61,8 @@
     "remark-gfm": "^3.0.1",
     "reqwest": "^2.0.5",
     "save": "^2.4.0",
+    "sweetalert2": "^11.7.5",
+    "sweetalert2-react-content": "^5.0.7",
     "universal-cookie": "^4.0.4",
     "web-vitals": "^0.2.4"
   },
