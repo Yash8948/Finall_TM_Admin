@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AUTH_TOKEN } from 'constants/AuthConstant';
 import FirebaseService from 'services/FirebaseService';
 import AuthService from 'services/AuthService';
-import { Alert, Space } from 'antd';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 export const initialState = {
@@ -42,9 +41,9 @@ export const signIn = createAsyncThunk('/Login',async (data, { rejectWithValue }
 		console.log(response);
 		console.log(response.status);
 		console.log(response.message);
-		// const token = response.data.Xtoken;
-		// localStorage.setItem(AUTH_TOKEN, token);
-		// return token;
+		const token = response.data.Xtoken;
+		localStorage.setItem(AUTH_TOKEN, token);
+		return token;
 	} catch (err) {
 		return rejectWithValue(err.response?.data?.message || 'Error')
 	}
