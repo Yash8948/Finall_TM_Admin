@@ -39,21 +39,12 @@ const Title = styled.span(() => ({
 	opacity: 0.8
 }))
 
-<<<<<<< HEAD
-// const MenuItem = (props) => (
-// 	<Flex as="a" href={props.path} alignItems="center" gap={SPACER[2]}>
-// 		<Icon>{props.icon}</Icon>
-// 		<span>{props.label}</span>
-// 	</Flex>
-// )
-=======
 const MenuItem = (props) => (
 	<Flex as="a" href={props.path} alignItems="center" gap={SPACER[2]}>
 		<Icon>{props.icon}</Icon>
 		<span>{props.label}</span>
 	</Flex>
 )
->>>>>>> 09cf720 (first commit)
 
 const MenuItemSignOut = (props) => {
 
@@ -77,8 +68,6 @@ const MenuItemSignOut = (props) => {
 
 const items = [
 	{
-<<<<<<< HEAD
-=======
 		key: 'Edit Profile',
 		label: <MenuItem path="/${APP_PREFIX_PATH}/pages/profile" label="Edit Profile" icon={<EditOutlined />} />,
 	},
@@ -95,7 +84,6 @@ const items = [
 		label: <MenuItem path="/" label="Help Center" icon={<QuestionCircleOutlined />} />,
 	},
 	{
->>>>>>> 09cf720 (first commit)
 		key: 'Sign Out',
 		label: <MenuItemSignOut label="Sign Out" />,
 	}
@@ -106,11 +94,7 @@ export const NavProfile = ({mode}) => {
 		<Dropdown placement="bottomRight" menu={{items}} trigger={["click"]}>
 			<NavItem mode={mode}>
 				<Profile>
-<<<<<<< HEAD
 					<Avatar src="/img/avatars/thumb-14.jpg" />
-=======
-					<Avatar src="/img/avatars/thumb-5.jpg" />
->>>>>>> 09cf720 (first commit)
 					<UserInfo className="profile-text">
 						<Name>Mokshesh Shah</Name>
 						<Title>Pro-Full Developer</Title>

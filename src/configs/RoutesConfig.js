@@ -26,12 +26,6 @@ export const protectedRoutes = [
         component: React.lazy(() => import('views/app-views/dashboards/default')),
     },
     {
-<<<<<<< HEAD
-        key: 'dashboard.default',
-        path: `${APP_PREFIX_PATH}/dashboards/analytic`,
-        component: React.lazy(() => import('views/app-views/dashboards/analytic')),
-    },
-=======
         key: 'dashboard.analytic',
         path: `${APP_PREFIX_PATH}/dashboards/analytic`,
         component: React.lazy(() => import('views/app-views/dashboards/analytic')),
@@ -101,5 +95,4 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/apps/ecommerce/orders`,
         component: React.lazy(() => import('views/app-views/apps/e-commerce/orders')),
     },
->>>>>>> 09cf720 (first commit)
 ]

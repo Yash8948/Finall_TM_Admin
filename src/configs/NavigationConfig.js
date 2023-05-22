@@ -51,9 +51,6 @@ const dashBoardNavTree = [{
       key: 'dashboards-analytic',
       path: `${APP_PREFIX_PATH}/dashboards/analytic`,
       title: 'sidenav.dashboard.analytic',
-<<<<<<< HEAD
-      icon: AppstoreOutlined,
-=======
       icon: DotChartOutlined,
       breadcrumb: false,
       submenu: []
@@ -63,17 +60,11 @@ const dashBoardNavTree = [{
       path: `${APP_PREFIX_PATH}/dashboards/sales`,
       title: 'sidenav.dashboard.sales',
       icon: FundOutlined,
->>>>>>> 09cf720 (first commit)
       breadcrumb: false,
       submenu: []
     }
   ]
 }]
-<<<<<<< HEAD
-
-const navigationConfig = [
-  ...dashBoardNavTree
-=======
 const appsNavTree = [{
   key: 'apps',
   path: `${APP_PREFIX_PATH}/apps`,
@@ -179,7 +170,6 @@ const navigationConfig = [
   ...dashBoardNavTree,
   ...appsNavTree,
   
->>>>>>> 09cf720 (first commit)
 ]
 
 export default navigationConfig;

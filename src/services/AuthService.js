@@ -8,12 +8,7 @@ AuthService.login = function (data) {
 	return fetch({
 		url: '/Login',
 		method: 'post',
-<<<<<<< HEAD
-		data: data,
-		headers: { "Access-Control-Allow-Origin": "*"}
-=======
 		data: JSON.stringify(data)
->>>>>>> 09cf720 (first commit)
 	})
 }
 

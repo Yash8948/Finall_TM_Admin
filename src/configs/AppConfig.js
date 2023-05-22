@@ -17,11 +17,7 @@ export const THEME_CONFIG = {
 	topNavColor: '#3e82f7',
 	headerNavColor: '',
 	mobileNav: false,
-<<<<<<< HEAD
-	currentTheme: 'light',
-=======
 	currentTheme: 'dark',
->>>>>>> 09cf720 (first commit)
 	direction: DIR_LTR,
 	blankLayout: false
 };

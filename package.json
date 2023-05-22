@@ -2,11 +2,7 @@
   "name": "emilus",
   "version": "4.0.0",
   "private": true,
-<<<<<<< HEAD
-  "proxy": "http://localhost:3000/",
-=======
   "proxy": "http://task.mysyva.net/backend",
->>>>>>> 09cf720 (first commit)
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",

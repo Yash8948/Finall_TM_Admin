@@ -44,10 +44,7 @@ export const LoginForm = (props) => {
     const initialCredential = async (values) => {
      
     }
-<<<<<<< HEAD
-=======
    
->>>>>>> 09cf720 (first commit)
     
     // useEffect(() => {
     //   initialCredential()
