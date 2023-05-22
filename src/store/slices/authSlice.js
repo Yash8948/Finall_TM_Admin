@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AUTH_TOKEN,USER_EMAIL,USER_NAME,USER_AVATAR } from 'constants/AuthConstant';
-// import FirebaseService from 'services/FirebaseService';
 import AuthService from 'services/AuthService';
 import Swal from 'sweetalert2'
 export const initialState = {
@@ -33,7 +32,6 @@ export const signIn = createAsyncThunk('/Login',async (data, { rejectWithValue }
 				icon: 'error',
 				title: response.message
 			  })
-			  
 		}
 		
 		console.log(response);
