@@ -1,9 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { AUTH_TOKEN } from 'constants/AuthConstant';
-import FirebaseService from 'services/FirebaseService';
+import { AUTH_TOKEN,USER_EMAIL,USER_NAME,USER_AVATAR } from 'constants/AuthConstant';
+// import FirebaseService from 'services/FirebaseService';
 import AuthService from 'services/AuthService';
 import Swal from 'sweetalert2'
-import withReactContent from 'sweetalert2-react-content'
 export const initialState = {
 	loading: false,
 	message: '',
@@ -13,7 +12,6 @@ export const initialState = {
 }
 
 export const signIn = createAsyncThunk('/Login',async (data, { rejectWithValue }) => {
-	const MySwal = withReactContent(Swal)
 
 	const { email, password } = data
 	try {
@@ -37,13 +35,19 @@ export const signIn = createAsyncThunk('/Login',async (data, { rejectWithValue }
 			  })
 			  
 		}
-
+		
 		console.log(response);
-		console.log(response.status);
-		console.log(response.message);
-		const token = response.data.Xtoken;
-		localStorage.setItem(AUTH_TOKEN, token);
-		return token;
+		if (response.status) {			
+			const token = response.data.Xtoken;
+			const userEmail = response.data.email;
+			const userName = response.data.username;
+			const userAvatar = response.data.avatar;
+			localStorage.setItem(AUTH_TOKEN, token);
+			localStorage.setItem(USER_EMAIL, userEmail);
+			localStorage.setItem(USER_NAME, userName);
+			localStorage.setItem(USER_AVATAR, userAvatar);
+			return token;
+		}
 	} catch (err) {
 		return rejectWithValue(err.response?.data?.message || 'Error')
 	}
@@ -62,9 +66,11 @@ export const signUp = createAsyncThunk('auth/register',async (data, { rejectWith
 })
 
 export const signOut = createAsyncThunk('auth/logout',async () => {
-    const response = await FirebaseService.signOutRequest()
 	localStorage.removeItem(AUTH_TOKEN);
-    return response.data
+	localStorage.removeItem(USER_EMAIL);
+	localStorage.removeItem(USER_NAME);
+	localStorage.removeItem(USER_AVATAR);
+	
 })
 
 export const signInWithGoogle = createAsyncThunk('auth/signInWithGoogle', async (_, { rejectWithValue }) => {

@@ -1,4 +1,7 @@
 import React from 'react';
+import { AUTH_TOKEN,USER_EMAIL,USER_NAME,USER_AVATAR } from 'constants/AuthConstant';
+import {API_BASE_URL } from "../../constants/ApiConstant";
+import { ASSETS_PROFILE } from "../../constants/PathsConstant";
 import { Dropdown, Avatar } from 'antd';
 import { useDispatch } from 'react-redux'
 import { 
@@ -90,14 +93,17 @@ const items = [
 ]
 
 export const NavProfile = ({mode}) => {
+	const user_Name = localStorage.getItem(USER_NAME)
+	const user_Email = localStorage.getItem(USER_EMAIL)
+	const user_Avatar = localStorage.getItem(USER_AVATAR)
 	return (
 		<Dropdown placement="bottomRight" menu={{items}} trigger={["click"]}>
 			<NavItem mode={mode}>
 				<Profile>
-					<Avatar src="/img/avatars/thumb-14.jpg" />
+					<Avatar src={API_BASE_URL +ASSETS_PROFILE + user_Avatar} />
 					<UserInfo className="profile-text">
-						<Name>= | = | = | = | = | = |</Name>
-						<Title>Pro-Full Developer</Title>
+						<Name>{user_Name}</Name>
+						<Title>{user_Email}</Title>
 					</UserInfo>
 				</Profile>
 			</NavItem>
