@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import { xxxService } from '../../../services/xxxService'
 import { connect } from "react-redux";
 import { Button, Form, Input, Divider, Alert } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
@@ -19,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Cookies from 'universal-cookie';
 import { values } from "lodash";
+import "../../../assets/css/style.css";
 export const LoginForm = (props) => {
   const navigate = useNavigate();
   const {
@@ -55,7 +55,7 @@ export const LoginForm = (props) => {
   const onLogin = (values) => {
     showLoading();
     signIn(values);
-    console.log(values);
+    // console.log(values);
   };
 
   const onGoogleLogin = () => {

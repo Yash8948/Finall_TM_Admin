@@ -96,7 +96,7 @@ export const NavProfile = ({mode}) => {
 				<Profile>
 					<Avatar src="/img/avatars/thumb-14.jpg" />
 					<UserInfo className="profile-text">
-						<Name>Mokshesh Shah</Name>
+						<Name>= | = | = | = | = | = |</Name>
 						<Title>Pro-Full Developer</Title>
 					</UserInfo>
 				</Profile>

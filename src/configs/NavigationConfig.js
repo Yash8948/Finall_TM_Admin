@@ -62,6 +62,14 @@ const dashBoardNavTree = [{
       icon: FundOutlined,
       breadcrumb: false,
       submenu: []
+    },
+    {
+      key: 'dashboards-Kanban',
+      path: `${APP_PREFIX_PATH}/dashboards/kanban`,
+      title: 'sidenav.dashboard.kanban',
+      icon: FundOutlined,
+      breadcrumb: false,
+      submenu: []
     }
   ]
 }]

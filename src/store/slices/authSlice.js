@@ -2,7 +2,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AUTH_TOKEN } from 'constants/AuthConstant';
 import FirebaseService from 'services/FirebaseService';
 import AuthService from 'services/AuthService';
-
+import { Alert, Space } from 'antd';
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 export const initialState = {
 	loading: false,
 	message: '',
@@ -12,12 +14,37 @@ export const initialState = {
 }
 
 export const signIn = createAsyncThunk('/Login',async (data, { rejectWithValue }) => {
+	const MySwal = withReactContent(Swal)
+
 	const { email, password } = data
 	try {
 		const response = await AuthService.login({email, password})
-		const token = response.data.token;
-		localStorage.setItem(AUTH_TOKEN, token);
-		return token;
+		if (!response.status) {
+			console.log("working");
+			const Toast = Swal.mixin({
+				toast: true,
+				position: 'top-right',
+				iconColor: 'white',
+				customClass: {
+				  popup: 'colored-toast'
+				},
+				showConfirmButton: false,
+				timer: 1500,
+				timerProgressBar: true
+			  })
+			  Toast.fire({
+				icon: 'error',
+				title: 'Error'
+			  })
+			  
+		}
+
+		console.log(response);
+		console.log(response.status);
+		console.log(response.message);
+		// const token = response.data.Xtoken;
+		// localStorage.setItem(AUTH_TOKEN, token);
+		// return token;
 	} catch (err) {
 		return rejectWithValue(err.response?.data?.message || 'Error')
 	}
