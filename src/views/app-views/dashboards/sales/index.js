@@ -314,6 +314,7 @@ const RecentOrder = () => (
 			columns={tableColumns} 
 			dataSource={recentOrderData} 
 			rowKey='id'
+			style={{ overflow: 'auto'}}
 		/>
 	</Card>
 )

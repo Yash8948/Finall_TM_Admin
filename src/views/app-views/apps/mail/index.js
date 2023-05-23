@@ -6,11 +6,12 @@ import MailContent from './MailContent';
 export class Mail extends Component {
 	render() {
 		return (
-			<div className="mail">
+			<div className="mail" style={{ overflow: 'auto' }}> 
 				<InnerAppLayout 
 					sideContent={<MailMenu url="/app/apps/mail/" {...this.props}/>}
 					mainContent={<MailContent {...this.props}/>}
 					border
+					
 				/>
 			</div>
 		)
