@@ -6,6 +6,7 @@ import utils from 'utils';
 import { Grid } from 'antd';
 import styled from '@emotion/styled';
 import { TEMPLATE } from 'constants/ThemeConstant';
+import { Link } from 'react-router-dom';
 
 const LogoWrapper = styled.div(() => ({
 	height: TEMPLATE.HEADER_HEIGHT,
@@ -56,7 +57,7 @@ export const Logo = ({ mobileLogo, logoType }) => {
 
 	return (
 		<LogoWrapper className={isMobile && !mobileLogo ? 'd-none' : 'logo'} style={{width: `${getLogoWidthGutter()}`}}>
-			<img src={getLogo()} alt={`${APP_NAME} logo`}/>
+			<Link to="/"><img src={getLogo()} alt={`${APP_NAME} logo`}/></Link>
 		</LogoWrapper>
 	)
 }

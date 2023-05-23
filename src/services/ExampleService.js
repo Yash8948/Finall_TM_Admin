@@ -2,11 +2,11 @@ import fetch from 'auth/FetchInterceptor'
 
 const exampleService = {}
 
-exampleService.getPost = function (params) {
+exampleService.getDashbaord = function (data) {
   return fetch({
-    url: '/posts/1',
+    url: '/AdminDashboard',
     method: 'get',
-    params
+    data: data
   })
 }
 
