@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import { connect } from "react-redux";
 import { Button, Form, Input, Divider, Alert } from "antd";
 import { MailOutlined, LockOutlined } from "@ant-design/icons";
@@ -16,7 +15,7 @@ import {
 } from "store/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import Cookies from 'universal-cookie';
+// import Cookies from 'universal-cookie';
 import { values } from "lodash";
 import "../../../assets/css/style.css";
 export const LoginForm = (props) => {
@@ -112,9 +111,6 @@ export const LoginForm = (props) => {
   //   </div>
   // );
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const cookies = new Cookies();
   return (
     <>
       <motion.div
@@ -148,8 +144,7 @@ export const LoginForm = (props) => {
           ]}
         >
 		{/* email input type */}
-          <Input prefix={<MailOutlined className="text-primary" />} placeholder="Enter Password" onChange={(e) => setPassword(e.target.value)}
- />
+          <Input prefix={<MailOutlined className="text-primary" />} placeholder="Enter Password"  />
         </Form.Item>
         <Form.Item
           name="password"
@@ -180,7 +175,7 @@ export const LoginForm = (props) => {
           ]}
         >
 		{/* password input type */}
-          <Input.Password prefix={<LockOutlined className="text-primary" />} placeholder="Enter Password" onChange={(e) => setPassword(e.target.value)} />
+          <Input.Password prefix={<LockOutlined className="text-primary" />} placeholder="Enter Password" />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" block loading={loading}>

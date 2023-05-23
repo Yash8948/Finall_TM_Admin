@@ -11,6 +11,14 @@ AuthService.login = function (data) {
 		data: JSON.stringify(data)
 	})
 }
+AuthService.admin_Dashboard = function (data) {
+	// console.log("object");
+	return fetch({
+		url: '/AdminDashboard',
+		method: 'post',
+		data: JSON.stringify(data)
+	})
+}
 
 // AuthService.register = function (data) {
 // 	return fetch({

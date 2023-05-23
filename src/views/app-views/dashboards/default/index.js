@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col, Button, Avatar, Dropdown, Table, Menu, Tag } from 'antd';
 import StatisticWidget from 'components/shared-components/StatisticWidget';
 import ChartWidget from 'components/shared-components/ChartWidget';
@@ -27,6 +27,9 @@ import {
 } from '@ant-design/icons';
 import utils from 'utils';
 import { useSelector } from 'react-redux';
+import { AUTH_TOKEN } from "constants/AuthConstant";
+// import { Admin_Dashboard } from '../../../../services/AllDataService'
+
 
 const MembersChart = props => (
   <ApexChart {...props}/>
@@ -148,6 +151,16 @@ export const DefaultDashboard = () => {
   const [newMembersData] = useState(NewMembersData)
   const [recentTransactionData] = useState(RecentTransactionData)
   const { direction } = useSelector(state => state.theme)
+
+//api
+
+
+
+
+
+
+
+
 
   return (
     <>  

@@ -80,7 +80,8 @@ export const signOut = createAsyncThunk('auth/logout',async () => {
 	localStorage.removeItem(USER_EMAIL);
 	localStorage.removeItem(USER_NAME);
 	localStorage.removeItem(USER_AVATAR);
-	localStorage.removeItem(USER_TYPE);	
+	localStorage.removeItem(USER_TYPE);
+	
 })
 
 // export const signInWithGoogle = createAsyncThunk('auth/signInWithGoogle', async (_, { rejectWithValue }) => {
