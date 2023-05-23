@@ -6,30 +6,30 @@ import AvatarStatus from 'components/shared-components/AvatarStatus';
 import GoalWidget from 'components/shared-components/GoalWidget';
 import Card from 'components/shared-components/Card';
 import Flex from 'components/shared-components/Flex';
-import { 
-  VisitorChartData, 
-  AnnualStatisticData, 
-  ActiveMembersData, 
-  NewMembersData, 
-  RecentTransactionData 
+import {
+  VisitorChartData,
+  AnnualStatisticData,
+  ActiveMembersData,
+  NewMembersData,
+  RecentTransactionData
 } from './DefaultDashboardData';
 import ApexChart from 'react-apexcharts';
 import { apexLineChartDefaultOption, COLOR_2 } from 'constants/ChartConstant';
 import { SPACER } from 'constants/ThemeConstant'
-import { 
-  UserAddOutlined, 
-  FileExcelOutlined, 
-  PrinterOutlined, 
-  PlusOutlined, 
-  EllipsisOutlined, 
-  StopOutlined, 
-  ReloadOutlined 
+import {
+  UserAddOutlined,
+  FileExcelOutlined,
+  PrinterOutlined,
+  PlusOutlined,
+  EllipsisOutlined,
+  StopOutlined,
+  ReloadOutlined
 } from '@ant-design/icons';
 import utils from 'utils';
 import { useSelector } from 'react-redux';
 
 const MembersChart = props => (
-  <ApexChart {...props}/>
+  <ApexChart {...props} />
 )
 
 const memberChartOption = {
@@ -95,10 +95,10 @@ const newJoinMemberOptions = [
   },
 ]
 
-const CardDropdown = ({items}) => {
+const CardDropdown = ({ items }) => {
 
   return (
-    <Dropdown menu={{items}} trigger={['click']} placement="bottomRight">
+    <Dropdown menu={{ items }} trigger={['click']} placement="bottomRight">
       <a href="/#" className="text-gray font-size-lg" onClick={e => e.preventDefault()}>
         <EllipsisOutlined />
       </a>
@@ -113,7 +113,7 @@ const tableColumns = [
     key: 'name',
     render: (text, record) => (
       <div className="d-flex align-items-center">
-        <Avatar size={30} className="font-size-sm" style={{backgroundColor: record.avatarColor}}>
+        <Avatar size={30} className="font-size-sm" style={{ backgroundColor: record.avatarColor }}>
           {utils.getNameInitial(text)}
         </Avatar>
         <span className="ml-2">{text}</span>
@@ -150,15 +150,15 @@ export const DefaultDashboard = () => {
   const { direction } = useSelector(state => state.theme)
 
   return (
-    <>  
+    <>
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={18}>
           <Row gutter={16}>
             {
               annualStatisticData.map((elm, i) => (
                 <Col xs={24} sm={24} md={24} lg={24} xl={8} key={i}>
-                  <StatisticWidget 
-                    title={elm.title} 
+                  <StatisticWidget
+                    title={elm.title}
                     value={elm.value}
                     status={elm.status}
                     subtitle={elm.subtitle}
@@ -168,7 +168,7 @@ export const DefaultDashboard = () => {
             }
           </Row>
           <Row gutter={16}>
-            <Col span={24}>
+            {/* <Col span={24}>
                 <ChartWidget 
                   title="Unique Visitors" 
                   series={visitorChartData.series} 
@@ -176,17 +176,17 @@ export const DefaultDashboard = () => {
                   height={'400px'}
                   direction={direction}
                 />
-            </Col>
+            </Col> */}
           </Row>
         </Col>
         <Col xs={24} sm={24} md={24} lg={6}>
-          <GoalWidget 
-            title="Monthly Target" 
+          <GoalWidget
+            title="Monthly Target"
             value={87}
             subtitle="You need abit more effort to hit monthly target"
             extra={<Button type="primary">Learn More</Button>}
           />
-          <StatisticWidget 
+          {/* <StatisticWidget 
             title={
               <MembersChart 
                 options={memberChartOption}
@@ -197,7 +197,7 @@ export const DefaultDashboard = () => {
             value='17,329'
             status={3.7}
             subtitle="Active members"
-          />
+          /> */}
         </Col>
       </Row>
       <Row gutter={16}>
@@ -219,11 +219,12 @@ export const DefaultDashboard = () => {
         </Col>
         <Col xs={24} sm={24} md={24} lg={17}>
           <Card title="Latest Transactions" extra={<CardDropdown items={latestTransactionOption} />}>
-            <Table 
-              className="no-border-last" 
-              columns={tableColumns} 
-              dataSource={recentTransactionData} 
-              rowKey='id' 
+            <Table
+              className="no-border-last"
+              columns={tableColumns}
+              dataSource={recentTransactionData}
+              rowKey='id'
+              style={{ overflow: 'auto'}}
               pagination={false}
             />
           </Card>
