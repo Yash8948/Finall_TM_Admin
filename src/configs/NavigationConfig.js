@@ -23,6 +23,7 @@ import {
   FundOutlined,
   ShoppingCartOutlined,
   BookOutlined,
+  UnorderedListOutlined,
   FileUnknownOutlined,
   ProfileOutlined
 } from '@ant-design/icons';
@@ -64,13 +65,13 @@ const dashBoardNavTree = [{
       submenu: []
     },
     {
-      key: 'dashboards-Kanban',
-      path: `${APP_PREFIX_PATH}/dashboards/kanban`,
-      title: 'sidenav.dashboard.kanban',
-      icon: FundOutlined,
+      key: 'dashboards-Task-List',
+      path: `${APP_PREFIX_PATH}/dashboards/TaskList`,
+      title: 'sidenav.dashboard.TaskList',
+      icon: UnorderedListOutlined,
       breadcrumb: false,
       submenu: []
-    }
+    },
   ]
 }]
 const appsNavTree = [{

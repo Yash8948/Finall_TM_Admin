@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Row, Col, Card, Avatar, Select, Tag, Badge, List } from 'antd';
 import RegiondataWidget from 'components/shared-components/RegiondataWidget';
 import DonutChartWidget from 'components/shared-components/DonutChartWidget'
-import Flex from 'components/shared-components/Flex';
 import ChartWidget from 'components/shared-components/ChartWidget';
 import NumberFormat from 'react-number-format';
 import ApexChart from "react-apexcharts";
@@ -64,37 +63,15 @@ export const AnalyticDashboard = () => {
             data={regionData}
             content={rederRegionTopEntrance}
           />
+          
         </Col>
         <Col xs={24} sm={24} md={24} lg={24} xxl={6}>
-          <DonutChartWidget 
-            series={sessionData} 
-            labels={sessionLabels} 
-            title="Sessions Device"
-            bodyClass="my-3"
-            customOptions={{colors: sessionColor}}
-            extra={
-              <Row  justify="center">
-                <Col xs={20} sm={20} md={20} lg={24}>
-                  <div className="mt-4 mx-auto" style={{maxWidth: 200}}>
-                    {conbinedSessionData.map(elm => (
-                      <Flex alignItems="center" justifyContent="space-between" className="mb-3" key={elm.label}>
-                        <Flex gap={5}>
-                          <Badge color={elm.color} />
-                          <span className="text-gray-light">{elm.label}</span>
-                        </Flex>
-                        <span className="font-weight-bold text-dark">{elm.data}</span>
-                      </Flex>
-                    ))}
-                  </div>
-                </Col>
-              </Row>
-            }
-          />
+          
         </Col>
       </Row>
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={12} xxl={6}>
-          <Card title="Most visited pages">
+          {/* <Card title="Most visited pages">
             <List
               itemLayout="horizontal"
               dataSource={pagesViewData}
@@ -116,10 +93,10 @@ export const AnalyticDashboard = () => {
                 </List.Item>
               )}
             />
-          </Card>
+          </Card> */}
         </Col>
         <Col xs={24} sm={24} md={24} lg={12} xxl={6}>
-          <Card title="Social media referrals">
+          {/* <Card title="Social media referrals">
           <List
             itemLayout="horizontal"
             dataSource={socialMediaReferralData}
@@ -149,7 +126,7 @@ export const AnalyticDashboard = () => {
               </List.Item>
               )}
             />
-          </Card>
+          </Card> */}
         </Col>
         <Col xs={24} sm={24} md={24} lg={24} xxl={12}>
           <ChartWidget 

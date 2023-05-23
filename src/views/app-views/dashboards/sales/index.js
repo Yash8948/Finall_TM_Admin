@@ -338,7 +338,7 @@ const SalesDashboard = () => {
 					<SalesByCategory />
 				</Col>
 				<Col xs={24} sm={24} md={24} lg={24} xl={24} xxl={10}>
-					<Customers />
+					{/* <Customers /> */}
 				</Col>
 			</Row>
 			<Row gutter={16}>
