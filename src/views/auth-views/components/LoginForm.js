@@ -11,8 +11,8 @@ import {
   showLoading,
   showAuthMessage,
   hideAuthMessage,
-  signInWithGoogle,
-  signInWithFacebook,
+  // signInWithGoogle,
+  // signInWithFacebook,
 } from "store/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -58,59 +58,59 @@ export const LoginForm = (props) => {
     // console.log(values);
   };
 
-  const onGoogleLogin = () => {
-    showLoading();
-    signInWithGoogle();
-  };
+  // const onGoogleLogin = () => {
+  //   showLoading();
+  //   signInWithGoogle();
+  // };
 
-  const onFacebookLogin = () => {
-    showLoading();
-    signInWithFacebook();
-  };
+  // const onFacebookLogin = () => {
+  //   showLoading();
+  //   signInWithFacebook();
+  // };
 
-  // useEffect(() => {
-  //   if (token !== null && allowRedirect) {
-  //     navigate(redirect);
-  //   }
-  //   if (showMessage) {
-  //     const timer = setTimeout(() => hideAuthMessage(), 3000);
-  //     return () => {
-  //       clearTimeout(timer);
-  //     };
-  //   }
-  // });
+  useEffect(() => {
+    if (token !== null && allowRedirect) {
+      navigate(redirect);
+    }
+    if (showMessage) {
+      const timer = setTimeout(() => hideAuthMessage(), 3000);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  });
 
 
   
 
 
 
-  const renderOtherSignIn = (
-    <div>
-      <Divider>
-        <span className="text-muted font-size-base font-weight-normal">
-          or connect with
-        </span>
-      </Divider>
-      <div className="d-flex justify-content-center">
-        <Button
-          onClick={() => onGoogleLogin()}
-          className="mr-2"
-          disabled={loading}
-          icon={<CustomIcon svg={GoogleSVG} />}
-        >
-          Google
-        </Button>
-        <Button
-          onClick={() => onFacebookLogin()}
-          icon={<CustomIcon svg={FacebookSVG} />}
-          disabled={loading}
-        >
-          Facebook
-        </Button>
-      </div>
-    </div>
-  );
+  // const renderOtherSignIn = (
+  //   <div>
+  //     <Divider>
+  //       <span className="text-muted font-size-base font-weight-normal">
+  //         or connect with
+  //       </span>
+  //     </Divider>
+  //     <div className="d-flex justify-content-center">
+  //       <Button
+  //         onClick={() => onGoogleLogin()}
+  //         className="mr-2"
+  //         disabled={loading}
+  //         icon={<CustomIcon svg={GoogleSVG} />}
+  //       >
+  //         Google
+  //       </Button>
+  //       <Button
+  //         onClick={() => onFacebookLogin()}
+  //         icon={<CustomIcon svg={FacebookSVG} />}
+  //         disabled={loading}
+  //       >
+  //         Facebook
+  //       </Button>
+  //     </div>
+  //   </div>
+  // );
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -187,7 +187,7 @@ export const LoginForm = (props) => {
             Sign In
           </Button>
         </Form.Item>
-        {otherSignIn ? renderOtherSignIn : null}
+        {/* {otherSignIn ? renderOtherSignIn : null} */}
         {extra}
       </Form>
     </>
@@ -215,8 +215,8 @@ const mapDispatchToProps = {
   showAuthMessage,
   showLoading,
   hideAuthMessage,
-  signInWithGoogle,
-  signInWithFacebook,
+  // signInWithGoogle,
+  // signInWithFacebook,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

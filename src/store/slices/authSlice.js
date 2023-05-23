@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { AUTH_TOKEN,USER_EMAIL,USER_NAME,USER_AVATAR } from 'constants/AuthConstant';
+import { AUTH_TOKEN,USER_EMAIL,USER_NAME,USER_AVATAR, USER_TYPE } from 'constants/AuthConstant';
 import AuthService from 'services/AuthService';
 import Swal from 'sweetalert2'
 export const initialState = {
@@ -15,6 +15,8 @@ export const signIn = createAsyncThunk('/Login',async (data, { rejectWithValue }
 	const { email, password } = data
 	try {
 		const response = await AuthService.login({email, password})
+		console.log(response);
+
 		if (!response.status) {
 			console.log("working");
 			const Toast = Swal.mixin({
@@ -34,16 +36,26 @@ export const signIn = createAsyncThunk('/Login',async (data, { rejectWithValue }
 			  })
 		}
 		
-		console.log(response);
-		if (response.status) {			
+		if (response.status) {	
+			
+			// let apiData = {
+				
+			// }
+
 			const token = response.data.Xtoken;
-			const userEmail = response.data.email;
-			const userName = response.data.username;
-			const userAvatar = response.data.avatar;
 			localStorage.setItem(AUTH_TOKEN, token);
+
+			const userEmail = response.data.email;
 			localStorage.setItem(USER_EMAIL, userEmail);
+
+			const userName = response.data.username;
 			localStorage.setItem(USER_NAME, userName);
+
+			const userAvatar = response.data.avatar;
 			localStorage.setItem(USER_AVATAR, userAvatar);
+
+			const userTpye = response.data.type;
+			localStorage.setItem(USER_TYPE, userTpye)
 			return token;
 		}
 	} catch (err) {
@@ -51,47 +63,49 @@ export const signIn = createAsyncThunk('/Login',async (data, { rejectWithValue }
 	}
 })
 
-export const signUp = createAsyncThunk('auth/register',async (data, { rejectWithValue }) => {
-	const { email, password } = data
-	try {
-		const response = await AuthService.register({email, password})
-		const token = response.data.token;
-		localStorage.setItem(AUTH_TOKEN, token);
-		return token;
-	} catch (err) {
-		return rejectWithValue(err.response?.data?.message || 'Error')
-	}
-})
+// export const signUp = createAsyncThunk('auth/register',async (data, { rejectWithValue }) => {
+// 	const { email, password } = data
+// 	try {
+// 		const response = await AuthService.register({email, password})
+// 		const token = response.data.token;
+// 		localStorage.setItem(AUTH_TOKEN, token);
+// 		return token;
+// 	} catch (err) {
+// 		return rejectWithValue(err.response?.data?.message || 'Error')
+// 	}
+// })
 
 export const signOut = createAsyncThunk('auth/logout',async () => {
 	localStorage.removeItem(AUTH_TOKEN);
 	localStorage.removeItem(USER_EMAIL);
 	localStorage.removeItem(USER_NAME);
 	localStorage.removeItem(USER_AVATAR);
+	localStorage.removeItem(USER_TYPE);
+	
 	
 })
 
-export const signInWithGoogle = createAsyncThunk('auth/signInWithGoogle', async (_, { rejectWithValue }) => {
-    try {
-		const response = await AuthService.loginInOAuth()
-		const token = response.data.token;
-		localStorage.setItem(AUTH_TOKEN, token);
-		return token;
-	} catch (err) {
-		return rejectWithValue(err.response?.data?.message || 'Error')
-	}
-})
+// export const signInWithGoogle = createAsyncThunk('auth/signInWithGoogle', async (_, { rejectWithValue }) => {
+//     try {
+// 		const response = await AuthService.loginInOAuth()
+// 		const token = response.data.token;
+// 		localStorage.setItem(AUTH_TOKEN, token);
+// 		return token;
+// 	} catch (err) {
+// 		return rejectWithValue(err.response?.data?.message || 'Error')
+// 	}
+// })
 
-export const signInWithFacebook = createAsyncThunk('auth/signInWithFacebook', async (_, { rejectWithValue }) => {
-    try {
-		const response = await AuthService.loginInOAuth()
-		const token = response.data.token;
-		localStorage.setItem(AUTH_TOKEN, token);
-		return token;
-	} catch (err) {
-		return rejectWithValue(err.response?.data?.message || 'Error')
-	}
-})
+// export const signInWithFacebook = createAsyncThunk('auth/signInWithFacebook', async (_, { rejectWithValue }) => {
+//     try {
+// 		const response = await AuthService.loginInOAuth()
+// 		const token = response.data.token;
+// 		localStorage.setItem(AUTH_TOKEN, token);
+// 		return token;
+// 	} catch (err) {
+// 		return rejectWithValue(err.response?.data?.message || 'Error')
+// 	}
+// })
 
 
 export const authSlice = createSlice({
@@ -150,45 +164,45 @@ export const authSlice = createSlice({
 				state.token = null
 				state.redirect = '/'
 			})
-			.addCase(signUp.pending, (state) => {
-				state.loading = true
-			})
-			.addCase(signUp.fulfilled, (state, action) => {
-				state.loading = false
-				state.redirect = '/'
-				state.token = action.payload
-			})
-			.addCase(signUp.rejected, (state, action) => {
-				state.message = action.payload
-				state.showMessage = true
-				state.loading = false
-			})
-			.addCase(signInWithGoogle.pending, (state) => {
-				state.loading = true
-			})
-			.addCase(signInWithGoogle.fulfilled, (state, action) => {
-				state.loading = false
-				state.redirect = '/'
-				state.token = action.payload
-			})
-			.addCase(signInWithGoogle.rejected, (state, action) => {
-				state.message = action.payload
-				state.showMessage = true
-				state.loading = false
-			})
-			.addCase(signInWithFacebook.pending, (state) => {
-				state.loading = true
-			})
-			.addCase(signInWithFacebook.fulfilled, (state, action) => {
-				state.loading = false
-				state.redirect = '/'
-				state.token = action.payload
-			})
-			.addCase(signInWithFacebook.rejected, (state, action) => {
-				state.message = action.payload
-				state.showMessage = true
-				state.loading = false
-			})
+			// .addCase(signUp.pending, (state) => {
+			// 	state.loading = true
+			// })
+			// .addCase(signUp.fulfilled, (state, action) => {
+			// 	state.loading = false
+			// 	state.redirect = '/'
+			// 	state.token = action.payload
+			// })
+			// .addCase(signUp.rejected, (state, action) => {
+			// 	state.message = action.payload
+			// 	state.showMessage = true
+			// 	state.loading = false
+			// })
+			// .addCase(signInWithGoogle.pending, (state) => {
+			// 	state.loading = true
+			// })
+			// .addCase(signInWithGoogle.fulfilled, (state, action) => {
+			// 	state.loading = false
+			// 	state.redirect = '/'
+			// 	state.token = action.payload
+			// })
+			// .addCase(signInWithGoogle.rejected, (state, action) => {
+			// 	state.message = action.payload
+			// 	state.showMessage = true
+			// 	state.loading = false
+			// })
+			// .addCase(signInWithFacebook.pending, (state) => {
+			// 	state.loading = true
+			// })
+			// .addCase(signInWithFacebook.fulfilled, (state, action) => {
+			// 	state.loading = false
+			// 	state.redirect = '/'
+			// 	state.token = action.payload
+			// })
+			// .addCase(signInWithFacebook.rejected, (state, action) => {
+			// 	state.message = action.payload
+			// 	state.showMessage = true
+			// 	state.loading = false
+			// })
 	},
 })
 
