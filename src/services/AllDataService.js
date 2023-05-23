@@ -1,15 +1,9 @@
-import fetch from 'auth/FetchInterceptor'
-// import ApirService from "./ApiService"
-const AllDataService = {}
+// import ApiService from "./ApiService";
 
-
-AllDataService.admin_Dashboard = function (data) {
-	// console.log("object");
-	return fetch({
-		url: '/AdminDashboard',
-		method: 'post',
-		data: JSON.stringify(data)
-	})
-}
-
-export default AllDataService;
+// export async function admin_Dashboard (data) {
+//     return ApiService.fetchData({
+//         url: 'https://task.mysyva.net/backend/Admindashboard',
+//         method: 'post',
+//         data:JSON.stringify(data)
+//     })
+// }

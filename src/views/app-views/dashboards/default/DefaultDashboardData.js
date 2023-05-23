@@ -25,7 +25,7 @@ export const VisitorChartData = {
   ]
 }
 
-export const AnnualStatisticData = [
+ const AnnualStatisticData = [
   {
       title: "Today's Task ",
       value:'$2,454', 

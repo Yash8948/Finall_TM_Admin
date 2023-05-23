@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Row, Col, Button, Avatar, Dropdown, Table, Menu, Tag } from 'antd';
 import StatisticWidget from 'components/shared-components/StatisticWidget';
 import ChartWidget from 'components/shared-components/ChartWidget';
@@ -28,7 +29,11 @@ import {
 import utils from 'utils';
 import { useSelector } from 'react-redux';
 import { AUTH_TOKEN } from "constants/AuthConstant";
+import { admin_Dashboard } from "services/AllDataService";
 // import { Admin_Dashboard } from '../../../../services/AllDataService'
+import ApiSnippets from '../../../../constants/ApiSnippet'
+import { forEach, forEachRight, forIn } from "lodash";
+import ColumnGroup from "antd/es/table/ColumnGroup";
 
 
 const MembersChart = props => (
@@ -146,42 +151,118 @@ const tableColumns = [
 
 export const DefaultDashboard = () => {
   const [visitorChartData] = useState(VisitorChartData);
-  const [annualStatisticData] = useState(AnnualStatisticData);
+  // const [annualStatisticData] = useState(AnnualStatisticData);
   const [activeMembersData] = useState(ActiveMembersData);
   const [newMembersData] = useState(NewMembersData)
   const [recentTransactionData] = useState(RecentTransactionData)
   const { direction } = useSelector(state => state.theme)
+  const [items, setItems] = useState([])
+// //api
+// const fetchData = () => {
+//   const token= localStorage.getItem(AUTH_TOKEN)
+//   console.log(token);
+//   const axios = require('axios');
 
-//api
+// let config = {
+//   method: 'post',
+//   // maxBodyLength: Infinity,
+//   url: 'https://task.mysyva.net/backend/AdminDashboard',
+//   headers: { 
+//     'Access-Control-Allow-Origin': '*',
+//     'Access-Control-Allow-Headers': '*',
+//     'Xtoken': token, 
+//     // 'Cookie': 'ci_session=c781d491f918d88ff3bfaae9a0c14f87'
+//   },
+//   // data : JSON.stringify(data)
+// };
+
+// axios.request(config)
+// .then((response) => {
+//   // console.log(JSON.stringify(response.data));
+//   console.log(response.data);
+
+// })
+// .catch((error) => {
+//   console.log(error);
+// });
+
+// }
+// useEffect(() => {
+//   fetchData()
+// }, [])
+
+
+var cards = [];
+useEffect(() => {
+  const getAllData = async () => {
+    var response = await ApiSnippets("/AdminDashboard", null);
+    cards=response.data.cards
+    // console.log("object");
+    // console.log(cards);
+    setItems(Object.keys(cards).map((key) => [key, cards[key]]))
+
+
+
+    //  statisticWidgets = Object.keys(cards_title).map((key, index) => {
+    //   let item = cards_title[key];
+    //   console.log("Key:", key);
+    //   console.log("Value:", item);
+    
+    //   return (
+    //     <Col xs={24} sm={24} md={24} lg={24} xl={8} key={index}>
+    //       <StatisticWidget
+    //         title={item}
+    //         // value={elm.value}
+    //         // status={elm.status}
+    //         // subtitle={elm.subtitle}
+    //       />
+    //     </Col>
+    //   );
+    // });
+    
+    // return (
+    //   <div>
+    //     {statisticWidgets}
+    //   </div>
+    // );
+    
 
 
 
 
-
-
-
+  }
+  getAllData()
+}, []);
 
 
   return (
     <>
-      <Row gutter={16}>
-        <Col xs={24} sm={24} md={24} lg={18}>
+      <Row gutter={4} >
+        {/* <Col xs={24} sm={24} md={24} lg={18}> */}
           <Row gutter={16}>
             {
-              annualStatisticData.map((elm, i) => (
-                <Col xs={24} sm={24} md={24} lg={24} xl={8} key={i}>
-                  <StatisticWidget
-                    title={elm.title}
-                    value={elm.value}
-                    status={elm.status}
-                    subtitle={elm.subtitle}
-                  />
-                </Col>
-              ))
-            }
+               items.map((item) => {
+                const key = item[0];
+                const value = String(item[1].length);
+
+                {/* console.log("Key:", typeof key);
+                console.log("Value:", typeof value); */}
+
+                return (
+                  <Col xs={24} sm={24} md={24} lg={24} xl={8} key={key}>
+                    <StatisticWidget
+                      title={key}
+                      value={value}
+                      // status={elm.status}
+                      // subtitle={elm.subtitle}
+                    />
+                  </Col>
+                );
+              })
+            } 
           </Row>
-          <Row gutter={16}>
-            {/* <Col span={24}>
+          {/* <Row gutter={16}>
+            <Col span={24}>
                 <ChartWidget 
                   title="Unique Visitors" 
                   series={visitorChartData.series} 
@@ -189,17 +270,17 @@ export const DefaultDashboard = () => {
                   height={'400px'}
                   direction={direction}
                 />
-            </Col> */}
-          </Row>
-        </Col>
-        <Col xs={24} sm={24} md={24} lg={6}>
+            </Col>
+          </Row> */}
+        {/* </Col> */}
+        {/* <Col xs={24} sm={24} md={24} lg={6}>
           <GoalWidget
             title="Monthly Target"
             value={87}
             subtitle="You need abit more effort to hit monthly target"
             extra={<Button type="primary">Learn More</Button>}
           />
-          {/* <StatisticWidget 
+          <StatisticWidget 
             title={
               <MembersChart 
                 options={memberChartOption}
@@ -210,8 +291,8 @@ export const DefaultDashboard = () => {
             value='17,329'
             status={3.7}
             subtitle="Active members"
-          /> */}
-        </Col>
+          />
+        </Col> */}
       </Row>
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={7}>
