@@ -197,39 +197,8 @@ useEffect(() => {
   const getAllData = async () => {
     var response = await ApiSnippets("/AdminDashboard", null);
     cards=response.data.cards
-    // console.log("object");
     // console.log(cards);
     setItems(Object.keys(cards).map((key) => [key, cards[key]]))
-
-
-
-    //  statisticWidgets = Object.keys(cards_title).map((key, index) => {
-    //   let item = cards_title[key];
-    //   console.log("Key:", key);
-    //   console.log("Value:", item);
-    
-    //   return (
-    //     <Col xs={24} sm={24} md={24} lg={24} xl={8} key={index}>
-    //       <StatisticWidget
-    //         title={item}
-    //         // value={elm.value}
-    //         // status={elm.status}
-    //         // subtitle={elm.subtitle}
-    //       />
-    //     </Col>
-    //   );
-    // });
-    
-    // return (
-    //   <div>
-    //     {statisticWidgets}
-    //   </div>
-    // );
-    
-
-
-
-
   }
   getAllData()
 }, []);
@@ -249,7 +218,7 @@ useEffect(() => {
                 console.log("Value:", typeof value); */}
 
                 return (
-                  <Col xs={24} sm={24} md={24} lg={24} xl={8} key={key}>
+                  <Col xs={24} sm={24} md={24} lg={24} xl={6} key={key}>
                     <StatisticWidget
                       title={key}
                       value={value}
