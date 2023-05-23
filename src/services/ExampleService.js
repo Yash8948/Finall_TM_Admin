@@ -1,8 +1,8 @@
 import fetch from 'auth/FetchInterceptor'
 
-const exampleService = {}
+const ExampleService = {}
 
-exampleService.getDashbaord = function (data) {
+ExampleService.getDashbaord = function (data) {
   return fetch({
     url: '/AdminDashboard',
     method: 'get',
@@ -10,12 +10,12 @@ exampleService.getDashbaord = function (data) {
   })
 }
 
-exampleService.setPost = function (data) {
-  return fetch({
-    url: '/posts',
-    method: 'post',
-    data: data
-  })
-}
+// exampleService.setPost = function (data) {
+//   return fetch({
+//     url: '/posts',
+//     method: 'post',
+//     data: data
+//   })
+// }
 
-export default exampleService
+export default ExampleService;
