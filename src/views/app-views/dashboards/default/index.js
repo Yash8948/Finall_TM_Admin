@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Row, Col, Button, Avatar, Dropdown, Table, Menu, Tag } from 'antd';
+import { Row, Col, Button, Avatar, Dropdown, Table, Menu, Tag, Select, Input, DatePicker, Divider  } from 'antd';
+import dayjs from 'dayjs';
+
 import StatisticWidget from 'components/shared-components/StatisticWidget';
 import ChartWidget from 'components/shared-components/ChartWidget';
 import AvatarStatus from 'components/shared-components/AvatarStatus';
 import GoalWidget from 'components/shared-components/GoalWidget';
 import Card from 'components/shared-components/Card';
 import Flex from 'components/shared-components/Flex';
+//datatable imports
+// import { Table } from 'antd';
+import qs from 'qs';
+
 import {
   VisitorChartData,
   AnnualStatisticData,
@@ -32,8 +37,11 @@ import { AUTH_TOKEN } from "constants/AuthConstant";
 import { admin_Dashboard } from "services/AllDataService";
 // import { Admin_Dashboard } from '../../../../services/AllDataService'
 import ApiSnippets from '../../../../constants/ApiSnippet'
-import { forEach, forEachRight, forIn } from "lodash";
-import ColumnGroup from "antd/es/table/ColumnGroup";
+
+const { Option } = Select;
+const { TextArea } = Input;
+const dateFormatList = ['DD/MM/YYYY'];
+
 
 
 const MembersChart = props => (
@@ -106,7 +114,7 @@ const newJoinMemberOptions = [
 const CardDropdown = ({ items }) => {
 
   return (
-    <Dropdown menu={{ items }} trigger={['click']} placement="bottomRight">
+    <Dropdown menu={{ items }} trigger={['click']} placement="bottomRight" arrow={{pointAtCenter: true,}}>
       <a href="/#" className="text-gray font-size-lg" onClick={e => e.preventDefault()}>
         <EllipsisOutlined />
       </a>
@@ -149,6 +157,42 @@ const tableColumns = [
   },
 ];
 
+
+// TABLE task list
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    sorter: true,
+    render: (name) => `${name.first} ${name.last}`,
+    width: '20%',
+  },
+  {
+    title: 'Gender',
+    dataIndex: 'gender',
+    filters: [
+      {
+        text: 'Male',
+        value: 'male',
+      },
+      {
+        text: 'Female',
+        value: 'female',
+      },
+    ],
+    width: '20%',
+  },
+  {
+    title: 'Email',
+    dataIndex: 'email',
+  },
+];
+const getRandomuserParams = (params) => ({
+  results: params.pagination?.pageSize,
+  page: params.pagination?.current,
+  ...params,
+});
+
 export const DefaultDashboard = () => {
   const [visitorChartData] = useState(VisitorChartData);
   // const [annualStatisticData] = useState(AnnualStatisticData);
@@ -156,80 +200,224 @@ export const DefaultDashboard = () => {
   const [newMembersData] = useState(NewMembersData)
   const [recentTransactionData] = useState(RecentTransactionData)
   const { direction } = useSelector(state => state.theme)
-  const [items, setItems] = useState([])
-// //api
-// const fetchData = () => {
-//   const token= localStorage.getItem(AUTH_TOKEN)
-//   console.log(token);
-//   const axios = require('axios');
+  const [cardCounts, setCardCounts] = useState(null)
+  //table task list
+  const [data, setData] = useState();
+  const [loading, setLoading] = useState(false);
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: 10,
+    },
+  });
+  const fetchData = () => {
+    setLoading(true);
+    fetch(`https://randomuser.me/api?${qs.stringify(getRandomuserParams(tableParams))}`)
+      .then((res) => res.json())
+      .then(({ results }) => {
+        setData(results);
+        setLoading(false);
+        setTableParams({
+          ...tableParams,
+          pagination: {
+            ...tableParams.pagination,
+            total: 200,
+            // 200 is mock data, you should read it from server
+            // total: data.totalCount,
+          },
+        });
+      });
+  };
 
-// let config = {
-//   method: 'post',
-//   // maxBodyLength: Infinity,
-//   url: 'https://task.mysyva.net/backend/AdminDashboard',
-//   headers: { 
-//     'Access-Control-Allow-Origin': '*',
-//     'Access-Control-Allow-Headers': '*',
-//     'Xtoken': token, 
-//     // 'Cookie': 'ci_session=c781d491f918d88ff3bfaae9a0c14f87'
-//   },
-//   // data : JSON.stringify(data)
-// };
+  useEffect(() => {
+    fetchData();
+  }, [JSON.stringify(tableParams)]);
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      ...sorter,
+    });
 
-// axios.request(config)
-// .then((response) => {
-//   // console.log(JSON.stringify(response.data));
-//   console.log(response.data);
+    // `dataSource` is useless since `pageSize` changed
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([]);
+    }
+  };
 
-// })
-// .catch((error) => {
-//   console.log(error);
-// });
+  const { Option } = Select;
 
-// }
-// useEffect(() => {
-//   fetchData()
-// }, [])
+  function onChange(value) {
+    console.log(`selected ${value}`);
+  }
+  
+  function onBlur() {
+    console.log('blur');
+  }
+  
+  function onFocus() {
+    console.log('focus');
+  }
+  
+  function onSearch(val) {
+    console.log('search:', val);
+  }
+
+  function disabledDate(current) {
+    // Can not select days before today and today
+    return current && current < dayjs().startOf('day');
+  }
+  
+  
 
 
-var cards = [];
+
+
+
+
+
+
+
+
 useEffect(() => {
   const getAllData = async () => {
-    var response = await ApiSnippets("/AdminDashboard", null);
-    cards=response.data.cards
-    // console.log(cards);
-    setItems(Object.keys(cards).map((key) => [key, cards[key]]))
+    let response = await ApiSnippets("/AdminDashboard", null);
+    let countObj = await response.data.count
+    setCardCounts(countObj)
   }
   getAllData()
 }, []);
+const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+const onSelectChange = (newSelectedRowKeys) => {
+  // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+  setSelectedRowKeys(newSelectedRowKeys);
+};
+//task list table selected drop down
+const rowSelection = {
+  selectedRowKeys,
+  onChange: onSelectChange,
+  selections: [
+    Table.SELECTION_ALL,
+    Table.SELECTION_INVERT,
+    Table.SELECTION_NONE,
+    {
+      key: 'odd',
+      text: 'Select Odd Row',
+      onSelect: (changeableRowKeys) => {
+        let newSelectedRowKeys = [];
+        newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
+          if (index % 2 !== 0) {
+            return false;
+          }
+          return true;
+        });
+        setSelectedRowKeys(newSelectedRowKeys);
+      },
+    },
+    {
+      key: 'even',
+      text: 'Select Even Row',
+      onSelect: (changeableRowKeys) => {
+        let newSelectedRowKeys = [];
+        newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
+          if (index % 2 !== 0) {
+            return true;
+          }
+          return false;
+        });
+        setSelectedRowKeys(newSelectedRowKeys);
+      },
+    },
+  ],
+};
+
 
 
   return (
     <>
       <Row gutter={4} >
         {/* <Col xs={24} sm={24} md={24} lg={18}> */}
+        
           <Row gutter={16}>
-            {
-               items.map((item) => {
-                const key = item[0];
-                const value = String(item[1].length);
+          { cardCounts && (
+            <>
+          <Col xs={24} sm={24} md={24} lg={24} xl={6} >
+          <StatisticWidget
 
-                {/* console.log("Key:", typeof key);
-                console.log("Value:", typeof value); */}
-
-                return (
-                  <Col xs={24} sm={24} md={24} lg={24} xl={6} key={key}>
-                    <StatisticWidget
-                      title={key}
-                      value={value}
-                      // status={elm.status}
-                      // subtitle={elm.subtitle}
-                    />
-                  </Col>
-                );
-              })
-            } 
+            onClick={() => console.log("working")}
+            title="Today Task's"
+            value={cardCounts.tasks_count === null ? '0' : String(cardCounts.tasks_count)}
+            // status={elm.status}
+            // subtitle={elm.subtitle}
+           
+          />
+          </Col>
+          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+          <StatisticWidget
+            title="Pending Task's"
+            value={cardCounts.pending_count === null ? '0' : String(cardCounts.pending_count)}
+          />
+          </Col> 
+          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+          <StatisticWidget
+            title="Overdue Task"
+              value={cardCounts.total_overdue_task_count === null ? '0' : String(cardCounts.total_overdue_task_count)}
+          />
+          </Col>
+          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+          <StatisticWidget
+            title="Tax Payable"
+              value={cardCounts.tax_payable_count === null ? '0' : String(cardCounts.tax_payable_count)}
+          />
+          </Col>
+          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+          <StatisticWidget
+            title="Query Raised"
+              value={cardCounts.total_query_raised_count === null ? '0' : String(cardCounts.total_query_raised_count)}
+          />
+          </Col>
+          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+          <StatisticWidget
+            title="On Board"
+              value={cardCounts.total_on_board_count === null ? '0' : String(cardCounts.total_on_board_count)}
+          />
+          </Col>
+          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+          <StatisticWidget
+            title="Un Assigned"
+             value={cardCounts.unassigned_task_count === null ? '0' : String(cardCounts.unassigned_task_count)}
+          />
+          </Col>
+          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+          <StatisticWidget
+            title="Un Paid Task"
+             value={cardCounts.unpaid_task_board_count === null ? '0' : String(cardCounts.unpaid_task_board_count)}
+          />
+          </Col>
+          </>
+)}
           </Row>
+          </Row>
+
+          {/* table task lists starts*/}
+          <Row gutter={16}>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+          <Card title="Task List" extra={<CardDropdown items={latestTransactionOption} />}>
+
+          <Table
+           rowSelection={rowSelection}
+            columns={columns}
+            rowKey={(record) => record.login.uuid}
+            dataSource={data}
+            pagination={tableParams.pagination}
+            loading={loading}
+            onChange={handleTableChange}
+            style={{ overflow: 'auto'}}
+          />
+          </Card>
+          </Col>
+          </Row>
+          {/* table task lists ends*/}
           {/* <Row gutter={16}>
             <Col span={24}>
                 <ChartWidget 
@@ -262,40 +450,162 @@ useEffect(() => {
             subtitle="Active members"
           />
         </Col> */}
-      </Row>
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={7}>
-          <Card title="New Join Member" extra={<CardDropdown items={newJoinMemberOptions} />}>
+          <Card title="Add Log" extra={<CardDropdown items={newJoinMemberOptions} />}>
             <div className="mt-3">
-              {
-                newMembersData.map((elm, i) => (
-                  <div key={i} className={`d-flex align-items-center justify-content-between mb-4`}>
-                    <AvatarStatus id={i} src={elm.img} name={elm.name} subTitle={elm.title} />
-                    <div>
-                      <Button icon={<UserAddOutlined />} type="default" size="small">Add</Button>
-                    </div>
-                  </div>
-                ))
+            <div style={{ marginBottom: 16 }}>
+
+            <Select
+              showSearch
+              style={{ width: '100%' }}
+              placeholder="Select a person"
+              optionFilterProp="children"
+              onChange={onChange}
+              onFocus={onFocus}
+              onBlur={onBlur}
+              onSearch={onSearch}
+              filterOption={(input, option) =>
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
+            >
+              <Option value="jack">Jack</Option>
+              <Option value="lucy">Lucy</Option>
+              <Option value="tom">Tom</Option>
+            </Select>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <Input placeholder="Basic usage" />
+            </div>
+            <div style={{ marginBottom: 16 }}>
+            <TextArea rows={4} />
+            </div>
+            <div style={{ marginBottom: 16 }}>
+            <DatePicker defaultValue={dayjs('01/01/2015', dateFormatList[0])} format={dateFormatList} 
+            disabledDate={disabledDate}
+             style={{ width: '100%' }}/>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+            <Button type="primary" style={{ width: '100%' }}>Submit</Button>
+            </div>
             </div>
           </Card>
         </Col>
         <Col xs={24} sm={24} md={24} lg={17}>
-          <Card title="Latest Transactions" extra={<CardDropdown items={latestTransactionOption} />}>
-            <Table
+          <Card title="Client Log Data" extra={
+            <div style={{width:"100%"}}>
+          <Select
+              className="mx-2"
+              // showSearch={true}
+              // style={{ width: '70%',  }}
+              placeholder="Select a person"
+              optionFilterProp="children"
+              onChange={onChange}
+              onFocus={onFocus}
+              onBlur={onBlur}
+              onSearch={onSearch}
+              filterOption={(input, option) =>
+                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+              allowClear={true}
+            >
+              <Option value="jack">Jack</Option>
+              <Option value="lucy">Lucy</Option>
+              <Option value="tom">Tom</Option>
+            </Select>   
+            <CardDropdown items={latestTransactionOption} />
+            </div>
+          }>
+            <Input.Search placeholder="Search Here..." className="my-2" />
+           <Table
+           rowSelection={rowSelection}
+            columns={columns}
+            rowKey={(record) => record.login.uuid}
+            dataSource={data}
+            pagination={tableParams.pagination}
+            loading={loading}
+            onChange={handleTableChange}
+            style={{ overflow: 'auto'}}
+          />
+            {/* <Table
               className="no-border-last"
               columns={tableColumns}
               dataSource={recentTransactionData}
               rowKey='id'
               style={{ overflow: 'auto'}}
               pagination={false}
-            />
+            /> */}
           </Card>
         </Col>
       </Row>
+       {/* table birthday lists starts*/}
+       <Row gutter={16}>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+          <Card title="Birthday List" extra={<CardDropdown items={latestTransactionOption} />}>
+
+          <Table
+           rowSelection={rowSelection}
+            columns={columns}
+            // rowKey={(record) => record.login.uuid}
+            dataSource={data}
+            // pagination={tableParams.pagination}
+            loading={loading}
+            onChange={handleTableChange}
+            style={{ overflow: 'auto'}}
+          />
+          </Card>
+          
+          </Col>
+          </Row>
+          {/* table birthday lists ends*/}
+       {/* table holiday lists starts*/}
+       <Row gutter={16}>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+          <Card title="Holiday List" extra={<CardDropdown items={latestTransactionOption} />}>
+
+          <Table
+           rowSelection={rowSelection}
+            columns={columns}
+            // rowKey={(record) => record.login.uuid}
+            dataSource={data}
+            // pagination={tableParams.pagination}
+            loading={loading}
+            onChange={handleTableChange}
+            style={{ overflow: 'auto'}}
+          />
+          </Card>
+          
+          </Col>
+          </Row>
+          {/* table birthday lists ends*/}
     </>
   )
 }
 
 
 export default DefaultDashboard;
+
+//----------------------------------------------------------------TASK CARDS DYNAMIC
+// const [items, setItems] = useState([])
+//PUT INDISE THE USEEFFECT HOOK
+// setItems(Object.keys(response.data.cards).map((key) => [key, response.data.cards[key]]))
+// {
+//   items.map((item) => {
+//    const key = item[0];
+//    const value = String(item[1].length);
+
+//    {/* console.log("Key:",typeof key);
+//    console.log("Value:", typeof value); */}
+
+//    return (
+//      <Col xs={24} sm={24} md={24} lg={24} xl={6} key={key}>
+//        <StatisticWidget
+//          title={key}
+//          value={value}
+//          // status={elm.status}
+//          // subtitle={elm.subtitle}
+//        />
+//      </Col>
+//    );
+//  })
+// } 

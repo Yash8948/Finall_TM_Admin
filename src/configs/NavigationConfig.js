@@ -174,10 +174,37 @@ const appsNavTree = [{
     }
   ]
 }]
+const docsNavTree = [{
+  key: 'docs',
+  path: `${APP_PREFIX_PATH}/docs`,
+  title: 'sidenav.docs',
+  icon: BookOutlined,
+  breadcrumb: false,
+  isGroupTitle: true,
+  submenu: [
+    {
+      key: 'docs-documentation',
+      path: `${APP_PREFIX_PATH}/docs/documentation`,
+      title: 'sidenav.docs.documentation',
+      icon: FileUnknownOutlined,
+      breadcrumb: false,
+      submenu: []
+    },
+    {
+      key: 'docs-changelog',
+      path: `${APP_PREFIX_PATH}/docs/documentation/changelog`,
+      title: 'sidenav.docs.changelog',
+      icon: ProfileOutlined,
+      breadcrumb: false,
+      submenu: []
+    }
+  ]
+}]
 
 const navigationConfig = [
   ...dashBoardNavTree,
   ...appsNavTree,
+  ...docsNavTree
   
 ]
 

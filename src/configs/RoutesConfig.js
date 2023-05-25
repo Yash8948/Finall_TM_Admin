@@ -100,4 +100,9 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/apps/ecommerce/orders`,
         component: React.lazy(() => import('views/app-views/apps/e-commerce/orders')),
     },
+    {
+        key: 'docs.documentation',
+        path: `${APP_PREFIX_PATH}/docs/documentation/*`,
+        component: React.lazy(() => import('views/app-views/docs')),
+    }
 ]

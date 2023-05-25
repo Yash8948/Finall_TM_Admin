@@ -5,9 +5,9 @@ import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 
 const StatisticWidget = ({ title, value, status, subtitle, prefix }) => {
 	return (
-		<Card>
+		<Card >
 			{title && <h4 className="mb-0">{title}</h4>}
-			<div className={`${prefix? 'd-flex': ''} ${title ? 'mt-3':''}`}>
+			<div  className={`${prefix? 'd-flex': ''} ${title ? 'mt-3':''}`}>
 				{prefix ? <div className="mr-2">{prefix}</div> : null}
 				<div>
 					<div className="d-flex align-items-center">
