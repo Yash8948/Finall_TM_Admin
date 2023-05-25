@@ -7,6 +7,7 @@ import ChartWidget from 'components/shared-components/ChartWidget';
 import AvatarStatus from 'components/shared-components/AvatarStatus';
 import GoalWidget from 'components/shared-components/GoalWidget';
 import Card from 'components/shared-components/Card';
+import BoardCards from 'components/shared-components/BoardCards';
 import Flex from 'components/shared-components/Flex';
 //datatable imports
 // import { Table } from 'antd';
@@ -37,6 +38,7 @@ import { AUTH_TOKEN } from "constants/AuthConstant";
 import { admin_Dashboard } from "services/AllDataService";
 // import { Admin_Dashboard } from '../../../../services/AllDataService'
 import ApiSnippets from '../../../../constants/ApiSnippet'
+import { result } from "lodash";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -122,40 +124,40 @@ const CardDropdown = ({ items }) => {
   )
 }
 
-const tableColumns = [
-  {
-    title: 'Customer',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text, record) => (
-      <div className="d-flex align-items-center">
-        <Avatar size={30} className="font-size-sm" style={{ backgroundColor: record.avatarColor }}>
-          {utils.getNameInitial(text)}
-        </Avatar>
-        <span className="ml-2">{text}</span>
-      </div>
-    ),
-  },
-  {
-    title: 'Date',
-    dataIndex: 'date',
-    key: 'date',
-  },
-  {
-    title: 'Amount',
-    dataIndex: 'amount',
-    key: 'amount',
-  },
-  {
-    title: () => <div className="text-right">Status</div>,
-    key: 'status',
-    render: (_, record) => (
-      <div className="text-right">
-        <Tag className="mr-0" color={record.status === 'Approved' ? 'cyan' : record.status === 'Pending' ? 'blue' : 'volcano'}>{record.status}</Tag>
-      </div>
-    ),
-  },
-];
+// const tableColumns = [
+//   {
+//     title: 'Sr.No',
+//     dataIndex: 'srno',
+//     key: 'srno',
+//     // render: (text, record) => (
+//     //   <div className="d-flex align-items-center">
+//     //     <Avatar size={30} className="font-size-sm" style={{ backgroundColor: record.avatarColor }}>
+//     //       {utils.getNameInitial(text)}
+//     //     </Avatar>
+//     //     <span className="ml-2">{text}</span>
+//     //   </div>
+//     // ),
+//   },
+//   {
+//     title: 'Client Name',
+//     dataIndex: 'Client_Name',
+//     key: 'Client_Namedate',
+//   },
+//   {
+//     title: 'Message',
+//     dataIndex: 'Message',
+//     key: 'Message',
+//   },
+//   {
+//     title: () => <div className="text-right">Status</div>,
+//     key: 'status',
+//     // render: (_, record) => (
+//       // <div className="text-right">
+//       //   <Tag className="mr-0" color={record.status === 'Approved' ? 'cyan' : record.status === 'Pending' ? 'blue' : 'volcano'}>{record.status}</Tag>
+//       // </div>
+//     // ),
+//   },
+// ];
 
 
 // TABLE task list
@@ -170,16 +172,7 @@ const columns = [
   {
     title: 'Gender',
     dataIndex: 'gender',
-    filters: [
-      {
-        text: 'Male',
-        value: 'male',
-      },
-      {
-        text: 'Female',
-        value: 'female',
-      },
-    ],
+    
     width: '20%',
   },
   {
@@ -201,6 +194,8 @@ export const DefaultDashboard = () => {
   const [recentTransactionData] = useState(RecentTransactionData)
   const { direction } = useSelector(state => state.theme)
   const [cardCounts, setCardCounts] = useState(null)
+  const [clientTableData, setClientTableData] = useState(null)
+  const [clientName, setClientName] = useState(null)
   //table task list
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
@@ -221,21 +216,35 @@ export const DefaultDashboard = () => {
           ...tableParams,
           pagination: {
             ...tableParams.pagination,
-            total: 200,
+            total: 100,
             // 200 is mock data, you should read it from server
             // total: data.totalCount,
           },
         });
       });
+      console.log(data);
   };
+//client log table api
+  // const fetchData = async () => {  
+  //     let ApiData = {
+  //         "limit": 10,
+  //         "offset": 0,
+  //         "search":""
+  //       }
+  //         let response = await ApiSnippets("/ClientLogData_Dashboard", ApiData);
+  //         let countObj = await response.data;
+  //         setClientTableData(countObj);
+  //         setData(response.data)
+  // }
+
+console.log(data);
 
   useEffect(() => {
     fetchData();
   }, [JSON.stringify(tableParams)]);
-  const handleTableChange = (pagination, filters, sorter) => {
+  const handleTableChange = (pagination, sorter) => {
     setTableParams({
       pagination,
-      filters,
       ...sorter,
     });
 
@@ -282,11 +291,17 @@ export const DefaultDashboard = () => {
 useEffect(() => {
   const getAllData = async () => {
     let response = await ApiSnippets("/AdminDashboard", null);
-    let countObj = await response.data.count
+    let countObj = await response.data
     setCardCounts(countObj)
-  }
+    let onlyClientData = await response.data.client
+    setClientName(onlyClientData)
+  
+  }		
+  
   getAllData()
 }, []);
+// console.log("chech");
+// console.log(clientName);
 const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 const onSelectChange = (newSelectedRowKeys) => {
   // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
@@ -331,8 +346,7 @@ const rowSelection = {
   ],
 };
 
-
-
+// console.log(cardCounts.client);
   return (
     <>
       <Row gutter={4} >
@@ -343,10 +357,8 @@ const rowSelection = {
             <>
           <Col xs={24} sm={24} md={24} lg={24} xl={6} >
           <StatisticWidget
-
-            onClick={() => console.log("working")}
             title="Today Task's"
-            value={cardCounts.tasks_count === null ? '0' : String(cardCounts.tasks_count)}
+            value={cardCounts.tasks_count === null ? '0' : String(cardCounts.count.tasks_count)}
             // status={elm.status}
             // subtitle={elm.subtitle}
            
@@ -354,44 +366,48 @@ const rowSelection = {
           </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={6}>
           <StatisticWidget
+            
             title="Pending Task's"
-            value={cardCounts.pending_count === null ? '0' : String(cardCounts.pending_count)}
+            value={cardCounts.count.pending_count === null ? '0' : String(cardCounts.count.pending_count)}
           />
           </Col> 
           <Col xs={24} sm={24} md={24} lg={24} xl={6}>
           <StatisticWidget
+            
             title="Overdue Task"
-              value={cardCounts.total_overdue_task_count === null ? '0' : String(cardCounts.total_overdue_task_count)}
+            value={cardCounts.count.total_overdue_task_count === null ? '0' : String(cardCounts.count.total_overdue_task_count)}
           />
           </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={6}>
           <StatisticWidget
+            
             title="Tax Payable"
-              value={cardCounts.tax_payable_count === null ? '0' : String(cardCounts.tax_payable_count)}
+            value={cardCounts.count.tax_payable_count === null ? '0' : String(cardCounts.count.tax_payable_count)}
           />
           </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={6}>
           <StatisticWidget
             title="Query Raised"
-              value={cardCounts.total_query_raised_count === null ? '0' : String(cardCounts.total_query_raised_count)}
+            value={cardCounts.count.total_query_raised_count === null ? '0' : String(cardCounts.count.total_query_raised_count)}
           />
           </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={6}>
           <StatisticWidget
             title="On Board"
-              value={cardCounts.total_on_board_count === null ? '0' : String(cardCounts.total_on_board_count)}
+            value={cardCounts.count.total_on_board_count === null ? '0' : String(cardCounts.count.total_on_board_count)}
           />
           </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+
           <StatisticWidget
             title="Un Assigned"
-             value={cardCounts.unassigned_task_count === null ? '0' : String(cardCounts.unassigned_task_count)}
+             value={cardCounts.count.unassigned_task_count === null ? '0' : String(cardCounts.count.unassigned_task_count)}
           />
           </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={6}>
           <StatisticWidget
             title="Un Paid Task"
-             value={cardCounts.unpaid_task_board_count === null ? '0' : String(cardCounts.unpaid_task_board_count)}
+             value={cardCounts.count.unpaid_task_board_count === null ? '0' : String(cardCounts.count.unpaid_task_board_count)}
           />
           </Col>
           </>
@@ -407,7 +423,7 @@ const rowSelection = {
           <Table
            rowSelection={rowSelection}
             columns={columns}
-            rowKey={(record) => record.login.uuid}
+            rowKey={(record) => record.login.uuid}// id
             dataSource={data}
             pagination={tableParams.pagination}
             loading={loading}
@@ -467,11 +483,12 @@ const rowSelection = {
               onSearch={onSearch}
               filterOption={(input, option) =>
                 option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-            >
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="tom">Tom</Option>
+              }>
+            {clientName && clientName.map((item, index) => (
+              <Option key={index} value={String(item.username)}>
+                {item.username}
+              </Option>
+            ))}
             </Select>
             </div>
             <div style={{ marginBottom: 16 }}>
@@ -509,9 +526,11 @@ const rowSelection = {
               }
               allowClear={true}
             >
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="tom">Tom</Option>
+               {clientName && clientName.map((item, index) => (
+              <Option key={index} value={String(item.username)}>
+                {item.username}
+              </Option>
+            ))}
             </Select>   
             <CardDropdown items={latestTransactionOption} />
             </div>

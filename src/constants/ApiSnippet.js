@@ -1,7 +1,7 @@
 import React from 'react';
 import { AUTH_TOKEN } from "./AuthConstant";
 
-const ApiSnippets = async (path, data = null) => {
+const ApiSnippets = async (path, ApiData = null) => {
     const token = localStorage.getItem(AUTH_TOKEN);
     var myHeaders = new Headers(); 
     myHeaders.append("Xtoken",token)
@@ -10,7 +10,7 @@ const ApiSnippets = async (path, data = null) => {
     var requestOptions = {
       method: 'POST',
       headers: myHeaders,
-      body: data,
+      body: ApiData,
     };
 
     // const fetchAndLog = async () => {
@@ -18,7 +18,7 @@ const ApiSnippets = async (path, data = null) => {
     var json = await response.json();
     // just log ‘json’
     let stTrue = await json.status;
-    console.log(json);
+    // console.log(json);
     // }
     return json;
    
