@@ -3,30 +3,57 @@ import qs from 'qs';
 import { useEffect, useState } from 'react';
 const columns = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-    sorter: true,
-    render: (name) => `${name.first} ${name.last}`,
-    width: '20%',
+    
+    title: 'Sr no',
+    dataIndex: '',
+    // sorter: true,
+    // render: (name) => `${name.first} ${name.last}`,
+    width: '10%',
   },
   {
-    title: 'Gender',
-    dataIndex: 'gender',
-    filters: [
-      {
-        text: 'Male',
-        value: 'male',
-      },
-      {
-        text: 'Female',
-        value: 'female',
-      },
-    ],
-    width: '20%',
+    title: 'Task Name',
+    dataIndex: '',
+    width: '10%',
   },
   {
-    title: 'Email',
-    dataIndex: 'email',
+    title: 'Tickit Id',
+    dataIndex: 'tickit id',
+    width: '10%',
+  },
+  {
+    title: 'Client Name',
+    dataIndex: 'client name',
+    width: '10%',
+  },
+  {
+    title: 'Employee Name',
+    dataIndex: '',
+    width: '10%',
+  },
+  {
+    title: 'Department',
+    dataIndex: '',
+    width: '10%',
+  },
+  {
+    title: 'Dadeline Date',
+    dataIndex: '',
+    width: '10%',
+  },
+  {
+    title: 'Closing Date',
+    dataIndex: '',
+    width: '10%',
+  },
+  {
+    title: 'Status',
+    dataIndex: '',
+    width: '10%',
+  },
+  {
+    title: 'Action',
+    dataIndex: '',
+    width: '10%',
   },
 ];
 const getRandomuserParams = (params) => ({
@@ -54,8 +81,8 @@ const TaskOnBoard = () => {
           ...tableParams,
           pagination: {
             ...tableParams.pagination,
-            total: 200,
-            // 200 is mock data, you should read it from server
+            total: 100,
+            // 100 is mock data, you should read it from server
             // total: data.totalCount,
           },
         });
