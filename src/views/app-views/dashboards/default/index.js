@@ -161,23 +161,40 @@ const CardDropdown = ({ items }) => {
 
 
 // TABLE task list
+
+
+const i = 1;
 const columns = [
+  // dataIndex: 'id',
   {
-    title: 'Name',
-    dataIndex: 'name',
-    sorter: true,
-    render: (name) => `${name.first} ${name.last}`,
+    title: 'SrNo',
+    defaultSortOrder: 'ascend',
+    sorter:(a, b) => a.id - b.id,
+    render: (id, record, index) => { ++index; return index; },
     width: '20%',
   },
   {
-    title: 'Gender',
-    dataIndex: 'gender',
+    title: 'Client Name',
+    dataIndex: 'client',
+    width: '20%',
+  },
+  {
+    title: 'Message',
+    dataIndex: 'message',
+  },
+  {
+    title: 'Description',
+    dataIndex: 'description',
+  },
+  {
+    title: 'Date',
+    dataIndex: 'on_date',
+    render: (on_date) => (new Date(on_date * 1000)),
     
-    width: '20%',
   },
   {
-    title: 'Email',
-    dataIndex: 'email',
+    title: 'Created On',
+    dataIndex: 'created_on',
   },
 ];
 const getRandomuserParams = (params) => ({
@@ -205,41 +222,56 @@ export const DefaultDashboard = () => {
       pageSize: 10,
     },
   });
-  const fetchData = () => {
-    setLoading(true);
-    fetch(`https://randomuser.me/api?${qs.stringify(getRandomuserParams(tableParams))}`)
-      .then((res) => res.json())
-      .then(({ results }) => {
-        setData(results);
-        setLoading(false);
-        setTableParams({
-          ...tableParams,
-          pagination: {
-            ...tableParams.pagination,
-            total: 100,
-            // 200 is mock data, you should read it from server
-            // total: data.totalCount,
-          },
-        });
-      });
-      console.log(data);
-  };
+  // const fetchData = () => {
+  //   setLoading(true);
+  //   fetch(`https://randomuser.me/api?${qs.stringify(getRandomuserParams(tableParams))}`)
+  //     .then((res) => res.json())
+  //     .then(({ results }) => {
+  //       setData(results);
+  //       setLoading(false);
+  //       setTableParams({
+  //         ...tableParams,
+  //         pagination: {
+  //           ...tableParams.pagination,
+  //           total: 100,
+  //           // 200 is mock data, you should read it from server
+  //           // total: data.totalCount,
+  //         },
+  //       });
+  //     });
+  //     console.log(data);
+  // };
 //client log table api
-  // const fetchData = async () => {  
-  //     let ApiData = {
-  //         "limit": 10,
-  //         "offset": 0,
-  //         "search":""
-  //       }
-  //         let response = await ApiSnippets("/ClientLogData_Dashboard", ApiData);
-  //         let countObj = await response.data;
-  //         setClientTableData(countObj);
-  //         setData(response.data)
-  // }
+  const fetchData = async () => {  
+    var offset = 0;
+    setLoading(true);
+    if(tableParams.pagination.current > 1){
+      offset = (tableParams.pagination.current - 1 ) * tableParams.pagination.pageSize;
+    }
+      let ApiData = {
+          "limit": tableParams.pagination.pageSize,
+          "offset": offset,
+          "search":""
+        }
+          let response = await ApiSnippets("/ClientLogData_Dashboard", ApiData);
+          let countObj = await response.data;
+          setClientTableData(countObj);
+          setData(response.data)
+          setLoading(false);
+          setTableParams({
+            ...tableParams,
+            pagination: {
+              ...tableParams.pagination,
+              total: response.count,
+              // 200 is mock data, you should read it from server
+              // total: data.totalCount,
+            },
+          });
+  }
 
 console.log(data);
 
-  useEffect(() => {
+  useEffect(() => {    
     fetchData();
   }, [JSON.stringify(tableParams)]);
   const handleTableChange = (pagination, sorter) => {
@@ -423,7 +455,7 @@ const rowSelection = {
           <Table
            rowSelection={rowSelection}
             columns={columns}
-            rowKey={(record) => record.login.uuid}// id
+            // rowKey={(record) => record.login.uuid}// id
             dataSource={data}
             pagination={tableParams.pagination}
             loading={loading}
@@ -539,7 +571,7 @@ const rowSelection = {
            <Table
            rowSelection={rowSelection}
             columns={columns}
-            rowKey={(record) => record.login.uuid}
+            rowKey={(record) => record.id}
             dataSource={data}
             pagination={tableParams.pagination}
             loading={loading}
