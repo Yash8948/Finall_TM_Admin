@@ -8,6 +8,7 @@ import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { TEMPLATE, DARK_MODE, BORDER } from 'constants/ThemeConstant';
 import { useSelector } from 'react-redux';
+import e from 'cors';
 
 const { useBreakpoint } = Grid;
 
@@ -40,7 +41,7 @@ const SideContent = props => {
 }
 
 const SideContentMobile = props => {
-	const { sideContent, visible, onSideContentClose } = props
+	const {   sideContent, visible, onSideContentClose } = props
 	return (
 		<Drawer
 			width={320}
@@ -88,7 +89,7 @@ export const InnerAppLayout = props => {
 			}
 			<MainContent hasPageHeader={pageHeader} gutter={sideContentGutter}>
 				{isMobile ? 
-					<div className={`font-size-lg mb-3 ${!sideContentGutter ? 'pt-3 px-3' : ''}`} style={{ overflow: 'auto'}}>
+					<div className={`font-size- mb-3 ${!sideContentGutter ? 'pt-3 px-3' : ''}`} style={{ overflow: 'auto'}}>
 						<MenuOutlined onClick={() => openSideContentMobile()}/>
 					</div>
 					:

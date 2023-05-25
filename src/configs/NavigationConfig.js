@@ -1,5 +1,5 @@
-import { 
-  DashboardOutlined, 
+import {
+  DashboardOutlined,
   AppstoreOutlined,
   FileTextOutlined,
   PieChartOutlined,
@@ -65,15 +65,50 @@ const dashBoardNavTree = [{
       submenu: []
     },
     {
-      key: 'dashboards-Task-List',
-      path: `${APP_PREFIX_PATH}/dashboards/TaskList`,
-      title: 'sidenav.dashboard.TaskList',
-      icon: UnorderedListOutlined,
+      key: 'dashboards-task',
+      path: `${APP_PREFIX_PATH}/dashboards/task`,
+      title: 'sidenav.dashboard.task',
+      icon: FileDoneOutlined,
       breadcrumb: false,
-      submenu: []
+      submenu: [
+        {
+          key: 'dashboards-task-tasklist',
+          path: `${APP_PREFIX_PATH}/dashboards/task/tasklist`,
+          title: 'sidenav.dashboard.task.tasklist',
+          icon: UnorderedListOutlined,
+          breadcrumb: false,
+          submenu: []
+        },
+        {
+          key: 'dashboards-task-taskAdd',
+          path: `${APP_PREFIX_PATH}/dashboards/task/taskadd`,
+          title: 'sidenav.dashboard.task.taskadd',
+          icon: PlusCircleOutlined,
+          breadcrumb: false,
+          submenu: []
+        },
+        {
+          key: 'dashboards-task-taskOnBoard',
+          path: `${APP_PREFIX_PATH}/dashboards/task/taskonboard`,
+          title: 'sidenav.dashboard.task.taskonboard',
+          icon: DesktopOutlined,
+          breadcrumb: false,
+          submenu: []
+        },
+        {
+          key: 'dashboards-task-taskreports',
+          path: `${APP_PREFIX_PATH}/dashboards/task/taskreports`,
+          title: 'sidenav.dashboard.task.taskreports',
+          icon: InfoCircleOutlined,
+          breadcrumb: false,
+          submenu: []
+        },
+      ]
     },
+    
   ]
 }]
+
 const appsNavTree = [{
   key: 'apps',
   path: `${APP_PREFIX_PATH}/apps`,
@@ -201,11 +236,13 @@ const docsNavTree = [{
   ]
 }]
 
+
 const navigationConfig = [
   ...dashBoardNavTree,
   ...appsNavTree,
-  ...docsNavTree
-  
+  ...docsNavTree,
+
+
 ]
 
 export default navigationConfig;

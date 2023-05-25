@@ -36,9 +36,24 @@ export const protectedRoutes = [
         component: React.lazy(() => import('views/app-views/dashboards/sales')),
     },
     {
-        key: 'dashboard.Task-List',
-        path: `${APP_PREFIX_PATH}/dashboards/TaskList`,
-        component: React.lazy(() => import('views/app-views/apps/project/scrumboard')),
+        key: 'dashboard.task-taskList',
+        path: `${APP_PREFIX_PATH}/dashboards/task/tasklist`,
+        component: React.lazy(() => import('views/app-views/dashboards/Task/TaskList')),
+    },
+    {
+        key: 'dashboard.task-taskAdd',
+        path: `${APP_PREFIX_PATH}/dashboards/task/taskadd`,
+        component: React.lazy(() => import('views/app-views/dashboards/Task/taskadd')),
+    },
+    {
+        key: 'dashboard.task-taskOnBoard',
+        path: `${APP_PREFIX_PATH}/dashboards/task/TaskOnBoard`,
+        component: React.lazy(() => import('views/app-views/dashboards/Task/taskonboard')),
+    },
+    {
+        key: 'dashboard.task-reports',
+        path: `${APP_PREFIX_PATH}/dashboards/task/taskreports`,
+        component: React.lazy(() => import('views/app-views/dashboards/Task/taskreports')),
     },
     {
         key: 'apps',
