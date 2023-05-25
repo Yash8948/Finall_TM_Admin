@@ -10,7 +10,7 @@ const ApiSnippets = async (path, ApiData = null) => {
     var requestOptions = {
       method: 'POST',
       headers: myHeaders,
-      body: ApiData,
+      body: JSON.stringify(ApiData),
     };
 
     // const fetchAndLog = async () => {
