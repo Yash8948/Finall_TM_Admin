@@ -1,6 +1,6 @@
 import React,{useState,useEffect, useRef} from 'react'
-import {CSVLink} from "react-csv"
-import { useReactToPrint } from 'react-to-print';
+// import {CSVLink} from "react-csv"
+// import { useReactToPrint } from 'react-to-print';
 import { DeleteOutlined,EditOutlined,FilePdfOutlined} from '@ant-design/icons';
 import {Button} from 'antd'
 import { Table } from "ant-table-extensions";
@@ -38,16 +38,13 @@ useEffect(() => {
   getData();
 }, [])
 console.log(dataSource);
-const componentRef = useRef();
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
+
   return (
     <div>
      
             {dataSource && 
       <>
-    <div ref={componentRef}>
+    <div >
     <Table
     // rowSelection={rowSelection}
      columns={columns}
@@ -56,7 +53,7 @@ const componentRef = useRef();
     //  pagination={tableParams.pagination}
     //  loading={loading}
     //  onChange={handleTableChange}
-    size="small"
+    // size="small"
       style={{ overflow: 'auto'}}
       exportableProps={{ showColumnPicker: true}}
       searchableProps={{ fuzzySearch: true }}
