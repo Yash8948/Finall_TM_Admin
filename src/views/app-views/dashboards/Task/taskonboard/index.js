@@ -1,28 +1,34 @@
 import { Table } from 'antd';
 import qs from 'qs';
 import { useEffect, useState } from 'react';
+import ApiSnippets from '../../../../../constants/ApiSnippet'
+
+
+
+
+
 const columns = [
   {
     
     title: 'Sr no',
-    dataIndex: '',
+    dataIndex: 'ticket_id',
     // sorter: true,
-    // render: (name) => `${name.first} ${name.last}`,
+    render: (id, record, index) => { ++index; return index; },
     width: '10%',
   },
   {
     title: 'Task Name',
-    dataIndex: '',
+    dataIndex: 'title',
     width: '10%',
   },
   {
     title: 'Tickit Id',
-    dataIndex: 'tickit id',
+    dataIndex: "unique_id",
     width: '10%',
   },
   {
     title: 'Client Name',
-    dataIndex: 'client name',
+    dataIndex: 'client_name',
     width: '10%',
   },
   {
@@ -32,22 +38,22 @@ const columns = [
   },
   {
     title: 'Department',
-    dataIndex: '',
+    dataIndex: 'department_name',
     width: '10%',
   },
   {
     title: 'Dadeline Date',
-    dataIndex: '',
+    dataIndex: 'deadline_date',
     width: '10%',
   },
   {
     title: 'Closing Date',
-    dataIndex: '',
+    dataIndex: 'starting_date',
     width: '10%',
   },
   {
     title: 'Status',
-    dataIndex: '',
+    dataIndex: 'statusname',
     width: '10%',
   },
   {
@@ -62,6 +68,7 @@ const getRandomuserParams = (params) => ({
   ...params,
 });
 const TaskOnBoard = () => {
+  const [clientTableData, setClientTableData] = useState(null)
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
   const [tableParams, setTableParams] = useState({
@@ -70,25 +77,52 @@ const TaskOnBoard = () => {
       pageSize: 10,
     },
   });
-  const fetchData = () => {
+  // const fetchData = () => {
+  //   setLoading(true);
+  //   fetch(`https://randomuser.me/api?${qs.stringify(getRandomuserParams(tableParams))}`)
+  //     .then((res) => res.json())
+  //     .then(({ results }) => {
+  //       setData(results);
+  //       setLoading(false);
+  //       setTableParams({
+  //         ...tableParams,
+  //         pagination: {
+  //           ...tableParams.pagination,
+  //           total: 100,
+  //           // 100 is mock data, you should read it from server
+  //           // total: data.totalCount,
+  //         },
+  //       });
+  //     });
+  // };
+  const fetchData = async () => {  
+    console.log("working")
+    var offset = 0;
     setLoading(true);
-    fetch(`https://randomuser.me/api?${qs.stringify(getRandomuserParams(tableParams))}`)
-      .then((res) => res.json())
-      .then(({ results }) => {
-        setData(results);
-        setLoading(false);
-        setTableParams({
-          ...tableParams,
-          pagination: {
-            ...tableParams.pagination,
-            total: 100,
-            // 100 is mock data, you should read it from server
-            // total: data.totalCount,
-          },
-        });
-      });
-  };
+    if(tableParams.pagination.current > 1){
+      offset = (tableParams.pagination.current - 1 ) * tableParams.pagination.pageSize;
+    }
+      let ApiData = {
+          "limit": tableParams.pagination.pageSize,
+          "offset": offset,
+          "search":"",
 
+        }
+          let response = await ApiSnippets("/LoadTask", ApiData);
+          let countObj = await response.data;
+          setClientTableData(countObj);
+          setData(response.data)
+          setLoading(false);
+          setTableParams({
+            ...tableParams,
+            pagination: {
+              ...tableParams.pagination,
+              total: response.count,
+              // 200 is mock data, you should read it from server
+              // total: data.totalCount,
+            },
+          });
+  }
   useEffect(() => {
     fetchData();
   }, [JSON.stringify(tableParams)]);
@@ -107,7 +141,7 @@ const TaskOnBoard = () => {
   return (
     <Table
       columns={columns}
-      rowKey={(record) => record.login.uuid}
+      // rowKey={(record) => record.login.uuid}
       dataSource={data}
       pagination={tableParams.pagination}
       loading={loading}
