@@ -163,24 +163,27 @@ const CardDropdown = ({ items }) => {
 // TABLE task list
 
 
-const i = 1;
 const columns = [
   // dataIndex: 'id',
   {
     title: 'SrNo',
     defaultSortOrder: 'ascend',
-    sorter:(a, b) => a.id - b.id,
+    // sorter:(a, b) => a.id - b.id,
     render: (id, record, index) => { ++index; return index; },
     width: '20%',
   },
   {
     title: 'Client Name',
     dataIndex: 'client',
+    sorter:(a, b) => a.id - b.id,
+    
     width: '20%',
   },
   {
     title: 'Message',
     dataIndex: 'message',
+    filterSearch: true,
+    onFilter: (value, record) => record.address.startsWith(value),
   },
   {
     title: 'Description',
@@ -189,7 +192,8 @@ const columns = [
   {
     title: 'Date',
     dataIndex: 'on_date',
-    render: (on_date) => (new Date(on_date * 1000)),
+    render: (on_date) => new Date(on_date * 1000).toLocaleDateString('en-GB'),
+    width:'20%'
     
   },
   {
@@ -213,15 +217,18 @@ export const DefaultDashboard = () => {
   const [cardCounts, setCardCounts] = useState(null)
   const [clientTableData, setClientTableData] = useState(null)
   const [clientName, setClientName] = useState(null)
+
   //table task list
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
   const [tableParams, setTableParams] = useState({
+    
     pagination: {
       current: 1,
       pageSize: 10,
     },
   });
+  const [value, setValue] = useState('');
   // const fetchData = () => {
   //   setLoading(true);
   //   fetch(`https://randomuser.me/api?${qs.stringify(getRandomuserParams(tableParams))}`)
@@ -567,7 +574,14 @@ const rowSelection = {
             <CardDropdown items={latestTransactionOption} />
             </div>
           }>
-            <Input.Search placeholder="Search Here..." className="my-2" />
+            <Input.Search placeholder="Search Here..." className="my-2"  onChange={e => {
+        const currValue = e.target.value;
+        setValue(currValue);
+        const filteredData = data.filter(entry =>
+          entry.name.includes(currValue)
+        );
+        setData(filteredData);
+      }} />
            <Table
            rowSelection={rowSelection}
             columns={columns}
