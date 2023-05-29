@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Button, Avatar, Dropdown, Table, Menu, Tag, Select, Input, DatePicker, Divider  } from 'antd';
+import { Row, Col, Button, Avatar, Dropdown, Menu, Tag, Select, Input, DatePicker, Divider  } from 'antd';
 import dayjs from 'dayjs';
 
 import StatisticWidget from 'components/shared-components/StatisticWidget';
@@ -11,6 +11,8 @@ import BoardCards from 'components/shared-components/BoardCards';
 import Flex from 'components/shared-components/Flex';
 //datatable imports
 // import { Table } from 'antd';
+import { Table } from "ant-table-extensions";
+
 import qs from 'qs';
 
 import {
@@ -339,8 +341,6 @@ useEffect(() => {
   
   getAllData()
 }, []);
-// console.log("chech");
-// console.log(clientName);
 const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 const onSelectChange = (newSelectedRowKeys) => {
   // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
@@ -388,10 +388,25 @@ const rowSelection = {
 // console.log(cardCounts.client);
   return (
     <>
+
+<Row gutter={4}>
+
+</Row>
+
+
+
+
+
+
+
+
+
+
+
       <Row gutter={4} >
         {/* <Col xs={24} sm={24} md={24} lg={18}> */}
-        
-          <Row gutter={16}>
+        {/* uncomment */}
+          {/* <Row gutter={16}>
           { cardCounts && (
             <>
           <Col xs={24} sm={24} md={24} lg={24} xl={6} >
@@ -451,11 +466,12 @@ const rowSelection = {
           </Col>
           </>
 )}
-          </Row>
+          </Row> */}
           </Row>
 
           {/* table task lists starts*/}
-          <Row gutter={16}>
+          {/* uncomment */}
+          {/* <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Card title="Task List" extra={<CardDropdown items={latestTransactionOption} />}>
 
@@ -467,11 +483,13 @@ const rowSelection = {
             pagination={tableParams.pagination}
             loading={loading}
             onChange={handleTableChange}
+            exportableProps={{ showColumnPicker: true}}
+      searchableProps={{ fuzzySearch: true }}
             style={{ overflow: 'auto'}}
           />
           </Card>
           </Col>
-          </Row>
+          </Row> */}
           {/* table task lists ends*/}
           {/* <Row gutter={16}>
             <Col span={24}>
@@ -505,7 +523,8 @@ const rowSelection = {
             subtitle="Active members"
           />
         </Col> */}
-      <Row gutter={16}>
+        {/* uncomment */}
+      {/* <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={7}>
           <Card title="Add Log" extra={<CardDropdown items={newJoinMemberOptions} />}>
             <div className="mt-3">
@@ -552,8 +571,8 @@ const rowSelection = {
             <div style={{width:"100%"}}>
           <Select
               className="mx-2"
-              // showSearch={true}
-              // style={{ width: '70%',  }}
+              showSearch={true}
+              style={{ width: '70%',  }}
               placeholder="Select a person"
               optionFilterProp="children"
               onChange={onChange}
@@ -592,6 +611,9 @@ const rowSelection = {
             onChange={handleTableChange}
             style={{ overflow: 'auto'}}
           />
+          </Card>
+        </Col>
+      </Row> */}
             {/* <Table
               className="no-border-last"
               columns={tableColumns}
@@ -600,11 +622,9 @@ const rowSelection = {
               style={{ overflow: 'auto'}}
               pagination={false}
             /> */}
-          </Card>
-        </Col>
-      </Row>
        {/* table birthday lists starts*/}
-       <Row gutter={16}>
+       {/* uncomment */}
+       {/* <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Card title="Birthday List" extra={<CardDropdown items={latestTransactionOption} />}>
 
@@ -621,10 +641,11 @@ const rowSelection = {
           </Card>
           
           </Col>
-          </Row>
+          </Row> */}
           {/* table birthday lists ends*/}
        {/* table holiday lists starts*/}
-       <Row gutter={16}>
+       {/* uncomment */}
+       {/* <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Card title="Holiday List" extra={<CardDropdown items={latestTransactionOption} />}>
 
@@ -641,7 +662,7 @@ const rowSelection = {
           </Card>
           
           </Col>
-          </Row>
+          </Row> */}
           {/* table birthday lists ends*/}
     </>
   )
