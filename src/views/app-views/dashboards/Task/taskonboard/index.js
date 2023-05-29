@@ -20,6 +20,8 @@ const columns = [
     title: 'Task Name',
     dataIndex: 'title',
     width: '10%',
+    sorter:(a, b) => a.id - b.id,
+
   },
   {
     title: 'Tickit Id',
@@ -30,6 +32,8 @@ const columns = [
     title: 'Client Name',
     dataIndex: 'client_name',
     width: '10%',
+    sorter:(a, b) => a.id - b.id,
+
   },
   {
     title: 'Employee Name',
