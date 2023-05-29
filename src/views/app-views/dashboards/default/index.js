@@ -1,30 +1,45 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Button, Avatar, Dropdown, Menu, Tag, Select, Input, DatePicker, Divider  } from 'antd';
-import dayjs from 'dayjs';
+import {
+  Row,
+  Col,
+  Button,
+  Avatar,
+  Dropdown,
+  Menu,
+  Tag,
+  Select,
+  Input,
+  DatePicker,
+  Divider,
+  Form,
+  Spin,
+} from "antd";
+import dayjs from "dayjs";
+import moment from "moment";
 
-import StatisticWidget from 'components/shared-components/StatisticWidget';
-import ChartWidget from 'components/shared-components/ChartWidget';
-import AvatarStatus from 'components/shared-components/AvatarStatus';
-import GoalWidget from 'components/shared-components/GoalWidget';
-import Card from 'components/shared-components/Card';
-import BoardCards from 'components/shared-components/BoardCards';
-import Flex from 'components/shared-components/Flex';
+import StatisticWidget from "components/shared-components/StatisticWidget";
+import ChartWidget from "components/shared-components/ChartWidget";
+import AvatarStatus from "components/shared-components/AvatarStatus";
+import GoalWidget from "components/shared-components/GoalWidget";
+import Card from "components/shared-components/Card";
+import BoardCards from "components/shared-components/BoardCards";
+import Flex from "components/shared-components/Flex";
 //datatable imports
 // import { Table } from 'antd';
 import { Table } from "ant-table-extensions";
 
-import qs from 'qs';
+import qs from "qs";
 
 import {
   VisitorChartData,
   AnnualStatisticData,
   ActiveMembersData,
   NewMembersData,
-  RecentTransactionData
-} from './DefaultDashboardData';
-import ApexChart from 'react-apexcharts';
-import { apexLineChartDefaultOption, COLOR_2 } from 'constants/ChartConstant';
-import { SPACER } from 'constants/ThemeConstant'
+  RecentTransactionData,
+} from "./DefaultDashboardData";
+import ApexChart from "react-apexcharts";
+import { apexLineChartDefaultOption, COLOR_2 } from "constants/ChartConstant";
+import { SPACER } from "constants/ThemeConstant";
 import {
   UserAddOutlined,
   FileExcelOutlined,
@@ -32,25 +47,21 @@ import {
   PlusOutlined,
   EllipsisOutlined,
   StopOutlined,
-  ReloadOutlined
-} from '@ant-design/icons';
-import utils from 'utils';
-import { useSelector } from 'react-redux';
+  ReloadOutlined,
+} from "@ant-design/icons";
+import utils from "utils";
+import { useSelector } from "react-redux";
 import { AUTH_TOKEN } from "constants/AuthConstant";
 import { admin_Dashboard } from "services/AllDataService";
 // import { Admin_Dashboard } from '../../../../services/AllDataService'
-import ApiSnippets from '../../../../constants/ApiSnippet'
+import ApiSnippets from "../../../../constants/ApiSnippet";
 import { result } from "lodash";
 
 const { Option } = Select;
 const { TextArea } = Input;
-const dateFormatList = ['DD/MM/YYYY'];
+const dateFormatList = ["DD/MM/YYYY"];
 
-
-
-const MembersChart = props => (
-  <ApexChart {...props} />
-)
+const MembersChart = (props) => <ApexChart {...props} />;
 
 const memberChartOption = {
   ...apexLineChartDefaultOption,
@@ -58,15 +69,15 @@ const memberChartOption = {
     chart: {
       sparkline: {
         enabled: true,
-      }
+      },
     },
     colors: [COLOR_2],
-  }
-}
+  },
+};
 
 const latestTransactionOption = [
   {
-    key: 'Refresh',
+    key: "Refresh",
     label: (
       <Flex alignItems="center" gap={SPACER[2]}>
         <ReloadOutlined />
@@ -75,7 +86,7 @@ const latestTransactionOption = [
     ),
   },
   {
-    key: 'Print',
+    key: "Print",
     label: (
       <Flex alignItems="center" gap={SPACER[2]}>
         <PrinterOutlined />
@@ -84,7 +95,7 @@ const latestTransactionOption = [
     ),
   },
   {
-    key: 'Export',
+    key: "Export",
     label: (
       <Flex alignItems="center" gap={SPACER[2]}>
         <FileExcelOutlined />
@@ -92,11 +103,11 @@ const latestTransactionOption = [
       </Flex>
     ),
   },
-]
+];
 
 const newJoinMemberOptions = [
   {
-    key: 'Add all',
+    key: "Add all",
     label: (
       <Flex alignItems="center" gap={SPACER[2]}>
         <PlusOutlined />
@@ -105,7 +116,7 @@ const newJoinMemberOptions = [
     ),
   },
   {
-    key: 'Disable all',
+    key: "Disable all",
     label: (
       <Flex alignItems="center" gap={SPACER[2]}>
         <StopOutlined />
@@ -113,18 +124,26 @@ const newJoinMemberOptions = [
       </Flex>
     ),
   },
-]
+];
 
 const CardDropdown = ({ items }) => {
-
   return (
-    <Dropdown menu={{ items }} trigger={['click']} placement="bottomRight" arrow={{pointAtCenter: true,}}>
-      <a href="/#" className="text-gray font-size-lg" onClick={e => e.preventDefault()}>
+    <Dropdown
+      menu={{ items }}
+      trigger={["click"]}
+      placement="bottomRight"
+      arrow={{ pointAtCenter: true }}
+    >
+      <a
+        href="/#"
+        className="text-gray font-size-lg"
+        onClick={(e) => e.preventDefault()}
+      >
         <EllipsisOutlined />
       </a>
     </Dropdown>
-  )
-}
+  );
+};
 
 // const tableColumns = [
 //   {
@@ -161,46 +180,46 @@ const CardDropdown = ({ items }) => {
 //   },
 // ];
 
-
 // TABLE task list
-
 
 const columns = [
   // dataIndex: 'id',
   {
-    title: 'SrNo',
-    defaultSortOrder: 'ascend',
+    title: "SrNo",
+    defaultSortOrder: "ascend",
     // sorter:(a, b) => a.id - b.id,
-    render: (id, record, index) => { ++index; return index; },
-    width: '20%',
+    render: (id, record, index) => {
+      ++index;
+      return index;
+    },
+    width: "20%",
   },
   {
-    title: 'Client Name',
-    dataIndex: 'client',
-    sorter:(a, b) => a.id - b.id,
-    
-    width: '20%',
+    title: "Client Name",
+    dataIndex: "client",
+    sorter: (a, b) => a.id - b.id,
+
+    width: "20%",
   },
   {
-    title: 'Message',
-    dataIndex: 'message',
+    title: "Message",
+    dataIndex: "message",
     filterSearch: true,
     onFilter: (value, record) => record.address.startsWith(value),
   },
   {
-    title: 'Description',
-    dataIndex: 'description',
+    title: "Description",
+    dataIndex: "description",
   },
   {
-    title: 'Date',
-    dataIndex: 'on_date',
-    render: (on_date) => new Date(on_date * 1000).toLocaleDateString('en-GB'),
-    width:'20%'
-    
+    title: "Date",
+    dataIndex: "on_date",
+    render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
+    width: "20%",
   },
   {
-    title: 'Created On',
-    dataIndex: 'created_on',
+    title: "Created On",
+    dataIndex: "created_on",
   },
 ];
 const getRandomuserParams = (params) => ({
@@ -213,24 +232,23 @@ export const DefaultDashboard = () => {
   const [visitorChartData] = useState(VisitorChartData);
   // const [annualStatisticData] = useState(AnnualStatisticData);
   const [activeMembersData] = useState(ActiveMembersData);
-  const [newMembersData] = useState(NewMembersData)
-  const [recentTransactionData] = useState(RecentTransactionData)
-  const { direction } = useSelector(state => state.theme)
-  const [cardCounts, setCardCounts] = useState(null)
-  const [clientTableData, setClientTableData] = useState(null)
-  const [clientName, setClientName] = useState(null)
+  const [newMembersData] = useState(NewMembersData);
+  const [recentTransactionData] = useState(RecentTransactionData);
+  const { direction } = useSelector((state) => state.theme);
+  const [cardCounts, setCardCounts] = useState(null);
+  const [clientTableData, setClientTableData] = useState(null);
+  const [clientName, setClientName] = useState(null);
 
   //table task list
   const [data, setData] = useState();
   const [loading, setLoading] = useState(false);
   const [tableParams, setTableParams] = useState({
-    
     pagination: {
       current: 1,
       pageSize: 10,
     },
   });
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   // const fetchData = () => {
   //   setLoading(true);
   //   fetch(`https://randomuser.me/api?${qs.stringify(getRandomuserParams(tableParams))}`)
@@ -250,37 +268,38 @@ export const DefaultDashboard = () => {
   //     });
   //     console.log(data);
   // };
-//client log table api
-  const fetchData = async () => {  
+  //client log table api
+  const fetchData = async () => {
     var offset = 0;
     setLoading(true);
-    if(tableParams.pagination.current > 1){
-      offset = (tableParams.pagination.current - 1 ) * tableParams.pagination.pageSize;
+    if (tableParams.pagination.current > 1) {
+      offset =
+        (tableParams.pagination.current - 1) * tableParams.pagination.pageSize;
     }
-      let ApiData = {
-          "limit": tableParams.pagination.pageSize,
-          "offset": offset,
-          "search":""
-        }
-          let response = await ApiSnippets("/ClientLogData_Dashboard", ApiData);
-          let countObj = await response.data;
-          setClientTableData(countObj);
-          setData(response.data)
-          setLoading(false);
-          setTableParams({
-            ...tableParams,
-            pagination: {
-              ...tableParams.pagination,
-              total: response.count,
-              // 200 is mock data, you should read it from server
-              // total: data.totalCount,
-            },
-          });
-  }
+    let ApiData = {
+      limit: tableParams.pagination.pageSize,
+      offset: offset,
+      search: "",
+    };
+    let response = await ApiSnippets("/ClientLogData_Dashboard", ApiData);
+    let countObj = await response.data;
+    setClientTableData(countObj);
+    setData(response.data);
+    setLoading(false);
+    setTableParams({
+      ...tableParams,
+      pagination: {
+        ...tableParams.pagination,
+        total: response.count,
+        // 200 is mock data, you should read it from server
+        // total: data.totalCount,
+      },
+    });
+  };
 
-console.log(data);
+  console.log(data);
 
-  useEffect(() => {    
+  useEffect(() => {
     fetchData();
   }, [JSON.stringify(tableParams)]);
   const handleTableChange = (pagination, sorter) => {
@@ -300,113 +319,114 @@ console.log(data);
   function onChange(value) {
     console.log(`selected ${value}`);
   }
-  
+
   function onBlur() {
-    console.log('blur');
+    // console.log("blur");
   }
-  
+
   function onFocus() {
-    console.log('focus');
+    // console.log("focus");
   }
-  
+
   function onSearch(val) {
-    console.log('search:', val);
+    // console.log("search:", val);
   }
 
   function disabledDate(current) {
     // Can not select days before today and today
-    return current && current < dayjs().startOf('day');
+    return current && current < dayjs().startOf("day");
   }
-  
-  
 
+  useEffect(() => {
+    const getAllData = async () => {
+      let response = await ApiSnippets("/AdminDashboard", null);
+      let countObj = await response.data;
+      setCardCounts(countObj);
+      let onlyClientData = await response.data.client;
+      setClientName(onlyClientData);
+    };
 
-
-
-
-
-
-
-
-
-useEffect(() => {
-  const getAllData = async () => {
-    let response = await ApiSnippets("/AdminDashboard", null);
-    let countObj = await response.data
-    setCardCounts(countObj)
-    let onlyClientData = await response.data.client
-    setClientName(onlyClientData)
-  
-  }		
-  
-  getAllData()
-}, []);
-const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-const onSelectChange = (newSelectedRowKeys) => {
-  // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
-  setSelectedRowKeys(newSelectedRowKeys);
-};
-//task list table selected drop down
-const rowSelection = {
-  selectedRowKeys,
-  onChange: onSelectChange,
-  selections: [
-    Table.SELECTION_ALL,
-    Table.SELECTION_INVERT,
-    Table.SELECTION_NONE,
-    {
-      key: 'odd',
-      text: 'Select Odd Row',
-      onSelect: (changeableRowKeys) => {
-        let newSelectedRowKeys = [];
-        newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
-          if (index % 2 !== 0) {
-            return false;
-          }
-          return true;
-        });
-        setSelectedRowKeys(newSelectedRowKeys);
-      },
-    },
-    {
-      key: 'even',
-      text: 'Select Even Row',
-      onSelect: (changeableRowKeys) => {
-        let newSelectedRowKeys = [];
-        newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
-          if (index % 2 !== 0) {
+    getAllData();
+  }, []);
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const onSelectChange = (newSelectedRowKeys) => {
+    // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+  //task list table selected drop down
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+    selections: [
+      Table.SELECTION_ALL,
+      Table.SELECTION_INVERT,
+      Table.SELECTION_NONE,
+      {
+        key: "odd",
+        text: "Select Odd Row",
+        onSelect: (changeableRowKeys) => {
+          let newSelectedRowKeys = [];
+          newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
+            if (index % 2 !== 0) {
+              return false;
+            }
             return true;
-          }
-          return false;
-        });
-        setSelectedRowKeys(newSelectedRowKeys);
+          });
+          setSelectedRowKeys(newSelectedRowKeys);
+        },
       },
-    },
-  ],
-};
+      {
+        key: "even",
+        text: "Select Even Row",
+        onSelect: (changeableRowKeys) => {
+          let newSelectedRowKeys = [];
+          newSelectedRowKeys = changeableRowKeys.filter((_, index) => {
+            if (index % 2 !== 0) {
+              return true;
+            }
+            return false;
+          });
+          setSelectedRowKeys(newSelectedRowKeys);
+        },
+      },
+    ],
+  };
+  const [form] = Form.useForm();
+  const handleAddClient =async (value,id) => {
+    // console.log(value);
+    let ApiData = {
+      client: value.client,
+      message:value.message,
+      description:value.description,
+      date: value["date"].format("DD-MM-YYYY")  //Add your required date format here
+      // date: value["date"].format("YYYY-MM-DD HH:mm:ss")  //Add your required date format here
+    };
+    let response = await ApiSnippets("/AddClientLog", ApiData);
+    let countObj = await response;
+    fetchData();
+    console.log(countObj);
+    console.log(ApiData);
+    setLoading(true)
+    setTimeout(() => {
 
-// console.log(cardCounts.client);
+      form.resetFields();
+    }, 500);
+    setLoading(false)
+
+  }
+  const handleDatePicker = (date, dateString) => {
+    // console.log(date, dateString);
+  };
+
+
+
+  // console.log(cardCounts.client);
   return (
     <>
-
-<Row gutter={4}>
-
-</Row>
-
-
-
-
-
-
-
-
-
-
-
-      <Row gutter={4} >
+      <Row gutter={4}>
         {/* <Col xs={24} sm={24} md={24} lg={18}> */}
         {/* uncomment */}
-          {/* <Row gutter={16}>
+        {/* <Row gutter={16}>
           { cardCounts && (
             <>
           <Col xs={24} sm={24} md={24} lg={24} xl={6} >
@@ -467,11 +487,11 @@ const rowSelection = {
           </>
 )}
           </Row> */}
-          </Row>
+      </Row>
 
-          {/* table task lists starts*/}
-          {/* uncomment */}
-          {/* <Row gutter={16}>
+      {/* table task lists starts*/}
+      {/* uncomment */}
+      {/* <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Card title="Task List" extra={<CardDropdown items={latestTransactionOption} />}>
 
@@ -490,8 +510,8 @@ const rowSelection = {
           </Card>
           </Col>
           </Row> */}
-          {/* table task lists ends*/}
-          {/* <Row gutter={16}>
+      {/* table task lists ends*/}
+      {/* <Row gutter={16}>
             <Col span={24}>
                 <ChartWidget 
                   title="Unique Visitors" 
@@ -502,8 +522,8 @@ const rowSelection = {
                 />
             </Col>
           </Row> */}
-        {/* </Col> */}
-        {/* <Col xs={24} sm={24} md={24} lg={6}>
+      {/* </Col> */}
+      {/* <Col xs={24} sm={24} md={24} lg={6}>
           <GoalWidget
             title="Monthly Target"
             value={87}
@@ -523,98 +543,135 @@ const rowSelection = {
             subtitle="Active members"
           />
         </Col> */}
-        {/* uncomment */}
-      {/* <Row gutter={16}>
+      {/* uncomment */}
+      <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={7}>
-          <Card title="Add Log" extra={<CardDropdown items={newJoinMemberOptions} />}>
+          <Card
+            title="Add Log"
+            extra={<CardDropdown items={newJoinMemberOptions} />}
+          >
             <div className="mt-3">
-            <div style={{ marginBottom: 16 }}>
-
-            <Select
-              showSearch
-              style={{ width: '100%' }}
-              placeholder="Select a person"
-              optionFilterProp="children"
-              onChange={onChange}
-              onFocus={onFocus}
-              onBlur={onBlur}
-              onSearch={onSearch}
-              filterOption={(input, option) =>
-                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }>
-            {clientName && clientName.map((item, index) => (
-              <Option key={index} value={String(item.username)}>
-                {item.username}
-              </Option>
-            ))}
-            </Select>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <Input placeholder="Basic usage" />
-            </div>
-            <div style={{ marginBottom: 16 }}>
-            <TextArea rows={4} />
-            </div>
-            <div style={{ marginBottom: 16 }}>
-            <DatePicker defaultValue={dayjs('01/01/2015', dateFormatList[0])} format={dateFormatList} 
-            disabledDate={disabledDate}
-             style={{ width: '100%' }}/>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-            <Button type="primary" style={{ width: '100%' }}>Submit</Button>
-            </div>
+            <Spin spinning={loading} >
+              <Form layout="vertical" onFinish={handleAddClient} form={form} >
+                <div style={{ marginBottom: 16 }}>
+                
+                <Form.Item label="Client : " name="client" rules={[{ required: true, message: 'Please select your client!' }]}>
+                  <Select
+                    showSearch
+                    style={{ width: "100%" }}
+                    placeholder="Select a Client"
+                    optionFilterProp="children"
+                    onChange={onChange}
+                    onFocus={onFocus}
+                    onBlur={onBlur}
+                    onSearch={onSearch}
+                    filterOption={(input, option) =>
+                      option.props.children
+                        .toLowerCase()
+                        .indexOf(input.toLowerCase()) >= 0
+                    }
+                  >
+                    {clientName &&
+                      clientName.map((item, index) => (
+                        <Option key={index} id={item.ID} value={item.ID}>
+                          {item.username}
+                        </Option>
+                      ))}
+                  </Select>
+                  </Form.Item>
+                </div>
+                <div style={{ marginBottom: 16 }}>
+                  <Form.Item label="User : " name="message" rules={[{ required: true, message: 'Please input your message!' }]}>
+                    <Input placeholder="Enter Message" />
+                  </Form.Item>
+                </div>
+                <div style={{ marginBottom: 16 }}>
+                <Form.Item label="Description : "  name="description" rules={[{ required: true, message: 'Please input your description!' }]}>
+                  <TextArea rows={4} placeholder="Enter Description" />
+                </Form.Item>
+                </div>
+                <div style={{ marginBottom: 16 }}>
+                <Form.Item label="Date : " name="date" rules={[{ required: true, message: 'Please input your date!' }]}  >
+                  <DatePicker
+                    // defaultValue={dayjs()}
+                    format={dateFormatList}
+                    disabledDate={disabledDate}
+                    onChange={handleDatePicker}
+                    style={{ width: "100%" }}
+                  />
+                </Form.Item>
+                </div>
+                <div style={{ marginBottom: 16 }}>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+                    Submit
+                  </Button>
+                </Form.Item>
+                </div>
+              </Form>
+              </Spin>
             </div>
           </Card>
         </Col>
         <Col xs={24} sm={24} md={24} lg={17}>
-          <Card title="Client Log Data" extra={
-            <div style={{width:"100%"}}>
-          <Select
-              className="mx-2"
-              showSearch={true}
-              style={{ width: '70%',  }}
-              placeholder="Select a person"
-              optionFilterProp="children"
-              onChange={onChange}
-              onFocus={onFocus}
-              onBlur={onBlur}
-              onSearch={onSearch}
-              filterOption={(input, option) =>
-                option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-              }
-              allowClear={true}
-            >
-               {clientName && clientName.map((item, index) => (
-              <Option key={index} value={String(item.username)}>
-                {item.username}
-              </Option>
-            ))}
-            </Select>   
-            <CardDropdown items={latestTransactionOption} />
-            </div>
-          }>
-            <Input.Search placeholder="Search Here..." className="my-2"  onChange={e => {
-        const currValue = e.target.value;
-        setValue(currValue);
-        const filteredData = data.filter(entry =>
-          entry.name.includes(currValue)
-        );
-        setData(filteredData);
-      }} />
-           <Table
-           rowSelection={rowSelection}
-            columns={columns}
-            rowKey={(record) => record.id}
-            dataSource={data}
-            pagination={tableParams.pagination}
-            loading={loading}
-            onChange={handleTableChange}
-            style={{ overflow: 'auto'}}
-          />
+          <Card
+            title="Client Log Data"
+            extra={
+              <div style={{ width: "100%" }}>
+                <Select
+                  className="mx-2"
+                  showSearch={true}
+                  style={{ width: "70%" }}
+                  placeholder="Select a person"
+                  optionFilterProp="children"
+                  onChange={onChange}
+                  onFocus={onFocus}
+                  onBlur={onBlur}
+                  onSearch={onSearch}
+                  filterOption={(input, option) =>
+                    option.props.children
+                      .toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
+                  }
+                  allowClear={true}
+                >
+                  {clientName &&
+                    clientName.map((item, index) => (
+                      <Option key={index} value={String(item.username)}>
+                        {item.username}
+                      </Option>
+                    ))}
+                </Select>
+                <CardDropdown items={latestTransactionOption} />
+              </div>
+            }
+          >
+            <Input.Search
+              placeholder="Search Here..."
+              className="my-2"
+              onChange={(e) => {
+                const currValue = e.target.value;
+                setValue(currValue);
+                const filteredData = data.filter((entry) =>
+                  entry.name.includes(currValue)
+                );
+                setData(filteredData);
+              }}
+            />
+            <Table
+              rowSelection={rowSelection}
+              columns={columns}
+              rowKey={(record) => record.id}
+              dataSource={data}
+              pagination={tableParams.pagination}
+              loading={loading}
+              onChange={handleTableChange}
+              style={{ overflow: "auto" }}
+            />
           </Card>
         </Col>
-      </Row> */}
-            {/* <Table
+      </Row>
+      {/* <Table
               className="no-border-last"
               columns={tableColumns}
               dataSource={recentTransactionData}
@@ -622,9 +679,9 @@ const rowSelection = {
               style={{ overflow: 'auto'}}
               pagination={false}
             /> */}
-       {/* table birthday lists starts*/}
-       {/* uncomment */}
-       {/* <Row gutter={16}>
+      {/* table birthday lists starts*/}
+      {/* uncomment */}
+      {/* <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Card title="Birthday List" extra={<CardDropdown items={latestTransactionOption} />}>
 
@@ -642,10 +699,10 @@ const rowSelection = {
           
           </Col>
           </Row> */}
-          {/* table birthday lists ends*/}
-       {/* table holiday lists starts*/}
-       {/* uncomment */}
-       {/* <Row gutter={16}>
+      {/* table birthday lists ends*/}
+      {/* table holiday lists starts*/}
+      {/* uncomment */}
+      {/* <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Card title="Holiday List" extra={<CardDropdown items={latestTransactionOption} />}>
 
@@ -663,11 +720,10 @@ const rowSelection = {
           
           </Col>
           </Row> */}
-          {/* table birthday lists ends*/}
+      {/* table birthday lists ends*/}
     </>
-  )
-}
-
+  );
+};
 
 export default DefaultDashboard;
 
@@ -694,4 +750,4 @@ export default DefaultDashboard;
 //      </Col>
 //    );
 //  })
-// } 
+// }
