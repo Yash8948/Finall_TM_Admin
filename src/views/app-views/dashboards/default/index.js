@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef,useCallback } from "react";
 import {
   Row,
   Col,
@@ -15,7 +15,9 @@ import {
   Spin,
 } from "antd";
 import dayjs from "dayjs";
-import moment from "moment";
+// import moment from "moment";
+import { useReactToPrint } from "react-to-print";
+
 
 import StatisticWidget from "components/shared-components/StatisticWidget";
 import ChartWidget from "components/shared-components/ChartWidget";
@@ -75,35 +77,7 @@ const memberChartOption = {
   },
 };
 
-const latestTransactionOption = [
-  {
-    key: "Refresh",
-    label: (
-      <Flex alignItems="center" gap={SPACER[2]}>
-        <ReloadOutlined />
-        <span className="ml-2">Refresh</span>
-      </Flex>
-    ),
-  },
-  {
-    key: "Print",
-    label: (
-      <Flex alignItems="center" gap={SPACER[2]}>
-        <PrinterOutlined />
-        <span className="ml-2">Print</span>
-      </Flex>
-    ),
-  },
-  {
-    key: "Export",
-    label: (
-      <Flex alignItems="center" gap={SPACER[2]}>
-        <FileExcelOutlined />
-        <span className="ml-2">Export</span>
-      </Flex>
-    ),
-  },
-];
+
 
 const newJoinMemberOptions = [
   {
@@ -182,23 +156,25 @@ const CardDropdown = ({ items }) => {
 
 // TABLE task list
 
+
+
 const columns = [
-  // dataIndex: 'id',
+  // dataIndex: 'id', 
   {
     title: "SrNo",
+    dataIndex: "srno",
     defaultSortOrder: "ascend",
     // sorter:(a, b) => a.id - b.id,
-    render: (id, record, index) => {
-      ++index;
-      return index;
-    },
+    // render: (id, record, index) => {
+    //   ++index;
+    //   return index;
+    // },
     width: "20%",
   },
   {
     title: "Client Name",
     dataIndex: "client",
     sorter: (a, b) => a.id - b.id,
-
     width: "20%",
   },
   {
@@ -214,7 +190,7 @@ const columns = [
   {
     title: "Date",
     dataIndex: "on_date",
-    render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
+    // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
     width: "20%",
   },
   {
@@ -225,8 +201,10 @@ const columns = [
 const getRandomuserParams = (params) => ({
   results: params.pagination?.pageSize,
   page: params.pagination?.current,
-  ...params,
+  ...params,  
 });
+
+
 
 export const DefaultDashboard = () => {
   const [visitorChartData] = useState(VisitorChartData);
@@ -238,6 +216,9 @@ export const DefaultDashboard = () => {
   const [cardCounts, setCardCounts] = useState(null);
   const [clientTableData, setClientTableData] = useState(null);
   const [clientName, setClientName] = useState(null);
+  const componentRefPrint = useRef(null);  
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   //table task list
   const [data, setData] = useState();
@@ -283,21 +264,86 @@ export const DefaultDashboard = () => {
     };
     let response = await ApiSnippets("/ClientLogData_Dashboard", ApiData);
     let countObj = await response.data;
+    for (let i = 0; i < countObj.length; i++) {
+      // limit * currentpage - (limit -1)
+      let current_page = tableParams.pagination.current;
+      let page_limit = tableParams.pagination.pageSize;
+      countObj[i].srno=page_limit * current_page - (page_limit - i-1); // srno added to response thank you jigi
+      countObj[i].on_date = new Date(countObj[i].on_date * 1000).toLocaleDateString("en-GB")
+    }
+    // 
+    
+    
+
+    // console.log(countObj);
+
+
     setClientTableData(countObj);
+    
+
+
+
+  // console.log(srno_array);
+  // console.log(response.count);
     setData(response.data);
+    console.log(data);
+    // setData(PclientLogData);
     setLoading(false);
     setTableParams({
       ...tableParams,
       pagination: {
         ...tableParams.pagination,
         total: response.count,
+        // total: 100,
         // 200 is mock data, you should read it from server
         // total: data.totalCount,
       },
     });
   };
 
-  console.log(data);
+
+  const reactToPrintContent = useCallback(() => {
+    return componentRefPrint.current;
+  }, [componentRefPrint.current]);
+
+  const handlePrint = useReactToPrint({
+    content: reactToPrintContent,
+    documentTitle: "AwesomeFileName",
+    
+  });
+
+
+
+  const latestTransactionOption = [
+    {
+      key: "Refresh",
+      label: (
+        <Flex alignItems="center" gap={SPACER[2]} onClick={fetchData}>
+          <ReloadOutlined />
+          <span className="ml-2">Refresh</span>
+        </Flex>
+      ),
+    },
+    {
+      key: "Print",
+      label: (
+        <Flex alignItems="center" gap={SPACER[2]} onClick={handlePrint}>
+          <PrinterOutlined />
+          <span className="ml-2">Print</span>
+        </Flex>
+      ),
+    },
+    {
+      key: "Export",
+      label: (
+        <Flex alignItems="center" gap={SPACER[2]}>
+          <FileExcelOutlined />
+          <span className="ml-2">Export</span>
+        </Flex>
+      ),
+    },
+  ];
+
 
   useEffect(() => {
     fetchData();
@@ -344,11 +390,11 @@ export const DefaultDashboard = () => {
       setCardCounts(countObj);
       let onlyClientData = await response.data.client;
       setClientName(onlyClientData);
+
     };
 
     getAllData();
   }, []);
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const onSelectChange = (newSelectedRowKeys) => {
     // console.log('selectedRowKeys changed: ', newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
@@ -402,9 +448,8 @@ export const DefaultDashboard = () => {
       // date: value["date"].format("YYYY-MM-DD HH:mm:ss")  //Add your required date format here
     };
     let response = await ApiSnippets("/AddClientLog", ApiData);
-    let countObj = await response;
+    // let countObj = await response;
     fetchData();
-    console.log(countObj);
     console.log(ApiData);
     setLoading(true)
     setTimeout(() => {
@@ -414,10 +459,6 @@ export const DefaultDashboard = () => {
     setLoading(false)
 
   }
-  const handleDatePicker = (date, dateString) => {
-    // console.log(date, dateString);
-  };
-
 
 
   // console.log(cardCounts.client);
@@ -491,25 +532,28 @@ export const DefaultDashboard = () => {
 
       {/* table task lists starts*/}
       {/* uncomment */}
-      {/* <Row gutter={16}>
+      <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Card title="Task List" extra={<CardDropdown items={latestTransactionOption} />}>
+          <div  ref={componentRefPrint}>
 
           <Table
-           rowSelection={rowSelection}
+          //  rowSelection={rowSelection}
             columns={columns}
-            // rowKey={(record) => record.login.uuid}// id
+            rowKey={(record) => record.id}// id
             dataSource={data}
             pagination={tableParams.pagination}
             loading={loading}
             onChange={handleTableChange}
-            exportableProps={{ showColumnPicker: true}}
-      searchableProps={{ fuzzySearch: true }}
+            // searchable={{fuzzySearch:true}}
+            exportableProps={{ showColumnPicker: true, fileName:"Task_List"}}
+            // searchableProps={{ fuzzySearch: true }}
             style={{ overflow: 'auto'}}
           />
+          </div>
           </Card>
           </Col>
-          </Row> */}
+          </Row>
       {/* table task lists ends*/}
       {/* <Row gutter={16}>
             <Col span={24}>
@@ -543,10 +587,11 @@ export const DefaultDashboard = () => {
             subtitle="Active members"
           />
         </Col> */}
-      {/* uncomment */}
+      
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={7}>
-          <Card
+        {/* uncomment */}
+          {/* <Card
             title="Add Log"
             extra={<CardDropdown items={newJoinMemberOptions} />}
           >
@@ -611,9 +656,10 @@ export const DefaultDashboard = () => {
               </Form>
               </Spin>
             </div>
-          </Card>
+          </Card> */}
         </Col>
-        <Col xs={24} sm={24} md={24} lg={17}>
+        {/* uncommet */}
+        {/* <Col xs={24} sm={24} md={24} lg={17}>
           <Card
             title="Client Log Data"
             extra={
@@ -666,10 +712,13 @@ export const DefaultDashboard = () => {
               pagination={tableParams.pagination}
               loading={loading}
               onChange={handleTableChange}
+              searchable={{fuzzySearch:true}}
+              exportableProps={{ showColumnPicker: true, fileName:"client_log"}}
+              searchableProps={{ fuzzySearch: true }}
               style={{ overflow: "auto" }}
             />
           </Card>
-        </Col>
+        </Col> */}
       </Row>
       {/* <Table
               className="no-border-last"
@@ -680,7 +729,7 @@ export const DefaultDashboard = () => {
               pagination={false}
             /> */}
       {/* table birthday lists starts*/}
-      {/* uncomment */}
+            {/* uncomment */}
       {/* <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Card title="Birthday List" extra={<CardDropdown items={latestTransactionOption} />}>
