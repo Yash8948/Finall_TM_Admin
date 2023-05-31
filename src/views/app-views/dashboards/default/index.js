@@ -15,7 +15,6 @@ import {
   Spin,
 } from "antd";
 import dayjs from "dayjs";
-import moment from "moment";
 
 import StatisticWidget from "components/shared-components/StatisticWidget";
 import ChartWidget from "components/shared-components/ChartWidget";
@@ -392,12 +391,12 @@ export const DefaultDashboard = () => {
     ],
   };
   const [form] = Form.useForm();
-  const handleAddClient =async (value,id) => {
+  const handleAddClient = async (value, id) => {
     // console.log(value);
     let ApiData = {
       client: value.client,
-      message:value.message,
-      description:value.description,
+      message: value.message,
+      description: value.description,
       date: value["date"].format("DD-MM-YYYY")  //Add your required date format here
       // date: value["date"].format("YYYY-MM-DD HH:mm:ss")  //Add your required date format here
     };
@@ -551,64 +550,64 @@ export const DefaultDashboard = () => {
             extra={<CardDropdown items={newJoinMemberOptions} />}
           >
             <div className="mt-3">
-            <Spin spinning={loading} >
-              <Form layout="vertical" onFinish={handleAddClient} form={form} >
-                <div style={{ marginBottom: 16 }}>
-                
-                <Form.Item label="Client : " name="client" rules={[{ required: true, message: 'Please select your client!' }]}>
-                  <Select
-                    showSearch
-                    style={{ width: "100%" }}
-                    placeholder="Select a Client"
-                    optionFilterProp="children"
-                    onChange={onChange}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
-                    onSearch={onSearch}
-                    filterOption={(input, option) =>
-                      option.props.children
-                        .toLowerCase()
-                        .indexOf(input.toLowerCase()) >= 0
-                    }
-                  >
-                    {clientName &&
-                      clientName.map((item, index) => (
-                        <Option key={index} id={item.ID} value={item.ID}>
-                          {item.username}
-                        </Option>
-                      ))}
-                  </Select>
-                  </Form.Item>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                  <Form.Item label="User : " name="message" rules={[{ required: true, message: 'Please input your message!' }]}>
-                    <Input placeholder="Enter Message" />
-                  </Form.Item>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                <Form.Item label="Description : "  name="description" rules={[{ required: true, message: 'Please input your description!' }]}>
-                  <TextArea rows={4} placeholder="Enter Description" />
-                </Form.Item>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                <Form.Item label="Date : " name="date" rules={[{ required: true, message: 'Please input your date!' }]}  >
-                  <DatePicker
-                    // defaultValue={dayjs()}
-                    format={dateFormatList}
-                    disabledDate={disabledDate}
-                    onChange={handleDatePicker}
-                    style={{ width: "100%" }}
-                  />
-                </Form.Item>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                <Form.Item>
-                  <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
-                    Submit
-                  </Button>
-                </Form.Item>
-                </div>
-              </Form>
+              <Spin spinning={loading} >
+                <Form layout="vertical" onFinish={handleAddClient} form={form} >
+                  <div style={{ marginBottom: 16 }}>
+
+                    <Form.Item label="Client : " name="client" rules={[{ required: true, message: 'Please select your client!' }]}>
+                      <Select
+                        showSearch
+                        style={{ width: "100%" }}
+                        placeholder="Select a Client"
+                        optionFilterProp="children"
+                        onChange={onChange}
+                        onFocus={onFocus}
+                        onBlur={onBlur}
+                        onSearch={onSearch}
+                        filterOption={(input, option) =>
+                          option.props.children
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        }
+                      >
+                        {clientName &&
+                          clientName.map((item, index) => (
+                            <Option key={index} id={item.ID} value={item.ID}>
+                              {item.username}
+                            </Option>
+                          ))}
+                      </Select>
+                    </Form.Item>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Form.Item label="User : " name="message" rules={[{ required: true, message: 'Please input your message!' }]}>
+                      <Input placeholder="Enter Message" />
+                    </Form.Item>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Form.Item label="Description : " name="description" rules={[{ required: true, message: 'Please input your description!' }]}>
+                      <TextArea rows={4} placeholder="Enter Description" />
+                    </Form.Item>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Form.Item label="Date : " name="date" rules={[{ required: true, message: 'Please input your date!' }]}  >
+                      <DatePicker
+                        // defaultValue={dayjs()}
+                        format={dateFormatList}
+                        disabledDate={disabledDate}
+                        onChange={handleDatePicker}
+                        style={{ width: "100%" }}
+                      />
+                    </Form.Item>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Form.Item>
+                      <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+                        Submit
+                      </Button>
+                    </Form.Item>
+                  </div>
+                </Form>
               </Spin>
             </div>
           </Card>
@@ -724,7 +723,7 @@ export const DefaultDashboard = () => {
     </>
   );
 };
-
+ 
 export default DefaultDashboard;
 
 //----------------------------------------------------------------TASK CARDS DYNAMIC
