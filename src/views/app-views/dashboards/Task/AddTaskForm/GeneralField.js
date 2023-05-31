@@ -34,6 +34,7 @@ const GeneralField = (props) => {
 	const [cardCounts, setCardCounts] = useState(null);
 	const [isCLnameSelected, setIsCLnameSelected] = useState(false);
 	const [selectedClient, setSelectedClient] = useState(null);
+	const [glo_data_id, setGlo_data_id] = useState(null)
 	const options = [];
 
 
@@ -42,8 +43,18 @@ const GeneralField = (props) => {
 
 
 
+	const addfileinstialsValues = {
+		addclientfile: ""
+	};
+	const addfilerules = {
+		addclientfile: [
+			{
+				required: true,
+				message: "Please enter file name",
 
-
+			}
+		]
+	};
 	const instialsValues = {
 		name: "",
 		description: "",
@@ -157,10 +168,11 @@ const GeneralField = (props) => {
 		var selectfile = []
 
 		if (selectedClient) {
-
+			setGlo_data_id(value);
 			let data_id = {
 				id: value
 			}
+			console.log(data_id)
 			let response = await ApiSnippets("/GetAllFileforTask", data_id);
 			let data = response.data;
 			console.log(response)
@@ -260,8 +272,8 @@ const GeneralField = (props) => {
 		let ApiData = {
 			txtTaskname: values.taskname,
 			Client: values.CLname,
-			startingdate: values["Sdate"].format("DD-MM-YYYY"),
-			deadlinedate: values["Ddate"].format("DD-MM-YYYY"),
+			startingdate: values["Sdate"].format("YYYY-MM-DD"),
+			deadlinedate: values["Ddate"].format("YYYY-MM-DD"),
 			Department: values.DEPname,
 			file: values.S_file,
 			auto_cmplt: values.switchValue1,
@@ -292,6 +304,52 @@ const GeneralField = (props) => {
 			message.error("Form submission failed");
 		}
 	};
+	const handleAddFile = async (value) => {
+		setSelectedClient(value);
+		if (selectedClient) {
+
+
+			let ApiData = {
+				"client_id": glo_data_id,
+				"name": document.querySelector('input[name="addclientfile"]').value
+			};
+			let jsonData = JSON.stringify(ApiData);
+
+			console.log(jsonData);
+
+			try {
+				let response = await ApiSnippets("/InsertDataintoFile", ApiData);
+				let addfile = await response;
+				console.log(addfile)
+				// console.log(countObj);
+				// console.log(ApiData);
+
+				setLoading(true);
+
+				setTimeout(() => {
+					Input.resetFields();
+					setLoading(false);
+				}, 500);
+				if (!response.status) {
+					message.error(response.message);
+				}
+				else{
+					message.success(response.message)
+				}
+				
+			} catch (error) {
+				console.log(error);
+				// message.error("Form submission failed");
+
+			}
+		}
+	};
+
+
+
+
+
+
 
 	return (
 		<Row gutter={16}>
@@ -354,10 +412,10 @@ const GeneralField = (props) => {
 								</Form.Item>
 							</Col>
 							<Col xs={24} sm={12} md={12} lg={12} xl={12}>
-								<Form.Item name="Addfile" label="Add File">
+								<Form.Item label="Add File">
 									<Space.Compact style={{ width: '100%' }}>
-										<Input placeholder="enter file name" disabled={!isCLnameSelected} />
-										<Button type="primary" disabled={!isCLnameSelected}>Add File</Button>
+										<Input placeholder="enter file name" disabled={!isCLnameSelected} name="addclientfile" />
+										<Button type="primary" onClick={handleAddFile} disabled={!isCLnameSelected}>Add File</Button>
 									</Space.Compact>
 								</Form.Item>
 							</Col>
