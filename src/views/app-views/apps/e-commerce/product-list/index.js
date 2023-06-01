@@ -27,6 +27,27 @@ const getStockStatus = stockCount => {
 const categories = ['Cloths', 'Bags', 'Shoes', 'Watches', 'Devices']
 
 const ProductList = () => {
+	const navigate = useNavigate();
+	const [list, setList] = useState(ProductListData)
+	const [selectedRows, setSelectedRows] = useState([])
+	const [selectedRowKeys, setSelectedRowKeys] = useState([])
+
+	const dropdownMenu = row => (
+		<Menu>
+			<Menu.Item onClick={() => viewDetails(row)}>
+				<Flex alignItems="center">
+					<EyeOutlined />
+					<span className="ml-2">View Details</span>
+				</Flex>
+			</Menu.Item>
+			<Menu.Item onClick={() => deleteRow(row)}>
+				<Flex alignItems="center">
+					<DeleteOutlined />
+					<span className="ml-2">{selectedRows.length > 0 ? `Delete (${selectedRows.length})` : 'Delete'}</span>
+				</Flex>
+			</Menu.Item>
+		</Menu>
+	);
 	
 	const addProduct = () => {
 		navigate(`/app/apps/ecommerce/add-product`)
@@ -134,7 +155,6 @@ const ProductList = () => {
 			setList(ProductListData)
 		}
 	}
-
 	return (
 		<Card>
 			<Flex alignItems="center" justifyContent="space-between" mobileFlex={false}>
@@ -180,4 +200,4 @@ const ProductList = () => {
 	)
 }
 
-export default ProductList
+export default ProductList
