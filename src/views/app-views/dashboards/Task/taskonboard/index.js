@@ -287,7 +287,7 @@ export const DefaultDashboard = () => {
       "offset": offset,
       "search": "",
     };
-    console.log(ApiData)
+    // console.log(ApiData)
     let response = await ApiSnippets("/LoadTask", ApiData);
     let countObj = await response.data;
     for (let i = 0; i < countObj.length; i++) {
@@ -307,7 +307,7 @@ export const DefaultDashboard = () => {
     setClientTableData(countObj);
 
     setData(response.data);
-    console.log(data);
+    // console.log(data);
     // setData(PclientLogData);
     setLoading(false);
     setTableParams({
@@ -384,7 +384,7 @@ export const DefaultDashboard = () => {
   const { Option } = Select;
 
   function onChange(value) {
-    console.log(`selected ${value}`);
+    // console.log(`selected ${value}`);
   }
 
   function onBlur() {

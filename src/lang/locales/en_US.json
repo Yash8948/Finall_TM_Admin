@@ -25,6 +25,22 @@
 	"sidenav.apps.ecommerce.productList": "Product List",
 	"sidenav.apps.ecommerce.orders": "Orders",
 
+	"sidenav.client": "Client",
+	"sidenav.client.company": "Company",
+	"sidenav.client.clientM_payment": "Client Manual Payment",
+
+
+
+
+
+
+	"sidenav.settings": "Setting",
+	"sidenav.settings.payment": "Payment Method",
+	"sidenav.settings.expences": "Expences",
+	"sidenav.settings.sms": "Config SMS",
+	"sidenav.settings.noti": "Config Notification",
+	"sidenav.settings.depart": "Department",
+	"sidenav.settings.vault": "Vault Manager",
 
 	"sidenav.components": "Components",
 	"sidenav.components.general": "General",
@@ -131,4 +147,6 @@
 	"sidenav.docs": "Docs",
 	"sidenav.docs.documentation": "Documentation",
 	"sidenav.docs.changelog": "Changelog"
+
+
 }

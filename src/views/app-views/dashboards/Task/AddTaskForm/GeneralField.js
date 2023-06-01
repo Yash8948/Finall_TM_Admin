@@ -172,10 +172,10 @@ const GeneralField = (props) => {
 			let data_id = {
 				id: value
 			}
-			console.log(data_id)
+			// console.log(data_id)
 			let response = await ApiSnippets("/GetAllFileforTask", data_id);
 			let data = response.data;
-			console.log(response)
+			// console.log(response)
 			let fileNames = data.map(item => item.id, item => item.text);
 			setFileNames(fileNames);
 			// console.log(data[0].id)
@@ -188,7 +188,7 @@ const GeneralField = (props) => {
 			}
 			setFileNames(selectfile)
 			// console.log(myObj[0].id);
-			console.log(selectfile);
+			// console.log(selectfile);
 		};
 
 
@@ -234,7 +234,7 @@ const GeneralField = (props) => {
 			let response = await ApiSnippets("/Department", null);
 			let data = response.data;
 
-			let departmentNames = data.map(item => item.name);
+			let departmentNames = data.map(item => item.name, index => index);
 			setDepartmentNames(departmentNames);
 		};
 
@@ -282,7 +282,7 @@ const GeneralField = (props) => {
 			txtComment: values.description,
 		};
 
-		console.log(ApiData);
+		// console.log(ApiData);
 
 		try {
 			let response = await ApiSnippets("/AddTask", ApiData);
@@ -315,7 +315,7 @@ const GeneralField = (props) => {
 			};
 			let jsonData = JSON.stringify(ApiData);
 
-			console.log(jsonData);
+			// console.log(jsonData);
 
 			try {
 				let response = await ApiSnippets("/InsertDataintoFile", ApiData);
@@ -490,6 +490,7 @@ const GeneralField = (props) => {
 						<Row gutter={16} justify="start">
 							<Col xs={24} sm={12} md={12} lg={12} xl={12}>
 								<Form.Item
+								// valuePropName= "sssss"
 									name="switchValue1"
 									label="Auto Complete"
 									labelCol={{ span: 8 }}
@@ -503,9 +504,11 @@ const GeneralField = (props) => {
 									// defaultChecked
 									/>
 								</Form.Item>
+
 							</Col>
 							<Col xs={24} sm={12} md={12} lg={12} xl={12}>
 								<Form.Item
+									// valuePropName= "sasas"
 									name="switchValue2"
 									label="Auto Invoice"
 									labelCol={{ span: 8 }}

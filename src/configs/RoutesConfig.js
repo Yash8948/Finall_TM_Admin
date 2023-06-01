@@ -114,7 +114,43 @@ export const protectedRoutes = [
         key: 'apps.ecommerce.orders',
         path: `${APP_PREFIX_PATH}/apps/ecommerce/orders`,
         component: React.lazy(() => import('views/app-views/apps/e-commerce/orders')),
+    }, 
+    {
+        key: 'settings',
+        path: `${APP_PREFIX_PATH}/settings/payment`,
+        component: React.lazy(() => import('views/app-views/settings/payment/index')),
     },
+    {
+        key: 'settings',
+        path: `${APP_PREFIX_PATH}/settings/expences`,
+        component: React.lazy(() => import('views/app-views/settings/expences/index')),
+    },
+    {
+        key: 'settings',
+        path: `${APP_PREFIX_PATH}/settings/smsconfig`,
+        component: React.lazy(() => import('views/app-views/settings/smsconfig/index')),
+    },
+    {
+        key: 'settings',
+        path: `${APP_PREFIX_PATH}/settings/notifiactionconfig`,
+        component: React.lazy(() => import('views/app-views/settings/notificationconfig/index')),
+    },
+    {
+        key: 'settings',
+        path: `${APP_PREFIX_PATH}/settings/department`,
+        component: React.lazy(() => import('views/app-views/settings/department/index')),
+    },
+    {
+        key: 'settings',
+        path: `${APP_PREFIX_PATH}/settings/vaultM`,
+        component: React.lazy(() => import('views/app-views/settings/vaultM/index')),
+    },
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/clientM_Payment`,
+        component: React.lazy(() => import('views/app-views/client/clientM_payment/index')),
+    },
+
     {
         key: 'docs.documentation',
         path: `${APP_PREFIX_PATH}/docs/documentation/*`,
