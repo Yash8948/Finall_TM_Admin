@@ -1,5 +1,6 @@
 import React from 'react';
 import { AUTH_TOKEN } from "./AuthConstant";
+import { API_BASE_URL } from './ApiConstant';
 
 const ApiSnippets = async (path, ApiData = null) => {
     const token = localStorage.getItem(AUTH_TOKEN);
@@ -14,7 +15,7 @@ const ApiSnippets = async (path, ApiData = null) => {
     };
 
     // const fetchAndLog = async () => {
-    const response = await fetch("https://task.mysyva.net/backend"+path, requestOptions);
+    const response = await fetch(API_BASE_URL+path, requestOptions);
     var json = await response.json();
     // just log ‘json’
     let stTrue = await json.status;

@@ -155,7 +155,6 @@ const ProductList = () => {
 			setList(ProductListData)
 		}
 	}
-
 	return (
 		<Card>
 			<Flex alignItems="center" justifyContent="space-between" mobileFlex={false}>

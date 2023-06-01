@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef,useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   Row,
   Col,
@@ -15,9 +15,9 @@ import {
   Spin,
 } from "antd";
 import dayjs from "dayjs";
-// import moment from "moment";
 import { useReactToPrint } from "react-to-print";
 
+import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 
 import StatisticWidget from "components/shared-components/StatisticWidget";
 import ChartWidget from "components/shared-components/ChartWidget";
@@ -77,8 +77,6 @@ const memberChartOption = {
   },
 };
 
-
-
 const newJoinMemberOptions = [
   {
     key: "Add all",
@@ -119,47 +117,9 @@ const CardDropdown = ({ items }) => {
   );
 };
 
-// const tableColumns = [
-//   {
-//     title: 'Sr.No',
-//     dataIndex: 'srno',
-//     key: 'srno',
-//     // render: (text, record) => (
-//     //   <div className="d-flex align-items-center">
-//     //     <Avatar size={30} className="font-size-sm" style={{ backgroundColor: record.avatarColor }}>
-//     //       {utils.getNameInitial(text)}
-//     //     </Avatar>
-//     //     <span className="ml-2">{text}</span>
-//     //   </div>
-//     // ),
-//   },
-//   {
-//     title: 'Client Name',
-//     dataIndex: 'Client_Name',
-//     key: 'Client_Namedate',
-//   },
-//   {
-//     title: 'Message',
-//     dataIndex: 'Message',
-//     key: 'Message',
-//   },
-//   {
-//     title: () => <div className="text-right">Status</div>,
-//     key: 'status',
-//     // render: (_, record) => (
-//       // <div className="text-right">
-//       //   <Tag className="mr-0" color={record.status === 'Approved' ? 'cyan' : record.status === 'Pending' ? 'blue' : 'volcano'}>{record.status}</Tag>
-//       // </div>
-//     // ),
-//   },
-// ];
-
-// TABLE task list
-
-
 
 const columns = [
-  // dataIndex: 'id', 
+  // dataIndex: 'id',
   {
     title: "SrNo",
     dataIndex: "srno",
@@ -201,10 +161,8 @@ const columns = [
 const getRandomuserParams = (params) => ({
   results: params.pagination?.pageSize,
   page: params.pagination?.current,
-  ...params,  
+  ...params,
 });
-
-
 
 export const DefaultDashboard = () => {
   const [visitorChartData] = useState(VisitorChartData);
@@ -216,8 +174,9 @@ export const DefaultDashboard = () => {
   const [cardCounts, setCardCounts] = useState(null);
   const [clientTableData, setClientTableData] = useState(null);
   const [clientName, setClientName] = useState(null);
-  const componentRefPrint = useRef(null);  
-
+  const componentRefPrint = useRef(null);
+  const exportBtnRef = useRef();
+  const [tLsearchalue, setTLsearchalue] = useState(null);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   //table task list
@@ -230,7 +189,7 @@ export const DefaultDashboard = () => {
     },
   });
   const [value, setValue] = useState("");
-  // const fetchData = () => {
+  // const fetchDataold = () => {
   //   setLoading(true);
   //   fetch(`https://randomuser.me/api?${qs.stringify(getRandomuserParams(tableParams))}`)
   //     .then((res) => res.json())
@@ -250,8 +209,9 @@ export const DefaultDashboard = () => {
   //     console.log(data);
   // };
   //client log table api
-  const fetchData = async () => {
+  const fetchData = async (value) => {
     var offset = 0;
+    
     setLoading(true);
     if (tableParams.pagination.current > 1) {
       offset =
@@ -260,31 +220,24 @@ export const DefaultDashboard = () => {
     let ApiData = {
       limit: tableParams.pagination.pageSize,
       offset: offset,
-      search: "",
+      search: value && value,
     };
+    console.log(value);
     let response = await ApiSnippets("/ClientLogData_Dashboard", ApiData);
     let countObj = await response.data;
     for (let i = 0; i < countObj.length; i++) {
       // limit * currentpage - (limit -1)
       let current_page = tableParams.pagination.current;
       let page_limit = tableParams.pagination.pageSize;
-      countObj[i].srno=page_limit * current_page - (page_limit - i-1); // srno added to response thank you jigi
-      countObj[i].on_date = new Date(countObj[i].on_date * 1000).toLocaleDateString("en-GB")
+      countObj[i].srno = page_limit * current_page - (page_limit - i - 1); // srno added to response thank you jigi
+      countObj[i].on_date = new Date(
+        countObj[i].on_date * 1000
+      ).toLocaleDateString("en-GB");
     }
-    // 
-    
-    
-
     // console.log(countObj);
-
-
     setClientTableData(countObj);
-    
-
-
-
-  // console.log(srno_array);
-  // console.log(response.count);
+    // console.log(srno_array);
+    // console.log(response.count);
     setData(response.data);
     console.log(data);
     // setData(PclientLogData);
@@ -301,7 +254,6 @@ export const DefaultDashboard = () => {
     });
   };
 
-
   const reactToPrintContent = useCallback(() => {
     return componentRefPrint.current;
   }, [componentRefPrint.current]);
@@ -309,10 +261,23 @@ export const DefaultDashboard = () => {
   const handlePrint = useReactToPrint({
     content: reactToPrintContent,
     documentTitle: "AwesomeFileName",
-    
   });
-
-
+  //pdf
+  const exportPDFWithMethod = () => {
+    let element = document.querySelector(".k-grid") || document.body;
+    savePDF(element, {
+      paperSize: "A4",
+    });
+  };
+  const exportPDFWithComponent = () => {
+    if (componentRefPrint.current) {
+      componentRefPrint.current.save();
+    }
+  };
+  //export csv
+  const handleExport = () => {
+    console.log(exportBtnRef.current);
+  };
 
   const latestTransactionOption = [
     {
@@ -336,18 +301,45 @@ export const DefaultDashboard = () => {
     {
       key: "Export",
       label: (
-        <Flex alignItems="center" gap={SPACER[2]}>
+        <Flex alignItems="center" gap={SPACER[2]} onClick={handleExport}>
           <FileExcelOutlined />
           <span className="ml-2">Export</span>
         </Flex>
       ),
     },
+    {
+      key: "pdf",
+      label: (
+        <Flex alignItems="center" gap={SPACER[2]} onClick={exportPDFWithMethod}>
+          <FileExcelOutlined />
+          <span className="ml-2">PDFmethod</span>
+        </Flex>
+      ),
+    },
+    {
+      key: "pdf",
+      label: (
+        <Flex
+          alignItems="center"
+          gap={SPACER[2]}
+          onClick={exportPDFWithComponent}
+        >
+          <FileExcelOutlined />
+          <span className="ml-2">PDFcomponent</span>
+        </Flex>
+      ),
+    },
   ];
 
-
   useEffect(() => {
-    fetchData();
+    let value = tLsearchalue;
+    fetchData(value);
+    console.log("in useeffect");
+    console.log(tLsearchalue);
+    console.log(JSON.stringify(tableParams));
   }, [JSON.stringify(tableParams)]);
+  // console.log("bare useeffect");
+  // console.log(JSON.stringify(tableParams));
   const handleTableChange = (pagination, sorter) => {
     setTableParams({
       pagination,
@@ -390,7 +382,6 @@ export const DefaultDashboard = () => {
       setCardCounts(countObj);
       let onlyClientData = await response.data.client;
       setClientName(onlyClientData);
-
     };
 
     getAllData();
@@ -438,28 +429,74 @@ export const DefaultDashboard = () => {
     ],
   };
   const [form] = Form.useForm();
-  const handleAddClient =async (value,id) => {
+  const handleAddClient = async (value, id) => {
     // console.log(value);
     let ApiData = {
       client: value.client,
-      message:value.message,
-      description:value.description,
-      date: value["date"].format("DD-MM-YYYY")  //Add your required date format here
+      message: value.message,
+      description: value.description,
+      date: value["date"].format("DD-MM-YYYY"), //Add your required date format here
       // date: value["date"].format("YYYY-MM-DD HH:mm:ss")  //Add your required date format here
     };
     let response = await ApiSnippets("/AddClientLog", ApiData);
     // let countObj = await response;
     fetchData();
     console.log(ApiData);
-    setLoading(true)
+    setLoading(true);
     setTimeout(() => {
-
       form.resetFields();
     }, 500);
-    setLoading(false)
+    setLoading(false);
+  };
 
-  }
-
+  const hanldeSearch_tasklist = (value, event) => {
+    setTLsearchalue(value);
+    const fetchDataOnSearch = async (value) => {
+      var offset = 0;
+      setLoading(true);
+      if (tableParams.pagination.current > 1) {
+        offset =
+          (tableParams.pagination.current - 1) *
+          tableParams.pagination.pageSize;
+      }
+      let ApiData = {
+        limit: tableParams.pagination.pageSize,
+        offset: offset,
+        search: value,
+      };
+      let response = await ApiSnippets("/ClientLogData_Dashboard", ApiData);
+      let countObj = await response.data;
+      for (let i = 0; i < countObj.length; i++) {
+        // limit * currentpage - (limit -1)
+        let current_page = tableParams.pagination.current;
+        let page_limit = tableParams.pagination.pageSize;
+        countObj[i].srno = page_limit * current_page - (page_limit - i - 1); // srno added to response thank you jigi
+        countObj[i].on_date = new Date(
+          countObj[i].on_date * 1000
+        ).toLocaleDateString("en-GB");
+      }
+      // console.log(countObj);
+      setClientTableData(countObj);
+      // console.log(srno_array);
+      // console.log(response.count);
+      setData(response.data);
+      console.log(data);
+      // setData(PclientLogData);
+      setLoading(false);
+      setTableParams({
+        ...tableParams,
+        pagination: {
+          ...tableParams.pagination,
+          total: response.count,
+          // total: 100,
+          // 200 is mock data, you should read it from server
+          // total: data.totalCount,
+        },
+      });
+    };
+    fetchDataOnSearch(value);
+    // console.log(typeofvalue);
+  };
 
   // console.log(cardCounts.client);
   return (
@@ -533,27 +570,52 @@ export const DefaultDashboard = () => {
       {/* table task lists starts*/}
       {/* uncomment */}
       <Row gutter={16}>
-          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <Card title="Task List" extra={<CardDropdown items={latestTransactionOption} />}>
-          <div  ref={componentRefPrint}>
-
-          <Table
-          //  rowSelection={rowSelection}
-            columns={columns}
-            rowKey={(record) => record.id}// id
-            dataSource={data}
-            pagination={tableParams.pagination}
-            loading={loading}
-            onChange={handleTableChange}
-            // searchable={{fuzzySearch:true}}
-            exportableProps={{ showColumnPicker: true, fileName:"Task_List"}}
-            // searchableProps={{ fuzzySearch: true }}
-            style={{ overflow: 'auto'}}
-          />
-          </div>
+        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+          <Card
+            title="Task List"
+            extra={
+              <>
+                {/* <div className="example"> */}
+                <Input.Search
+                  allowClear
+                  className="mx-3"
+                  onSearch={hanldeSearch_tasklist}
+                />
+                {/* </div> */}
+                <CardDropdown items={latestTransactionOption} />
+              </>
+            }
+          >
+            <div ref={componentRefPrint}>
+              <PDFExport ref={componentRefPrint} paperSize="A4">
+                {/* <Document>
+          <Page size="A4" style={styles.page}>
+          <View style={styles.section}> */}
+                <Table
+                  //  rowSelection={rowSelection}
+                  columns={columns}
+                  rowKey={(record) => record.id} // id
+                  dataSource={data}
+                  pagination={tableParams.pagination}
+                  loading={loading}
+                  onChange={handleTableChange}
+                  // searchable={{fuzzySearch:true}}
+                  // exportable={}
+                  exportableProps={{
+                    showColumnPicker: true,
+                    fileName: "Task_List",
+                  }}
+                  // searchableProps={{ fuzzySearch: true }}
+                  style={{ overflow: "auto" }}
+                />
+              </PDFExport>
+              {/* </View>
+          </Page>
+          </Document> */}
+            </div>
           </Card>
-          </Col>
-          </Row>
+        </Col>
+      </Row>
       {/* table task lists ends*/}
       {/* <Row gutter={16}>
             <Col span={24}>
@@ -587,10 +649,10 @@ export const DefaultDashboard = () => {
             subtitle="Active members"
           />
         </Col> */}
-      
+
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={7}>
-        {/* uncomment */}
+          {/* uncomment */}
           {/* <Card
             title="Add Log"
             extra={<CardDropdown items={newJoinMemberOptions} />}
@@ -729,7 +791,7 @@ export const DefaultDashboard = () => {
               pagination={false}
             /> */}
       {/* table birthday lists starts*/}
-            {/* uncomment */}
+      {/* uncomment */}
       {/* <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Card title="Birthday List" extra={<CardDropdown items={latestTransactionOption} />}>
