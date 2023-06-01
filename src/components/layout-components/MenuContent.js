@@ -69,11 +69,10 @@ const getTopNavMenuItem = (navItem) => navItem.map(nav => {
 const SideNavContent = (props) => {
 
 	const { routeInfo, hideGroupTitle } = props;
-
+	
 	const sideNavTheme = useSelector(state => state.theme.sideNavTheme);
 
 	const menuItems = useMemo(() => getSideNavMenuItem(navigationConfig), []);
-
 	return (
 		<Menu
 			mode="inline"
@@ -92,7 +91,7 @@ const TopNavContent = () => {
 	const topNavColor = useSelector(state => state.theme.topNavColor);
 
 	const menuItems = useMemo(() => getTopNavMenuItem(navigationConfig), [])
-
+	
 	return (
 		<Menu 
 			mode="horizontal" 

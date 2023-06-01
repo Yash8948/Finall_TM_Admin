@@ -1,150 +1,58 @@
-import React, { useState, useEffect, useRef } from "react";
-import BootstrapTable from 'react-bootstrap-table-next';
+import React from "react";
+import { DownloadOutlined } from '@ant-design/icons';
 
-// import {CSVLink} from "react-csv"
-// import { useReactToPrint } from 'react-to-print';
-import {
-  DeleteOutlined,
-  EditOutlined,
-  FilePdfOutlined,
-} from "@ant-design/icons";
-import { Button } from "antd";
-import { Table } from "ant-table-extensions";
-import ApiSnippets from "constants/ApiSnippet";
+import { Button, Card, Divider, Radio, Space, Table, message } from 'antd';
+
+// import { Button, Radio } from 'antd';
+// import { DownloadOutlined } from '@ant-design/icons';
+import "./table.css"
+import { useNavigate } from "react-router-dom";
 const TaskReports = () => {
-  const [dataSource, setDataSource] = useState([]);
-  const [data, setData] = useState(null);
-  const columns = [
-    {
-      text: "Sr No.",
-      dataField: "id",
-    },
-    {
-      text: "Title",
-      dataField: "title",
-    },
-    {
-      text: "Description",
-      dataField: "description",
-    },
-    {
-      text: "Date",
-      dataField: "date",
-      render: (date) => new Date(date * 1000).toLocaleDateString("en-GB"),
-    },
-  ];
-  useEffect(() => {
-    const getData = async () => {
-      const response = await ApiSnippets("/AdminDashboard", null);
-      setDataSource(response.data.holiday);
-    };
-    getData();
-  }, []);
-  console.log(dataSource);
-
+    const Navigate = useNavigate(); 
+    const go = () => {
+        Navigate("/")
+    }
   return (
-    <div>
-      {dataSource && (
-        <>
-          <div>
-            {/* <Table
-              columns={columns}
-              dataSource={dataSource}
-              style={{ overflow: "auto" }}
-              exportableProps={{ showColumnPicker: true }}
-              searchableProps={{ fuzzySearch: true }}
-            /> */}
-             <BootstrapTable keyField='id' data={ dataSource } columns={ columns } />
-          </div>
-        </>
-      )}
+    <Card>
+    <div className="App">
+      <Table border='2'>
+        <thead>
+            <th>srno</th>
+            <th>user name</th>
+            <th>first name</th>
+            <th>last name</th>
+            <th>Email id</th>
+            <th>status</th>
+            <th>action</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>yash07</td>
+                <td>yash</td>
+                <td>soni</td>
+                <td>a@a.com</td>
+                <td>active</td>
+                <td>
+                    <Button.Group outerCount='5' >
+                        <Button size='small' type='primary' onClick={go}>edit</Button>
+                        <Button size='small' type='primary' onClick={() => message.warning('delete')}>delete</Button>
+                        <Button size='small' type='primary' onClick={() => message.success('edit')}>edit</Button>
+                        <Button size='small' type='primary' onClick={() => message.warning('delete')}>delete</Button>
+                    </Button.Group>
+                </td>
+            </tr>
+        </tbody>
+  
+      </Table>
+      
     </div>
+    
+    <div>
+    
+    </div>
+    </Card>
   );
 };
 
 export default TaskReports;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React,{useState,useEffect, useRef} from 'react'
-// // import {CSVLink} from "react-csv"
-// // import { useReactToPrint } from 'react-to-print';
-// import { DeleteOutlined,EditOutlined,FilePdfOutlined} from '@ant-design/icons';
-// import {Button} from 'antd'
-// import { Table } from "ant-table-extensions";
-// import ApiSnippets from 'constants/ApiSnippet'
-// const TaskReports = () => {
-//   const [dataSource, setDataSource] = useState([])
-//   const [data, setData] = useState(null)
-// const columns=[
-//   {
-//   title:'Sr No.',
-//   dataIndex:'id',
-
-//   },
-//   {
-//   title:'Title',
-//   dataIndex:'title',
-//   },
-//   {
-//   title:'Description',
-//   dataIndex:'description',
-//   },
-//   {
-//   title:'Date',
-//   dataIndex:'date',
-//   render: (date) => new Date(date * 1000).toLocaleDateString('en-GB'),
-//   },
-// ];
-// useEffect(() => {
-//   const getData = async () => {
-
-//     const response = await ApiSnippets("/AdminDashboard",null)
-//     setDataSource(response.data.holiday)
-
-//   }
-//   getData();
-// }, [])
-// console.log(dataSource);
-
-//   return (
-//     <div>
-//             {dataSource &&
-//       <>
-//     <div >
-//     <Table
-//     // rowSelection={rowSelection}
-//      columns={columns}
-//      // rowKey={(record) => record.login.uuid}// id
-//      dataSource={dataSource}
-//     //  pagination={tableParams.pagination}
-//     //  loading={loading}
-//     //  onChange={handleTableChange}
-//     // size="small"
-//       style={{ overflow: 'auto'}}
-//       exportableProps={{ showColumnPicker: true}}
-//       searchableProps={{ fuzzySearch: true }}
-//    />
-//      </div>
-//      </>
-//    }
-//     </div>
-//   )
-// }
-
-// export default TaskReports;

@@ -7,6 +7,9 @@ const IntlMessage = ({ id, fallback }) => {
 
 	const translate = t(id, fallback)
 
+	console.log("TRANSLATE");
+	console.log(translate);
+	console.log("OVER");
 	return <>{translate}</>
 }
 

@@ -9,8 +9,6 @@ const StatisticWidget = ({ title, value, status, subtitle, prefix }) => {
 	
 	return (
 		<div onClick={()=>console.log("working") }>
-
-		
 		<BoardCards >
 			{title && <h4 className="mb-0">{title}</h4>}
 			<div  className={`${prefix? 'd-flex': ''} ${title ? 'mt-3':''}`}>
