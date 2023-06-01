@@ -282,7 +282,7 @@ export const DefaultDashboard = () => {
   };
   //export csv
   const handleExport = () => {
-    console.log(exportBtnRef.current);
+    // console.log(exportBtnRef.current);
   };
 
   const latestTransactionOption = [
@@ -340,8 +340,8 @@ export const DefaultDashboard = () => {
   useEffect(() => {
     let value = tLsearchalue;
     fetchData(value);
-    console.log("in useeffect");
-    console.log(tLsearchalue);
+    // console.log("in useeffect");
+    // console.log(tLsearchalue);
     console.log(JSON.stringify(tableParams));
   }, [JSON.stringify(tableParams)]);
   // console.log("bare useeffect");
