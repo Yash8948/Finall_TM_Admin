@@ -174,9 +174,8 @@ export const DefaultDashboard = () => {
   const [cardCounts, setCardCounts] = useState(null);
   const [clientTableData, setClientTableData] = useState(null);
   const [clientName, setClientName] = useState(null);
-  const componentRefPrint = useRef(null);
-  const exportBtnRef = useRef();
-  const [tLsearchalue, setTLsearchalue] = useState(null);
+  const componentRefPrint = useRef(null);  
+
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
 
   //table task list
@@ -229,15 +228,21 @@ export const DefaultDashboard = () => {
       // limit * currentpage - (limit -1)
       let current_page = tableParams.pagination.current;
       let page_limit = tableParams.pagination.pageSize;
-      countObj[i].srno = page_limit * current_page - (page_limit - i - 1); // srno added to response thank you jigi
-      countObj[i].on_date = new Date(
-        countObj[i].on_date * 1000
-      ).toLocaleDateString("en-GB");
+      countObj[i].srno=page_limit * current_page - (page_limit - i-1); // srno added to response thank you jigi
+      countObj[i].on_date = new Date(countObj[i].on_date * 1000).toLocaleDateString("en-GB")
     }
+    // 
+    
+    
+
     // console.log(countObj);
     setClientTableData(countObj);
-    // console.log(srno_array);
-    // console.log(response.count);
+    
+
+
+
+  // console.log(srno_array);
+  // console.log(response.count);
     setData(response.data);
     console.log(data);
     // setData(PclientLogData);
@@ -261,6 +266,7 @@ export const DefaultDashboard = () => {
   const handlePrint = useReactToPrint({
     content: reactToPrintContent,
     documentTitle: "AwesomeFileName",
+    
   });
   //pdf
   const exportPDFWithMethod = () => {
@@ -433,9 +439,9 @@ export const DefaultDashboard = () => {
     // console.log(value);
     let ApiData = {
       client: value.client,
-      message: value.message,
-      description: value.description,
-      date: value["date"].format("DD-MM-YYYY"), //Add your required date format here
+      message:value.message,
+      description:value.description,
+      date: value["date"].format("DD-MM-YYYY")  //Add your required date format here
       // date: value["date"].format("YYYY-MM-DD HH:mm:ss")  //Add your required date format here
     };
     let response = await ApiSnippets("/AddClientLog", ApiData);
@@ -570,49 +576,24 @@ export const DefaultDashboard = () => {
       {/* table task lists starts*/}
       {/* uncomment */}
       <Row gutter={16}>
-        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <Card
-            title="Task List"
-            extra={
-              <>
-                {/* <div className="example"> */}
-                <Input.Search
-                  allowClear
-                  className="mx-3"
-                  onSearch={hanldeSearch_tasklist}
-                />
-                {/* </div> */}
-                <CardDropdown items={latestTransactionOption} />
-              </>
-            }
-          >
-            <div ref={componentRefPrint}>
-              <PDFExport ref={componentRefPrint} paperSize="A4">
-                {/* <Document>
-          <Page size="A4" style={styles.page}>
-          <View style={styles.section}> */}
-                <Table
-                  //  rowSelection={rowSelection}
-                  columns={columns}
-                  rowKey={(record) => record.id} // id
-                  dataSource={data}
-                  pagination={tableParams.pagination}
-                  loading={loading}
-                  onChange={handleTableChange}
-                  // searchable={{fuzzySearch:true}}
-                  // exportable={}
-                  exportableProps={{
-                    showColumnPicker: true,
-                    fileName: "Task_List",
-                  }}
-                  // searchableProps={{ fuzzySearch: true }}
-                  style={{ overflow: "auto" }}
-                />
-              </PDFExport>
-              {/* </View>
-          </Page>
-          </Document> */}
-            </div>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+          <Card title="Task List" extra={<CardDropdown items={latestTransactionOption} />}>
+          <div  ref={componentRefPrint}>
+
+          <Table
+          //  rowSelection={rowSelection}
+            columns={columns}
+            rowKey={(record) => record.id}// id
+            dataSource={data}
+            pagination={tableParams.pagination}
+            loading={loading}
+            onChange={handleTableChange}
+            // searchable={{fuzzySearch:true}}
+            exportableProps={{ showColumnPicker: true, fileName:"Task_List"}}
+            // searchableProps={{ fuzzySearch: true }}
+            style={{ overflow: 'auto'}}
+          />
+          </div>
           </Card>
         </Col>
       </Row>
@@ -658,64 +639,64 @@ export const DefaultDashboard = () => {
             extra={<CardDropdown items={newJoinMemberOptions} />}
           >
             <div className="mt-3">
-            <Spin spinning={loading} >
-              <Form layout="vertical" onFinish={handleAddClient} form={form} >
-                <div style={{ marginBottom: 16 }}>
-                
-                <Form.Item label="Client : " name="client" rules={[{ required: true, message: 'Please select your client!' }]}>
-                  <Select
-                    showSearch
-                    style={{ width: "100%" }}
-                    placeholder="Select a Client"
-                    optionFilterProp="children"
-                    onChange={onChange}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
-                    onSearch={onSearch}
-                    filterOption={(input, option) =>
-                      option.props.children
-                        .toLowerCase()
-                        .indexOf(input.toLowerCase()) >= 0
-                    }
-                  >
-                    {clientName &&
-                      clientName.map((item, index) => (
-                        <Option key={index} id={item.ID} value={item.ID}>
-                          {item.username}
-                        </Option>
-                      ))}
-                  </Select>
-                  </Form.Item>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                  <Form.Item label="User : " name="message" rules={[{ required: true, message: 'Please input your message!' }]}>
-                    <Input placeholder="Enter Message" />
-                  </Form.Item>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                <Form.Item label="Description : "  name="description" rules={[{ required: true, message: 'Please input your description!' }]}>
-                  <TextArea rows={4} placeholder="Enter Description" />
-                </Form.Item>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                <Form.Item label="Date : " name="date" rules={[{ required: true, message: 'Please input your date!' }]}  >
-                  <DatePicker
-                    // defaultValue={dayjs()}
-                    format={dateFormatList}
-                    disabledDate={disabledDate}
-                    onChange={handleDatePicker}
-                    style={{ width: "100%" }}
-                  />
-                </Form.Item>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                <Form.Item>
-                  <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
-                    Submit
-                  </Button>
-                </Form.Item>
-                </div>
-              </Form>
+              <Spin spinning={loading} >
+                <Form layout="vertical" onFinish={handleAddClient} form={form} >
+                  <div style={{ marginBottom: 16 }}>
+
+                    <Form.Item label="Client : " name="client" rules={[{ required: true, message: 'Please select your client!' }]}>
+                      <Select
+                        showSearch
+                        style={{ width: "100%" }}
+                        placeholder="Select a Client"
+                        optionFilterProp="children"
+                        onChange={onChange}
+                        onFocus={onFocus}
+                        onBlur={onBlur}
+                        onSearch={onSearch}
+                        filterOption={(input, option) =>
+                          option.props.children
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        }
+                      >
+                        {clientName &&
+                          clientName.map((item, index) => (
+                            <Option key={index} id={item.ID} value={item.ID}>
+                              {item.username}
+                            </Option>
+                          ))}
+                      </Select>
+                    </Form.Item>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Form.Item label="User : " name="message" rules={[{ required: true, message: 'Please input your message!' }]}>
+                      <Input placeholder="Enter Message" />
+                    </Form.Item>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Form.Item label="Description : " name="description" rules={[{ required: true, message: 'Please input your description!' }]}>
+                      <TextArea rows={4} placeholder="Enter Description" />
+                    </Form.Item>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Form.Item label="Date : " name="date" rules={[{ required: true, message: 'Please input your date!' }]}  >
+                      <DatePicker
+                        // defaultValue={dayjs()}
+                        format={dateFormatList}
+                        disabledDate={disabledDate}
+                        onChange={handleDatePicker}
+                        style={{ width: "100%" }}
+                      />
+                    </Form.Item>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Form.Item>
+                      <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+                        Submit
+                      </Button>
+                    </Form.Item>
+                  </div>
+                </Form>
               </Spin>
             </div>
           </Card> */}
