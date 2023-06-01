@@ -252,7 +252,7 @@ const clientNavTree = [{
       title: 'sidenav.client.company',
       icon: FileUnknownOutlined,
       breadcrumb: true,
-      isGroupTitle: true,
+      isGroupTitle: false,
       submenu: [
         {
           key: 'docs-changelog',
@@ -281,7 +281,7 @@ const settingNavTree = [{
       title: 'sidenav.settings',
       icon: SettingOutlined,
       breadcrumb: true,
-      isGroupTitle: true,
+      isGroupTitle: false,
       submenu: [
         {
           key: 'settings-payment',
