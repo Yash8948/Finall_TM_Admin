@@ -230,12 +230,24 @@ const GeneralField = (props) => {
 	// console.log(companyData)
 	// -=============================== get all departments =================================================- //
 	useEffect(() => {
+
+		var depart =[]
+
 		const getAllData = async () => {
 			let response = await ApiSnippets("/Department", null);
 			let data = response.data;
 
 			let departmentNames = data.map(item => item.name, index => index);
 			setDepartmentNames(departmentNames);
+
+			for (let index = 0; index < data.length; index++) {
+				depart.push({
+					id: data[index].id,
+					name: data[index].name
+				});
+			}
+			setDepartmentNames(depart)
+			console.log(depart)
 		};
 
 		getAllData();
@@ -467,9 +479,9 @@ const GeneralField = (props) => {
 										}
 									>
 										{departmentName &&
-											departmentName.map((name, index) => (
-												<Option key={index}>
-													{name}
+											departmentName.map((item, index) => (
+												<Option key={index} value={item.id}>
+													{item.name}
 												</Option>
 											))}
 									</Select>
