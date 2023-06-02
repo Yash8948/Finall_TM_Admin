@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Card, Table, Select, Input, Button, Badge, Menu } from 'antd';
+import { Card, Table, Select, Input, Button, Badge, Menu, Modal } from 'antd';
 import ProductListData from "assets/data/product-list.data.json"
 import { EyeOutlined, DeleteOutlined, SearchOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import AvatarStatus from 'components/shared-components/AvatarStatus';
@@ -11,20 +11,7 @@ import utils from 'utils'
 
 const { Option } = Select
 
-const getStockStatus = stockCount => {
-	if(stockCount >= 10) {
-		return <><Badge status="success" /><span>In Stock</span></>
-	}
-	if(stockCount < 10 && stockCount > 0) {
-		return <><Badge status="warning" /><span>Limited Stock</span></>
-	}
-	if(stockCount === 0) {
-		return <><Badge status="error" /><span>Out of Stock</span></>
-	}
-	return null
-}
 
-const categories = ['Cloths', 'Bags', 'Shoes', 'Watches', 'Devices']
 
 const Company = () => {
 	const navigate = useNavigate();
@@ -32,45 +19,15 @@ const Company = () => {
 	const [selectedRows, setSelectedRows] = useState([])
 	const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
-	const dropdownMenu = row => (
-		<Menu>
-			<Menu.Item onClick={() => viewDetails(row)}>
-				<Flex alignItems="center">
-					<EyeOutlined />
-					<span className="ml-2">View Details</span>
-				</Flex>
-			</Menu.Item>
-			<Menu.Item onClick={() => deleteRow(row)}>
-				<Flex alignItems="center">
-					<DeleteOutlined />
-					<span className="ml-2">{selectedRows.length > 0 ? `Delete (${selectedRows.length})` : 'Delete'}</span>
-				</Flex>
-			</Menu.Item>
-		</Menu>
-	);
-	
     const handleAddClient = () => {
       console.log("object");
+      navigate('/app/client/addclientform')
     }
 	
 	const viewDetails = row => {
-		navigate(`/app/apps/ecommerce/edit-product/${row.id}`)
+		// navigate(`/app/apps/ecommerce/edit-product/${row.id}`)
 	}
 	
-	const deleteRow = row => {
-		const objKey = 'id'
-		let data = list
-		if(selectedRows.length > 1) {
-			selectedRows.forEach(elm => {
-				data = utils.deleteArrayRow(data, objKey, elm.id)
-				setList(data)
-				setSelectedRows([])
-			})
-		} else {
-			data = utils.deleteArrayRow(data, objKey, row.id)
-			setList(data)
-		}
-	}
 
 	const tableColumns = [
 		{
@@ -116,7 +73,8 @@ const Company = () => {
 			title: 'Status',
 			dataIndex: 'stock',
 			render: stock => (
-				<Flex alignItems="center">{getStockStatus(stock)}</Flex>
+				// <Flex alignItems="center">{getStockStatus(stock)}</Flex>
+        <div></div>
 			),
 			sorter: (a, b) => utils.antdTableSorter(a, b, 'stock')
 		},
@@ -125,18 +83,13 @@ const Company = () => {
 			dataIndex: 'actions',
 			render: (_, elm) => (
 				<div className="text-right">
-					<EllipsisDropdown menu={dropdownMenu(elm)}/>
+					{/* <EllipsisDropdown menu={dropdownMenu(elm)}/> */}
 				</div>
 			)
 		}
 	];
 	
-	const rowSelection = {
-		onChange: (key, rows) => {
-			setSelectedRows(rows)
-			setSelectedRowKeys(key)
-		}
-	};
+	
 
 	const onSearch = e => {
 		const value = e.currentTarget.value
@@ -146,15 +99,7 @@ const Company = () => {
 		setSelectedRowKeys([])
 	}
 
-	const handleShowCategory = value => {
-		if(value !== 'All') {
-			const key = 'category'
-			const data = utils.filterArray(ProductListData, key, value)
-			setList(data)
-		} else {
-			setList(ProductListData)
-		}
-	}
+	
 
 	return (
 		<Card>
@@ -189,7 +134,6 @@ const Company = () => {
 					columns="" 
 					// dataSource={list} 
 					rowKey='id' 
-					
 				/>
 			</div>
 		</Card>
