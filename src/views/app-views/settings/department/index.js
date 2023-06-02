@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, Table, Select, Input, Button, Form, Modal } from 'antd';
 import ProductListData from "assets/data/product-list.data.json"
 import { EyeOutlined, DeleteOutlined, SearchOutlined, PlusCircleOutlined } from '@ant-design/icons';
@@ -6,6 +6,7 @@ import AvatarStatus from 'components/shared-components/AvatarStatus';
 import EllipsisDropdown from 'components/shared-components/EllipsisDropdown';
 import Flex from 'components/shared-components/Flex'
 import NumberFormat from 'react-number-format';
+import ApiSnippets from 'constants/ApiSnippet';
 import utils from 'utils'
 
 const { Option } = Select
@@ -14,8 +15,7 @@ const { Option } = Select
 
 
 const ProductList = () => {
-
-  const [list, setList] = useState(ProductListData)
+  const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -26,14 +26,61 @@ const ProductList = () => {
   const showModal = () => {
     setOpen(true);
   };
-  const handleOk = () => {
-    setModalText('The modal will be closed after two seconds');
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setOpen(false);
-      setConfirmLoading(false);
-    }, 2000);
+  const [form] = Form.useForm();
+  // const handleOk = async (value) => {
+
+  //   const departNameInput = document.querySelector('input[name="departname"]');
+  //   const departName = departNameInput.value;
+  //   let ApiData = {
+  //     name: departName
+
+  //   };
+  //   let jsonData = JSON.stringify(ApiData);
+
+  //   console.log(jsonData);
+
+  //   try {
+  //     let response = await ApiSnippets("/AddDepartment", ApiData);
+  //     let countObj = await response;
+
+  //     console.log(countObj);
+  //     console.log(ApiData);
+
+  //     setLoading(true);
+  //     setTimeout(() => {
+  //       form.resetFields();
+  //       setLoading(false);
+  //     }, 200);
+
+
+  //   } catch (error) {
+  //     console.log(error);
+
+  //   }
+  // };
+  const onFinish = async (values) => {
+
+    let ApiData = {
+      "title": String(values.departname)
+    };
+
+    console.log(ApiData)
+    try {
+      setLoading(true);
+      // Make API request using values.departname
+      const response = await ApiSnippets('/AddDepartment', ApiData);
+      console.log(response);
+      // Reset form fields
+      form.resetFields();
+      // Close the modal
+      handleCancel();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
+
   const handleCancel = () => {
     console.log('Clicked cancel button');
     setOpen(false);
@@ -50,12 +97,12 @@ const ProductList = () => {
 
   const tableColumns = [
     {
-      title: 'ID',
-      dataIndex: 'id',
+      title: 'Sr No',
+      dataIndex: 'srno',
       width: "20%",
     },
     {
-      title: 'Product',
+      title: 'Department Name',
       dataIndex: 'name',
       sorter: (a, b) => utils.antdTableSorter(a, b, 'name'),
       width: "20%"
@@ -87,15 +134,6 @@ const ProductList = () => {
   // 	setSelectedRowKeys([])
   // }
 
-  const handleShowCategory = value => {
-    if (value !== 'All') {
-      const key = 'category'
-      const data = utils.filterArray(ProductListData, key, value)
-      setList(data)
-    } else {
-      setList(ProductListData)
-    }
-  }
   return (
     <>
       <Card>
@@ -112,37 +150,31 @@ const ProductList = () => {
           />
         </div>
       </Card>
-      {/* <Modal title="Add New Department" open={isModalOpen}>
-        <Form layout="inline" name="add-depart-ref" >
-          <Form.Item name="depart_title" label="Department Name">
-            <Input autoComplete="off" />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" onClick={handleDepart}>Add</Button>
-          </Form.Item>
-        </Form>
-      </Modal>
-         */}
+
       <Modal
         title="Add Department"
         open={open}
-        onOk={handleOk}
+        onOk={form.submit}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
         okText={"Add"}
       > <Form layout="inline" name="add-depart-ref"
+        form={form}
+        onFinish={onFinish}
         style={{
           alignItems: "center",
           justifyContent: "left",
           margin: "20px",
           left: "0",
-          padding: "10px"
+          padding: "10px",
+
         }} >
-          <Form.Item name="depart_title" label="Department Name">
-            <Input autoComplete="off" />
+          <Form.Item name="departname" label="Department Name" >
+            <Input placeholder="Department Name" name="departname" />
           </Form.Item>
 
-        </Form></Modal>
+        </Form>
+      </Modal >
     </>
   )
 }
