@@ -5,6 +5,7 @@ import {
   PieChartOutlined,
   EnvironmentOutlined,
   AntDesignOutlined,
+  ReconciliationOutlined,
   SafetyOutlined,
   StopOutlined,
   HddOutlined,
@@ -270,6 +271,14 @@ const clientNavTree = [{
           path: `${APP_PREFIX_PATH}/client/password`,
           title: 'sidenav.client.password',
           icon: ProfileOutlined,
+          breadcrumb: true,
+          submenu: []
+        },
+        {
+          key: 'client_recepit',
+          path: `${APP_PREFIX_PATH}/client/recepit`,
+          title: 'sidenav.client.recepit',
+          icon: ReconciliationOutlined ,
           breadcrumb: true,
           submenu: []
         },

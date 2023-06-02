@@ -14,7 +14,7 @@ const { Option } = Select
 
 
 
-const ProductList = () => {
+const Recepit = () => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -157,4 +157,4 @@ const ProductList = () => {
   )
 }
 
-export default ProductList
+export default Recepit
