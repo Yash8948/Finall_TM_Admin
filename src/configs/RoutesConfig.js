@@ -171,6 +171,11 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/client/login_details`,
         component: React.lazy(() => import('views/app-views/client/client-loginDetails/index')),
     },
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/addclientform`,
+        component: React.lazy(() => import('views/app-views/client/company/AddClientForm')),
+    },
 
     {
         key: 'docs.documentation',
