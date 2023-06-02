@@ -27,7 +27,10 @@ import {
   SettingOutlined,
   UnorderedListOutlined,
   FileUnknownOutlined,
-  ProfileOutlined
+  ProfileOutlined,
+  LoginOutlined,
+  HomeOutlined,
+  DollarCircleOutlined
 } from '@ant-design/icons';
 
 import { MdPayment } from 'react-icons/md'
@@ -246,25 +249,38 @@ const clientNavTree = [{
   breadcrumb: true,
   isGroupTitle: true,
   submenu: [
-    {
-      key: 'client-company',
-      path: `${APP_PREFIX_PATH}/client/company`,
-      title: 'sidenav.client.company',
-      icon: FileUnknownOutlined,
-      breadcrumb: true,
-      isGroupTitle: false,
-      submenu: [
         {
-          key: 'docs-changelog',
-          path: `${APP_PREFIX_PATH}/client/clientM_Payment`,
-          title: 'sidenav.client.clientM_payment',
+          key: 'client_company',
+          path: `${APP_PREFIX_PATH}/client/company`,
+          title: 'sidenav.client.company',
+          icon: HomeOutlined,
+          breadcrumb: true,
+          submenu: []
+        },
+        {
+          key: 'client_manual_payment',
+          path: `${APP_PREFIX_PATH}/client/manual_payment`,
+          title: 'sidenav.client.manual_payment',
+          icon: DollarCircleOutlined,
+          breadcrumb: true,
+          submenu: []
+        },
+        {
+          key: 'client_password',
+          path: `${APP_PREFIX_PATH}/client/password`,
+          title: 'sidenav.client.password',
           icon: ProfileOutlined,
           breadcrumb: true,
           submenu: []
-        }
-      ]
-    },
-
+        },
+        {
+          key: 'client_login_detail',
+          path: `${APP_PREFIX_PATH}/client/login_details`,
+          title: 'sidenav.client.login_details',
+          icon: LoginOutlined ,
+          breadcrumb: true,
+          submenu: []
+        },
   ]
 }]
 const settingNavTree = [{
