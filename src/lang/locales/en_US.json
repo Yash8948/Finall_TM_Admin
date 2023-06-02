@@ -27,7 +27,9 @@
 
 	"sidenav.client": "Client",
 	"sidenav.client.company": "Company",
-	"sidenav.client.clientM_payment": "Client Manual Payment",
+	"sidenav.client.manual_payment": "Manual Payment",
+	"sidenav.client.password": "Password",
+	"sidenav.client.login_details": "Login Details",
 
 
 

@@ -145,10 +145,26 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/settings/vaultM`,
         component: React.lazy(() => import('views/app-views/settings/vaultM/index')),
     },
+    //clients
     {
         key: 'client',
-        path: `${APP_PREFIX_PATH}/client/clientM_Payment`,
+        path: `${APP_PREFIX_PATH}/client/company`,
+        component: React.lazy(() => import('views/app-views/client/company/index')),
+    },
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/manual_payment`,
         component: React.lazy(() => import('views/app-views/client/clientM_payment/index')),
+    },
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/password`,
+        component: React.lazy(() => import('views/app-views/client/client-password/index')),
+    },
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/login_details`,
+        component: React.lazy(() => import('views/app-views/client/client-loginDetails/index')),
     },
 
     {
