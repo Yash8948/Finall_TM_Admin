@@ -191,7 +191,7 @@ const appsNavTree = [{
           path: `${APP_PREFIX_PATH}/apps/ecommerce/add-product`,
           title: 'sidenav.apps.ecommerce.addProduct',
           icon: '',
-          breadcrumb: true,
+          breadcrumb: false,
           submenu: []
         },
         {
@@ -199,7 +199,7 @@ const appsNavTree = [{
           path: `${APP_PREFIX_PATH}/apps/ecommerce/edit-product/12`,
           title: 'sidenav.apps.ecommerce.editProduct',
           icon: '',
-          breadcrumb: true,
+          breadcrumb: false,
           submenu: []
         },
         {
@@ -249,6 +249,14 @@ const clientNavTree = [{
   breadcrumb: true,
   isGroupTitle: true,
   submenu: [
+        {
+          key: 'client_list',
+          path: `${APP_PREFIX_PATH}/client/list`,
+          title: 'sidenav.client.list',
+          icon: HomeOutlined,
+          breadcrumb: false,
+          submenu: []
+        },
         {
           key: 'client_company',
           path: `${APP_PREFIX_PATH}/client/company`,

@@ -26,6 +26,7 @@
 	"sidenav.apps.ecommerce.orders": "Orders",
 
 	"sidenav.client": "Client",
+	"sidenav.client.list": "List",
 	"sidenav.client.company": "Company",
 	"sidenav.client.manual_payment": "Manual Payment",
 	"sidenav.client.password": "Password",

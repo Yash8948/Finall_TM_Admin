@@ -148,6 +148,11 @@ export const protectedRoutes = [
     //clients
     {
         key: 'client',
+        path: `${APP_PREFIX_PATH}/client/list`,
+        component: React.lazy(() => import('views/app-views/client/client-list/index')),
+    },
+    {
+        key: 'client',
         path: `${APP_PREFIX_PATH}/client/company`,
         component: React.lazy(() => import('views/app-views/client/company/index')),
     },
@@ -169,7 +174,12 @@ export const protectedRoutes = [
     {
         key: 'client',
         path: `${APP_PREFIX_PATH}/client/addclientform`,
-        component: React.lazy(() => import('views/app-views/client/company/AddClientForm')),
+        component: React.lazy(() => import('views/app-views/client/client-list/AddClientForm')),
+    },
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/addadmin_company`,
+        component: React.lazy(() => import('views/app-views/client/company/AddAdminCo')),
     },
 
     {
