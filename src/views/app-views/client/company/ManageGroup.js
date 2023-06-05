@@ -25,12 +25,12 @@ const ManageGroup = () => {
     }
     const handleAddNew = () => {
     //   console.log("object");
-      navigate('/app/client/addadmin_company')
+      navigate('/app/client/Add_company_group')
 	  
     }
 	
-	const handleManageGroup = () => {
-		navigate('/app/client/manage_group')
+	const handleCompanyList = () => {
+		navigate('/app/client/company')
 	}
 	// const handleManageGroup = () => {
 	// 	navigate(`/app/apps/ecommerce/edit-product/${row.id}`)
@@ -135,11 +135,11 @@ const ManageGroup = () => {
 				{/* </Flex> */}
 					<div style={{justifyContent:"end"}}>
 						<Row gutter={24}  >
-							<Col xs={24} sm={24} md={24} lg={24} xl={12} style={{paddingLeft:"0"}} >
+							<Col xs={24} sm={12} md={12} lg={12} xl={12} style={{paddingLeft:"0"}} >
 								<Button onClick={handleAddNew} type="primary" className='__button mx-2' block >Add New</Button>
 							</Col>
-							<Col xs={24} sm={24} md={24} lg={24} xl={12} style={{paddingLeft:"0"}}>
-								<Button onClick={handleManageGroup} type="primary" className='__button mx-2' block >Manage Group</Button>
+							<Col xs={24} sm={12} md={12} lg={12} xl={12} style={{paddingLeft:"0"}}>
+								<Button onClick={handleCompanyList} type="primary" className='__button mx-2' block >Company List</Button>
 							</Col>
 							{/* <Col xs={24} sm={8} md={8} lg={8} xl={8} style={{paddingLeft:"0"}}> */}
 								{/* <Button onClick={handleAddClient} type="primary" className='__button mx-2' block>Add Client</Button> */}
