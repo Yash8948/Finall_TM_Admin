@@ -22,7 +22,7 @@ import { values } from 'lodash';
 
 const AddReceiptForm = () => {
 
-
+    const [loading, setLoading] = useState(false);
     const [isCLnameSelected, setIsCLnameSelected] = useState(false);
     const [isInvoiceFileSelcted, setIsInvoiceFileSelected] = useState(false);
     const [invoiceSelect, setinvoiceSelect] = useState(null)
@@ -33,11 +33,13 @@ const AddReceiptForm = () => {
     const [companyData, setCompanyData] = useState([]);
     const [clientName, setClientName] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState([])
-    const [paymentAmount, setPaymentAmount] = useState([])
+    const [paymentAmount, setPaymentAmount] = useState(null)
     const [paymentData, setPaymentData] = useState([])
     const [invoiceId, setInvoiceId] = useState("");
     const dateFormatList = ["DD/MM/YYYY"];
     const { Option } = Select;
+    const [messageApi, contextHolder] = message.useMessage();
+
 
 
     const instialsValues = {
@@ -103,10 +105,49 @@ const AddReceiptForm = () => {
         // Can not select days before today and today
         // return current && current < dayjs().startOf("day");
     }
+
+    const successMsg = (msg) => {
+
+        messageApi.success(msg);
+    };
+    const errorMsg = (msg) => {
+
+        messageApi.error(msg);
+    };
     const [form] = Form.useForm();
-    const handleSubmit = () => {
-        console.log("object")
-    }
+    const handleSubmit = async (values) => {
+        let ApiData = {
+            Client: values.CLname,
+            file: values.SInvoice,
+            payment: values.Pmethod,
+            amt: values.amount,
+            pay_amount: values.Payable_amount,
+            refer: values.Rnumber,
+            paid_on: values["Paiddate"].format("YYYY-MM-DD"),
+            desc: values.description,
+            save: "save"
+        };
+        console.log(ApiData);
+
+        let response = await ApiSnippets("/Add_Payment", ApiData);
+
+
+        let RecepitData = await response;
+        console.log(RecepitData)
+        if (RecepitData.status === true) {
+            successMsg(RecepitData.message)
+            setTimeout(() => {
+                form.resetFields();
+            }, 500);
+        } else {
+
+            errorMsg(RecepitData.message)
+        }
+
+        setLoading(false);
+    };
+
+
 
     useEffect(() => {
         var company = [
@@ -138,7 +179,7 @@ const AddReceiptForm = () => {
 
         var selectfile = []
 
-        if (selectedClient) {
+        if (value) {
             setGlo_data_id(value);
             let data_id = {
                 id: value
@@ -229,7 +270,7 @@ const AddReceiptForm = () => {
         console.log(value);
         var amount = "";
 
-        if (invoiceSelect) {
+        if (value) {
             setGlo_invoice_id(value);
             for (let index = 0; index < value.length; index++) {
                 amount += value[index];
@@ -240,12 +281,27 @@ const AddReceiptForm = () => {
             }
             let response = await ApiSnippets("/get_amount_by_invoice_id", invoice_id);
             let data = response.data;
-            console.log(response);
-
-            setPaymentAmount(data);
+            console.log(data.amount);
+            form.setFieldsValue({
+                amount: data.amount,
+                Payable_amount: data.amount
+            });
+            setPaymentAmount(data.amount);
             console.log(paymentAmount)
+
+
+
+            // document.getElementById('Amount').innerHTML = data.amount
+            // document.getElementById('PayableAmount').innerHTML = data.amount
+            console.log(document.getElementById('Amount'))
+            console.log(document.getElementById('PayableAmount'))
         }
     };
+    // React.useEffect(() => {
+    //     form.setFieldsValue({
+    //       amount: "0",
+    //     });
+    //   }, []);
     return (
 
         <Row gutter={16}>
@@ -321,8 +377,10 @@ const AddReceiptForm = () => {
 
                                 <Input
                                     readOnly
+                                    id='Amount'
                                     type="NumberFormat"
-                                    defaultValue={paymentAmount} onChange={handleInvoiceChange}
+                                    // instialsValues={paymentAmount}
+                                    onChange={handleInvoiceChange}
                                     onKeyPress={(event) => {
                                         if (!/[0-9]/.test(event.key)) {
                                             event.preventDefault();
@@ -344,15 +402,17 @@ const AddReceiptForm = () => {
                                 <Input
 
                                     type="NumberFormat"
-                                    value={invoiceId}
+                                    id='PayableAmount'
+                                    value={paymentAmount}
+
                                     onKeyPress={(event) => {
                                         if (!/[0-9]/.test(event.key)) {
                                             event.preventDefault();
                                         }
                                     }}
-                                    onChange={(value) => {
-                                        value = { invoiceSelect }
-                                    }}
+                                    // onChange={(value) => {
+                                    //     value = { invoiceSelect }
+                                    // }}
                                     className='w-100 '
                                 />
 

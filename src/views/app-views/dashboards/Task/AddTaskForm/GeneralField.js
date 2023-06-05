@@ -167,7 +167,7 @@ const GeneralField = (props) => {
 
 		var selectfile = []
 
-		if (selectedClient) {
+		if (value) {
 			setGlo_data_id(value);
 			let data_id = {
 				id: value
@@ -338,14 +338,15 @@ const GeneralField = (props) => {
 
 				setLoading(true);
 
-				setTimeout(() => {
-					Input.resetFields();
-					setLoading(false);
-				}, 500);
+				
 				if (!response.status) {
 					message.error(response.message);
 				}
 				else {
+					setTimeout(() => {
+						Input.resetFields();
+						setLoading(false);
+					}, 500);
 					message.success(response.message)
 				}
 
