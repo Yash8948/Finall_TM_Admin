@@ -231,7 +231,7 @@ const GeneralField = (props) => {
 	// -=============================== get all departments =================================================- //
 	useEffect(() => {
 
-		var depart =[]
+		var depart = []
 
 		const getAllData = async () => {
 			let response = await ApiSnippets("/Department", null);
@@ -345,10 +345,10 @@ const GeneralField = (props) => {
 				if (!response.status) {
 					message.error(response.message);
 				}
-				else{
+				else {
 					message.success(response.message)
 				}
-				
+
 			} catch (error) {
 				console.log(error);
 				// message.error("Form submission failed");
@@ -489,20 +489,22 @@ const GeneralField = (props) => {
 							</Col>
 							<Col xs={24} sm={12} md={12} lg={12} xl={12}>
 								<Form.Item name="ammount" label="Amount" rules={rules.ammount}>
-									<InputNumber
-										formatter={(value) =>
-											`$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-										}
-										parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-										className="w-100"
-									/>
+									<Input
+										type="NumberFormat"
+										onKeyPress={(event) => {
+											if (!/[0-9]/.test(event.key)) {
+												event.preventDefault();
+											}
+										}}
+
+										className='w-100 ' />
 								</Form.Item>
 							</Col>
 						</Row>
 						<Row gutter={16} justify="start">
 							<Col xs={24} sm={12} md={12} lg={12} xl={12}>
 								<Form.Item
-								// valuePropName= "sssss"
+									// valuePropName= "sssss"
 									name="switchValue1"
 									label="Auto Complete"
 									labelCol={{ span: 8 }}
