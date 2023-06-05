@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Card, Table, Select, Input, Button, Badge, Menu, Modal, Row, Col } from 'antd';
+import { Card, Table, Select, Input, Button, Badge, Menu, Modal } from 'antd';
 import ProductListData from "assets/data/product-list.data.json"
 import { EyeOutlined, DeleteOutlined, SearchOutlined, PlusCircleOutlined } from '@ant-design/icons';
 import AvatarStatus from 'components/shared-components/AvatarStatus';
@@ -12,7 +12,7 @@ import utils from 'utils'
 const { Option } = Select
 
 
-const Company = () => {
+const ClientList = () => {
 	const navigate = useNavigate();
 	const [list, setList] = useState(ProductListData)
 	const [selectedRows, setSelectedRows] = useState([])
@@ -20,16 +20,12 @@ const Company = () => {
 
     const handleAddClient = () => {
       console.log("object");
-    //   navigate('/app/client/addclientform')
-    }
-    const handleAddNew = () => {
-    //   console.log("object");
-      navigate('/app/client/addadmin_company')
+      navigate('/app/client/addclientform')
     }
 	
-	// const viewDetails = row => {
-	// 	// navigate(`/app/apps/ecommerce/edit-product/${row.id}`)
-	// }
+	const viewDetails = row => {
+		// navigate(`/app/apps/ecommerce/edit-product/${row.id}`)
+	}
 	
 
 	const tableColumns = [
@@ -105,14 +101,14 @@ const Company = () => {
 	
 
 	return (
-		<Card title="Company List" > 
-			<Flex alignItems="center" justifyContent="space-between" mobileFlex={false}>	
+		<Card >
+			<Flex alignItems="center" justifyContent="space-between" mobileFlex={false}>
 				<Flex className="mb-1" mobileFlex={false}>
-					<div className="mr-md-3" >
-						<Input placeholder="Search" prefix={<SearchOutlined />} onChange={e => onSearch(e)} />
+					<div className="mr-md-3 mb-3">
+						<Input placeholder="Search" prefix={<SearchOutlined />} onChange={e => onSearch(e)}/>
 					</div>
-					{/* <div className="mb-3">
-						<Select 
+					<div className="mb-3">
+						{/* <Select 
 							defaultValue="All" 
 							className="w-100" 
 							style={{ minWidth: 180 }} 
@@ -125,23 +121,13 @@ const Company = () => {
 									<Option key={elm} value={elm}>{elm}</Option>
 								))
 							}
-						</Select>
-					</div> */}				
+						</Select> */}
+					</div>
 				</Flex>
-				<Row gutter={18} >
-					<Col xs={24} sm={8} md={8} lg={8} xl={8} className="mb-3" >
-						<Button onClick={handleAddNew} type="primary" block >Add New</Button>
-					</Col>
-					<Col xs={24} sm={8} md={8} lg={8} xl={8} className="mb-3">
-						<Button onClick={handleAddClient} type="primary" icon={<PlusCircleOutlined />} block >Add Client</Button>
-					</Col>
-					<Col xs={24} sm={8} md={8} lg={8} xl={8} className="mb-3">
-						<Button onClick={handleAddClient} type="primary" icon={<PlusCircleOutlined />} block >Add Client</Button>
-					</Col>
-				</Row>
-			
+				<div>
+					<Button onClick={handleAddClient} type="primary" icon={<PlusCircleOutlined />} block >Add Client</Button>
+				</div>
 			</Flex>
-			
 			<div className="table-responsive">
 				<Table 
 					columns="" 
@@ -153,4 +139,4 @@ const Company = () => {
 	)
 }
 
-export default Company
+export default ClientList
