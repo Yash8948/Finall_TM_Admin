@@ -31,11 +31,6 @@ export const protectedRoutes = [
         component: React.lazy(() => import('views/app-views/dashboards/analytic')),
     },
     {
-        key: 'dashboard.sales',
-        path: `${APP_PREFIX_PATH}/dashboards/sales`,
-        component: React.lazy(() => import('views/app-views/dashboards/sales')),
-    },
-    {
         key: 'dashboard.task-taskList',
         path: `${APP_PREFIX_PATH}/dashboards/task/tasklist`,
         component: React.lazy(() => import('views/app-views/dashboards/Task/TaskList')),
@@ -54,6 +49,21 @@ export const protectedRoutes = [
         key: 'dashboard.task-reports',
         path: `${APP_PREFIX_PATH}/dashboards/task/taskreports`,
         component: React.lazy(() => import('views/app-views/dashboards/Task/taskreports')),
+    },
+    {
+        key: 'dashboard.sales',
+        path: `${APP_PREFIX_PATH}/dashboards/sales`,
+        component: React.lazy(() => import('views/app-views/dashboards/sales')),
+    },
+    {
+        key: 'dashboard.fileManager',
+        path: `${APP_PREFIX_PATH}/dashboards/file_manager`,
+        component: React.lazy(() => import('views/app-views/dashboards/file-manager')),
+    },
+    {
+        key: 'dashboard.addfile',
+        path: `${APP_PREFIX_PATH}/dashboards/file_manager/addfile`,
+        component: React.lazy(() => import('views/app-views/dashboards/file-manager/AddFile')),
     },
     {
         key: 'apps',
@@ -145,6 +155,11 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/settings/vaultM`,
         component: React.lazy(() => import('views/app-views/settings/vaultM/index')),
     },
+    {
+        key: 'settings',
+        path: `${APP_PREFIX_PATH}/settings/addvaultmanger`,
+        component: React.lazy(() => import('views/app-views/settings/vaultM/AddVaultManager')),
+    },
     //clients
     {
         key: 'client',
@@ -181,6 +196,12 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/client/addadmin_company`,
         component: React.lazy(() => import('views/app-views/client/company/AddAdminCo')),
     },
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/manage_group`,
+        component: React.lazy(() => import('views/app-views/client/company/ManageGroup')),
+    },
+    
 
     {
         key: 'docs.documentation',

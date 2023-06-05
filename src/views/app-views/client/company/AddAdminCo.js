@@ -117,34 +117,23 @@ const getClients = async (value) => {
     }
     setGetAllClient(clients);
     // console.log(clients);
-    console.log(getAllClient);
+    // console.log(getAllClient);
 }
 
 const getuserData = (value,event) => {
     console.log("selected client");
     let eventData = event; 
     let result = Object.keys(eventData).map((key) => [key, eventData[key]]);
+    console.log("result");
   console.log(result);
 
   setMatchdata(result);
-
-    
-    
-    // for (let i = 0; i < getAllClient.length; i++) {
-    //     let selectedClientID = value;
-    //     console.log("object");
-    //     // console.log(getAllClient.id);
-    //     if (selectedClientID === getAllClient[i].id) {
-    //         setMatchdata(getAllClient[i]);
-    //     }
-    // }
-
-  }
   console.log(matchdata);
+  }
   // console.log(matchdata[3][1][0]);
   
 useEffect(() => {
-  console.log("useeffect");
+  // console.log("useeffect");
     getClients();
   console.log(getAllClient);    
 }, [])
@@ -158,14 +147,13 @@ useEffect(() => {
     form.setFieldsValue({
       email: matchdata[3][1][0],
       contact_number: matchdata[3][1][1],
+      // contact_number: matchdata[3][1][1].slice(3),
     });
+    // console.log(matchdata[3][1][1]);
+    // console.log(matchdata[3][1][1].slice(3));
   }
 
 }, [matchdata])
-
-
-
-
 
 
 const handleAddClient = async (value, e) => {
@@ -193,11 +181,11 @@ const handleAddClient = async (value, e) => {
     };
     console.log(ApiData);
     
-    let response = await ApiSnippets("/AddCompanyk", ApiData);
+    let response = await ApiSnippets("/AddCompany", ApiData);
     
 
     let countObj = await response;
-    
+    console.log(countObj);
     // console.log(countObj);
     // setApiStatus(countObj.status)
     if (countObj.status === true) {
@@ -207,10 +195,13 @@ const handleAddClient = async (value, e) => {
           }, 500);
          if(btnStatus === 1){
             // console.log("btnStatus: ",btnStatus);
-            // navigate('/app/client/list');
+            navigate('/app/client/company');
           }
           if (btnStatus ===2) {
-            // navigate('/app/client/company');
+            navigate('/app/dashboards/task/taskadd');
+          }
+          if (btnStatus ===3) {
+           navigate('/app/dashboards/file_manager/addfile');
          }
           
     }else{
@@ -221,18 +212,6 @@ const handleAddClient = async (value, e) => {
     setLoading(false);
   };
   
-  const hanldeSaveAndAddCompany = async () => {
-    // if (apiStatus === true) {
-    //     // console.log("object");
-    //     navigate('');
-    // }
-  } 
-  const hanldeSaveAndGoToList = async () => {
-    // if (apiStatus === true) {
-    //     // console.log("object");
-    //     // navigate('/app/client/company');
-    // }
-  }
 
   return (
     <>
@@ -251,7 +230,17 @@ const handleAddClient = async (value, e) => {
         </PageHeaderAlt> */}
         <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24}>
-            <Card title="Add Company" style={{ marginTop: 20 }}>
+            <Card title="Add Company" style={{ marginTop: 20 }} extra=
+                        {<Button
+                              type="primary"
+                              value="0"
+                              name="GoToListBtn"
+                              htmlType="submit"
+                              onClick={() =>  navigate('/app/client/addclientform')}
+                              style={{ width: "100%",whiteSpace: "normal" }}
+                          >
+                            Add New Client
+                          </Button>}>
               <div className="">
                 <Spin spinning={loading}>
                   <Row gutter={12} justify="start">
@@ -526,7 +515,7 @@ const handleAddClient = async (value, e) => {
                         >
                           <Input
                           type="NumberFormat"
-                          addonBefore="+91"
+                          // addonBefore="+91"
                             placeholder="Enter Contact Number"
                             // min={1}
                             // max={1000000000}
@@ -556,7 +545,6 @@ const handleAddClient = async (value, e) => {
                             value="0"
                             name="GoToListBtn"
                             htmlType="submit"
-                            // onClick={hanldeSaveAndGoToList}
                             onClick={() => setBtnStatus(1)}
                             style={{ width: "100%",whiteSpace: "normal" }}
                           >
@@ -574,11 +562,10 @@ const handleAddClient = async (value, e) => {
                             value="0"
                             name="GoToListBtn"
                             htmlType="submit"
-                            // onClick={hanldeSaveAndGoToList}
-                            onClick={() => setBtnStatus(1)}
+                            onClick={() => setBtnStatus(2)}
                             style={{ width: "100%",whiteSpace: "normal" }}
                           >
-                            Save And Go To List
+                            Save And Go To Add Task
                           </Button>
                         </Form.Item>
                       </div>
@@ -592,11 +579,10 @@ const handleAddClient = async (value, e) => {
                             value="1"
                             name="AddCompanyBtn"
                             htmlType="submit"
-                            // onClick={hanldeSaveAndAddCompany}
-                            onClick={() => setBtnStatus(2)}
+                            onClick={() => setBtnStatus(3)}
                             style={{ width: "100%",whiteSpace: "normal" }}
                           >
-                            Save and Add Company
+                            Save and Add To Add File
                           </Button>
                         </Form.Item>
                       </div>
