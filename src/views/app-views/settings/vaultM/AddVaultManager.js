@@ -10,6 +10,7 @@ import {
   Col,
   Card,
   Spin,
+  Select,
   Input,
   DatePicker,
   InputNumber,
@@ -26,107 +27,92 @@ import dayjs from "dayjs";
 
 
 const AddVaultManager = () => {
-    const [messageApi, contextHolder] = message.useMessage();
-    const navigate = useNavigate();
-    const [form] = Form.useForm();
-    const [loading, setLoading] = useState(false);
-    const [send_txt_msg, setSend_txt_msg] = useState(0);
-    const [send_email, setSend_email] = useState(0);
-    const [btnStatus, setBtnStatus] = useState(0);
-    
-  const dateFormatList = ["DD/MM/YYYY"];
-  function disabledDate(current) {
-    // Can not select days after today and today
-    return current && current > dayjs().startOf("day");
-  }
+  const [messageApi, contextHolder] = message.useMessage();
+  const navigate = useNavigate();
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+  const [send_txt_msg, setSend_txt_msg] = useState(0);
+  const [send_email, setSend_email] = useState(0);
+  const [btnStatus, setBtnStatus] = useState(0);
+  const [companyData, setCompanyData] = useState([]);
+  const [clientName, setClientName] = useState(null);
+  const { Option } = Select;
+ 
 
   const successMsg = (msg) => {
-    // message.success(countObj.message);
+
     messageApi.success(msg);
   };
   const errorMsg = (msg) => {
-    // message.success(countObj.message);
+
     messageApi.error(msg);
   };
+
   
-  const handleSend_txt_msg = (e) => {
-    // 0 = false
-    // 1 = true
-    // console.log(`checked = ${e.target.checked}`);
-    setSend_txt_msg(e.target.checked === true ? 1:0);
-  };
-  const handleSend_email = (e) => {
-    // 0 = false
-    // 1 = true
-    // console.log(`checked = ${e.target.checked}`);
 
-    setSend_email(e.target.checked === true ? 1:0);
-  };
-//   console.log(send_txt_msg);
-//   console.log(send_email);
-
-const handleAddClient = async (value, e) => {
-      setLoading(true);
-      // if (state.button === 2) {
-      //   console.log("state.button === 2 working");
-      //   // navigate('/app/client/company');
-      // }         
+  const handleAddClient = async (value, e) => {
+    setLoading(true);
+    // if (state.button === 2) {
+    //   console.log("state.button === 2 working");
+    //   // navigate('/app/client/company');
+    // }         
     let ApiData = {
 
-        "un":value.user_name,
-        "fname":value.first_name,
-        "lname":value.last_name,
-        "email":value.email,
-        "num":"+91"+value.contact_number,
-        "active":value.active_deactive,
-        "sendemail":`${send_email}`,
-        "sendsms":`${send_txt_msg}`,
-        "bdate":value["birth_date"].format("DD-MM-YYYY"),
-        // date: value["date"].format("DD-MM-YYYY"), //Add your required date format here
-        // date: value["date"].format("YYYY-MM-DD HH:mm:ss")  //Add your required date format here
+      "company": value.CLname,
+      "name": value.website_name,
+      "usname": value.user_name,
+      "email": value.email,
+      "pass": value.password,
+      "rpass": value.confirm,
+      "number": "+91" + value.contact_number,
+      "note": value.note,
     };
     console.log(ApiData);
-    
-    let response = await await ApiSnippets("/Add_Client", ApiData);
 
-    let countObj = await response;
-    
-    // console.log(countObj);
-    // setApiStatus(countObj.status)
-    if (countObj.status === true) {
-        successMsg(countObj.message)
-        setTimeout(() => {
-            // form.resetFields();
-          }, 500);
-         if(btnStatus === 1){
-            // console.log("btnStatus: ",btnStatus);
-            navigate('/app/client/list');
-          }
-          if (btnStatus ===2) {
-            navigate('/app/client/company');
-         }
-          
-    }else{
-        // message.error(countObj.message); 
-        errorMsg(countObj.message)
+    let response = await await ApiSnippets("/Add_Vault", ApiData);
+
+    let vaultData = await response;
+
+
+    if (vaultData.status === true) {
+      successMsg(vaultData.message)
+      setTimeout(() => {
+        form.resetFields();
+      }, 500);
+
+
+    } else {
+
+      errorMsg(vaultData.message)
     }
-      
+
     setLoading(false);
   };
-  
-  const hanldeSaveAndAddCompany = async () => {
-    // if (apiStatus === true) {
-    //     // console.log("object");
-    //     navigate('');
-    // }
-  } 
-  const hanldeSaveAndGoToList = async () => {
-    // if (apiStatus === true) {
-    //     // console.log("object");
-    //     // navigate('/app/client/company');
-    // }
-  }
 
+  useEffect(() => {
+    var company = [
+    ];
+    const getAllData = async () => {
+      let response = await ApiSnippets("/Company", null);
+      let data = response.data;
+      let clientName = data.map(item => item.name, item => item.id);
+      setClientName(clientName);
+      // console.log(data[0].id)
+      for (let index = 0; index < data.length; index++) {
+        company.push({
+          id: data[index].id,
+          name: data[index].name
+        });
+
+      }
+      setCompanyData(company)
+      // console.log(myObj[0].id);
+      // console.log(company);
+    };
+
+    getAllData();
+
+  }, []);
   return (
     <>
       <Form layout="vertical" form={form} onFinish={handleAddClient}>
@@ -144,75 +130,75 @@ const handleAddClient = async (value, e) => {
         </PageHeaderAlt> */}
         <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24}>
-            <Card title="Add Client" style={{ marginTop: 20 }}>
+            <Card title="Add New Vault" style={{ marginTop: 20 }}>
               <div className="">
                 <Spin spinning={loading}>
                   <Row gutter={12} justify="start">
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                       <Form.Item
-                        name="user_name"
-                        label="User name : "
+                        name="CLname"
+                        label="Client Name"
                         rules={[
-                          
+
                           {
                             required: true,
-                            message: "Please input your User name!",
+                            message: "Please Select Client!",
                           },
-                        ]}
-                      >
-                        <Input placeholder="Enter User Name" />
+                        ]}>
+                        <Select
+                          showSearch
+                          style={{ width: "100%" }}
+                          placeholder="Select a Client"
+                          optionFilterProp="children"
+                          // onFocus={onFocus}
+                          // onBlur={onBlur}
+                          // onSearch={onSearch}
+                          filterOption={(input, option) =>
+                            option.props.children
+                              .toLowerCase()
+                              .indexOf(input.toLowerCase()) >= 0
+
+                          }
+
+                        >
+                          {companyData &&
+                            companyData.map((item, index) => (
+                              <Option key={index} value={item.id}>
+                                {item.name}
+                              </Option>
+                            ))}
+                        </Select>
                       </Form.Item>
                     </Col>
 
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                       <Form.Item
-                        name="birth_date"
-                        label="Birth Date : "
+                        name="website_name"
+                        label="Name / Website "
                         rules={[
-                            {
-                              required: true,
-                              message: "Please input your Date!",
-                            },
-                          ]}
+
+                          {
+                            required: true,
+                            message: "Please enter Name/Website name!",
+                          },
+                        ]}
                       >
-                        <DatePicker
-                          initialValues={dayjs()}
-                          format={dateFormatList}
-                          disabledDate={disabledDate}
-                          // onChange={handleDatePicker}
-                          style={{ width: "100%" }}
-                        />
+                        <Input placeholder="Enter Name" />
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                       <div style={{ marginBottom: 16 }}>
                         <Form.Item
-                          label="First name  : "
-                          name="first_name"
+                          label="User Name  : "
+                          name="user_name"
                           rules={[
                             {
                               required: true,
-                              message: "Please input your first name!",
+                              message: "Please input your username!",
                             },
                           ]}
                         >
-                          <Input placeholder="Enter first name" />
-                        </Form.Item>
-                      </div>
-                    </Col>
-                    <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                      <div style={{ marginBottom: 16 }}>
-                        <Form.Item
-                          label="Last Name : "
-                          name="last_name"
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please input your Last Name!",
-                            },
-                          ]}
-                        >
-                          <Input placeholder="Enter Last Name" />
+                          <Input placeholder="Enter User name" />
                         </Form.Item>
                       </div>
                     </Col>
@@ -239,12 +225,53 @@ const handleAddClient = async (value, e) => {
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                       <div style={{ marginBottom: 16 }}>
                         <Form.Item
+                          name="password"
+                          label="Password"
+                          rules={[
+                            {
+                              required: true,
+                              message: 'Please input your password!',
+                            },
+                          ]}
+                          hasFeedback
+                        >
+                          <Input.Password />
+                        </Form.Item>
+                      </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                      <Form.Item
+                        name="confirm"
+                        label="Confirm Password"
+                        dependencies={['password']}
+                        hasFeedback
+                        rules={[
+                          {
+                            required: true,
+                            message: 'Please confirm your password!',
+                          },
+                          ({ getFieldValue }) => ({
+                            validator(_, value) {
+                              if (!value || getFieldValue('password') === value) {
+                                return Promise.resolve();
+                              }
+                              return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                            },
+                          }),
+                        ]}
+                      >
+                        <Input.Password />
+                      </Form.Item>
+                    </Col>
+                    <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                      <div style={{ marginBottom: 16 }}>
+                        <Form.Item
                           label="Contact Number : "
                           name="contact_number"
                           rules={[
                             {
-                                max: 10,
-                                message: "Value should only 10 digits",
+                              max: 10,
+                              message: "Value should only 10 digits",
                             },
                             {
                               required: true,
@@ -253,8 +280,8 @@ const handleAddClient = async (value, e) => {
                           ]}
                         >
                           <Input
-                          type="NumberFormat"
-                          addonBefore="+91"
+                            type="NumberFormat"
+                            addonBefore="+91"
                             placeholder="Enter Contact Number"
                             // min={1}
                             // max={1000000000}
@@ -262,11 +289,11 @@ const handleAddClient = async (value, e) => {
                             maxLength={10}
                             // onChange=""
                             onKeyPress={(event) => {
-                                if (!/[0-9]/.test(event.key)) {
-                                    event.preventDefault();
-                                }
+                              if (!/[0-9]/.test(event.key)) {
+                                event.preventDefault();
+                              }
                             }}
-                            
+
                             style={{
                               width: "100%",
                             }}
@@ -275,59 +302,26 @@ const handleAddClient = async (value, e) => {
                       </div>
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                      <div style={{ marginBottom: 12 }}>
-                        <Form.Item
-                          label="Account : "
-                          name="active_deactive"
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please select your any one !",
-                            },
-                          ]}
-                        >
-                          <Radio.Group initialValues="" buttonStyle="solid">
-                            <Radio.Button name="active" value="1">Active</Radio.Button>
-                            <Radio.Button name="deactive" value="0">Deactive</Radio.Button>
-                          </Radio.Group>
-                        </Form.Item>
-                      </div>
+                      <Form.Item
+                        name="note"
+                        label="Note"
+                      >
+                        <Input placeholder="Enter Note" />
+                      </Form.Item>
                     </Col>
-                    <Col xs={24} sm={12} md={12} lg={12} xl={12} className="my-2">
-                      {/* <Row xs={24} sm={12} md={12} lg={12} xl={12}> */}
-
-                      <div style={{ marginTop: 0 }} className="my-1">
-                        <Checkbox onChange={handleSend_txt_msg}>Send Text Message</Checkbox>
-                      </div>
-                       <div style={{ marginBottom: 5 }}>
-                        <Checkbox onChange={handleSend_email}>Send Email</Checkbox>
-                      </div>
-                      {/* </Row> */}
-                    </Col>
-                   
-                      <div style={{ marginBottom: 0 }}>
-                        <Form.Item>
-                       
-                          <Button
-                            type="primary"
-                            value="0"
-                            name="GoToListBtn"
-                            htmlType="submit"
-                            // onClick={hanldeSaveAndGoToList}
-                            style={{ width: "100%",whiteSpace: "normal" }}
-                          >
-                            Save And Go To List
-                          </Button>
-                        </Form.Item>
-                      </div>
-                 
-                  
                   </Row>
+                  <Form.Item>
+                    {contextHolder}
+                    <Button
+                      type="primary" htmlType="submit" className='w-100'
+                    >Submit</Button>
+                  </Form.Item>
                 </Spin>
               </div>
             </Card>
           </Col>
         </Row>
+
       </Form>
     </>
   );

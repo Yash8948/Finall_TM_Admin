@@ -35,7 +35,10 @@
 	"sidenav.client.login_details": "Login Details",
 
 
-
+	"sidenav.leaves": "Leaves",
+	"sidenav.leaves.leave": "Leave",
+	"sidenav.leaves.adminleave": "Admin Leave ",
+	"sidenav.leaves.employeeleave": "Employee Leave",
 
 
 

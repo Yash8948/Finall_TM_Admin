@@ -135,6 +135,7 @@ const AddReceiptForm = () => {
         let RecepitData = await response;
         console.log(RecepitData)
         if (RecepitData.status === true) {
+            console.log(RecepitData.status)
             successMsg(RecepitData.message)
             setTimeout(() => {
                 form.resetFields();
@@ -458,6 +459,7 @@ const AddReceiptForm = () => {
                         </Col>
                     </Row>
                     <Form.Item>
+                    {contextHolder}
                         <Button
                             type="primary" htmlType="submit" className='w-100'
                         >Submit</Button>

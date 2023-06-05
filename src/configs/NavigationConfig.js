@@ -309,6 +309,44 @@ const clientNavTree = [{
         },
   ]
 }]
+const leaveNavTree =[{
+  key: 'leave',
+  path: `${APP_PREFIX_PATH}/leave`,
+  title:  'sidenav.leaves',
+  breadcrumb: true,
+  isGroupTitle: true,
+  submenu: [
+    {
+      key: 'leave',
+      path: `${APP_PREFIX_PATH}/leave`,
+      title: 'sidenav.leaves.leave',
+      icon: FileTextOutlined ,
+      breadcrumb: true,
+      isGroupTitle: false,
+      submenu: [
+        {
+          key: 'leave-admin',
+          path: `${APP_PREFIX_PATH}/leave/AdminLeave`,
+          title: 'sidenav.leaves.adminleave',
+          icon: "",
+          breadcrumb: true,
+          submenu: []
+        },
+        { 
+          key: 'leave-employee',
+          path: `${APP_PREFIX_PATH}/leave/EmployeeLeave`,
+          title: 'sidenav.leaves.employeeleave',
+          icon: "",
+          breadcrumb: true,
+          submenu: []
+        },
+
+
+      ]
+    }
+
+  ]
+}]
 const settingNavTree = [{
   key: 'settings',
   path: `${APP_PREFIX_PATH}/settings`,
@@ -387,8 +425,10 @@ const navigationConfig = [
   ...dashBoardNavTree,
   ...appsNavTree,
   ...clientNavTree,
+  ...leaveNavTree,
   ...settingNavTree,
   ...docsNavTree,
+
 
 ]
 

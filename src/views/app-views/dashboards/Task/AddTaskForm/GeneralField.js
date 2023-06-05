@@ -37,10 +37,20 @@ const GeneralField = (props) => {
 	const [glo_data_id, setGlo_data_id] = useState(null)
 	const options = [];
 
+	const [messageApi, contextHolder] = message.useMessage();
 
 
 
 
+
+	const successMsg = (msg) => {
+
+		messageApi.success(msg);
+	};
+	const errorMsg = (msg) => {
+
+		messageApi.error(msg);
+	};
 
 
 	const addfileinstialsValues = {
@@ -263,22 +273,6 @@ const GeneralField = (props) => {
 
 
 
-	// =============================== all file name ========================//
-
-	// const [value, setValue] = useState([]);
-	// const selectProps = {
-	// 	mode: 'multiple',
-	// 	style: {
-	// 		width: '100%',
-	// 	},
-	// 	value,
-	// 	options,
-	// 	onChange: (value) => {
-	// 		value = { selectedClient }
-	// 	},
-	// 	placeholder: 'Select File...',
-	// 	maxTagCount: 'responsive',
-	// };
 	const [form] = Form.useForm();
 	const handleSubmit = async (values) => {
 		let ApiData = {
@@ -296,25 +290,27 @@ const GeneralField = (props) => {
 
 		// console.log(ApiData);
 
-		try {
-			let response = await ApiSnippets("/AddTask", ApiData);
-			let countObj = await response;
 
-			// console.log(countObj);
-			// console.log(ApiData);
+		let response = await ApiSnippets("/AddTask", ApiData);
+		let AddTaskData = await response;
 
-			setLoading(true);
 
+		if (AddTaskData.status === true) {
+			successMsg(AddTaskData.message)
 			setTimeout(() => {
 				form.resetFields();
-				setLoading(false);
 			}, 500);
 
-			message.success("Form submitted successfully");
-		} catch (error) {
-			console.log(error);
-			message.error("Form submission failed");
+
+		} else {
+
+			errorMsg(AddTaskData.message)
 		}
+
+		setLoading(false);
+
+
+
 	};
 	const handleAddFile = async (value) => {
 		setSelectedClient(value);
@@ -338,7 +334,7 @@ const GeneralField = (props) => {
 
 				setLoading(true);
 
-				
+
 				if (!response.status) {
 					message.error(response.message);
 				}
@@ -365,10 +361,12 @@ const GeneralField = (props) => {
 
 
 	return (
-		<Row gutter={16}>
-			<Col xs={24} sm={24} md={14} lg={16} xl={16}>
-				<Card title="Add Task">
-					<Form layout="vertical" onFinish={handleSubmit} form={form}>
+		<Form layout="vertical" onFinish={handleSubmit} form={form} className="w-100">
+
+			<Row gutter={16}>
+				<Col xs={24} sm={24} md={24} lg={24}>
+					<Card title="Add Task">
+
 						<Row gutter={16} justify="start">
 							<Col xs={24} sm={12} md={12} lg={12} xl={12}>
 								<Form.Item name="taskname" label="Task Name" rules={rules.taskname}>
@@ -546,80 +544,18 @@ const GeneralField = (props) => {
 						>
 							<Input.TextArea rows={4} />
 						</Form.Item>
-						{/* <Row gutter={16} justify="end">
-							<Col xs={24} sm={12} md={12} lg={12} xl={12}>
-								<Form.Item>
-									<Button
-										type="primary"
-										htmlType="submit"
-										// style={{ width: "100%" }
-									>
-										Submit
-									</Button>
-								</Form.Item>
-							</Col>
-							<Col xs={24} sm={12} md={12} lg={12} xl={12}>
-								<Form.Item>
-									<Button>Cancle</Button>
-								</Form.Item>
-							</Col>
-						</Row> */}
 						<Form.Item>
+							{contextHolder}
 							<Button
-								type="primary" htmlType="submit"
+								type="primary" htmlType="submit" className="w-100"
 							>Submit</Button>
 						</Form.Item>
-					</Form>
-				</Card>
-			</Col>
-			<Col xs={24} sm={24} md={10} lg={8} xl={8}>
-				<Card title="Add File">
-					<Dragger
-						{...imageUploadProps}
-						beforeUpload={beforeUpload}
-						onChange={(e) => props.handleUploadChange(e)}
-					>
-						{props.uploadedImg ? (
-							<img src={props.uploadedImg} alt="avatar" className="img-fluid" />
-						) : (
-							<div>
-								{props.uploadLoading ? (
-									<div>
-										<LoadingOutlined className="font-size-xxl text-primary" />
-										<div className="mt-3">Uploading</div>
-									</div>
-								) : (
-									<div>
-										<CustomIcon className="display-3" svg={ImageSvg} />
-										<p>Click or drag file to upload</p>
-									</div>
-								)}
-							</div>
-						)}
-					</Dragger>
-				</Card>
-				{/* <Card title="Organization">
-					<Form layout="vertical">
-						<Form.Item name="category" label="Category">
-							<Select placeholder="Category">
-								{categories.map((elm) => (
-									<Option key={elm} value={elm}>
-										{elm}
-									</Option>
-								))}
-							</Select>
-						</Form.Item>
-						<Form.Item name="tags" label="Tags">
-							<Select mode="tags" style={{ width: "100%" }} placeholder="Tags">
-								{tags.map((elm) => (
-									<Option key={elm}>{elm}</Option>
-								))}
-							</Select>
-						</Form.Item>
-					</Form>
-				</Card> */}
-			</Col>
-		</Row >
+
+					</Card>
+				</Col>
+			</Row >
+
+		</Form>
 	);
 };
 

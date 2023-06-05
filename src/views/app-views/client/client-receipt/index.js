@@ -120,7 +120,7 @@ const Recepit = () => {
                 <Flex alignItems="center" justifyContent="end" className='mb-2' mobileFlex={false}>
 
                     <div>
-                        <Button onClick={addProduct} type="primary" icon={<PlusCircleOutlined />} block>Add Department</Button>
+                        <Button onClick={addProduct} type="primary" icon={<PlusCircleOutlined />} block>Add Receipt</Button>
                     </div>
                 </Flex>
                 <div className="table-responsive">
