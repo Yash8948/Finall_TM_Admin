@@ -30,36 +30,6 @@ const Recepit = () => {
     };
     const [form] = Form.useForm();
 
-    const onFinish = async (values) => {
-
-        let ApiData = {
-            "title": String(values.departname)
-        };
-
-        console.log(ApiData)
-        try {
-            setLoading(true);
-            // Make API request using values.departname
-            const response = await ApiSnippets('/AddDepartment', ApiData);
-            console.log(response);
-            // Reset form fields
-
-            // Close the modal
-
-            if (!response.status) {
-                message.error(response.message);
-            }
-            else {
-                message.success(response.message)
-            }
-            form.resetFields();
-            handleCancel();
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
-        }
-    };
 
     const handleCancel = () => {
         console.log('Clicked cancel button');
@@ -69,7 +39,7 @@ const Recepit = () => {
     const handleDepart = () => {
         setIsModalOpen(false);
     }
-    const addProduct = () => {
+    const addReceipt = () => {
         navigate('/app/client/addreceiptform')
     }
 
@@ -120,7 +90,7 @@ const Recepit = () => {
                 <Flex alignItems="center" justifyContent="end" className='mb-2' mobileFlex={false}>
 
                     <div>
-                        <Button onClick={addProduct} type="primary" icon={<PlusCircleOutlined />} block>Add Receipt</Button>
+                        <Button onClick={addReceipt} type="primary" icon={<PlusCircleOutlined />} block>Add Receipt</Button>
                     </div>
                 </Flex>
                 <div className="table-responsive">
@@ -130,31 +100,6 @@ const Recepit = () => {
                     />
                 </div>
             </Card>
-
-            <Modal
-                title="Add Department"
-                open={open}
-                onOk={form.submit}
-                confirmLoading={confirmLoading}
-                onCancel={handleCancel}
-                okText={"Add"}
-            > <Form layout="inline" name="add-depart-ref"
-                form={form}
-                onFinish={onFinish}
-                style={{
-                    alignItems: "center",
-                    justifyContent: "left",
-                    margin: "20px",
-                    left: "0",
-                    padding: "10px",
-
-                }} >
-                    <Form.Item name="departname" label="Department Name" rules={[{ required: true, message: 'Please enter the department name' }]} >
-                        <Input placeholder="Department Name" name="departname" />
-                    </Form.Item>
-
-                </Form>
-            </Modal >
         </>
     )
 }

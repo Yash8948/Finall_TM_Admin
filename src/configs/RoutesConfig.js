@@ -135,6 +135,45 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/apps/ecommerce/orders`,
         component: React.lazy(() => import('views/app-views/apps/e-commerce/orders')),
     }, 
+    // ==========================leave ===========================//
+
+    {
+        key: 'leave',
+        path: `${APP_PREFIX_PATH}/leave/adminleave`,
+        component: React.lazy(() => import('views/app-views/leave/AdminLeave/index')),
+    },
+    {
+        key: 'leave',
+        path: `${APP_PREFIX_PATH}/leave/addadminleave`,
+        component: React.lazy(() => import('views/app-views/leave/AdminLeave/addAdminLeave')),
+    },
+    {
+        key: 'leave',
+        path: `${APP_PREFIX_PATH}/leave/employeeleave`,
+        component: React.lazy(() => import('views/app-views/leave/Employee/index')),
+    },
+    {
+        key: 'leave',
+        path: `${APP_PREFIX_PATH}/leave/addemployeeleave`,
+        component: React.lazy(() => import('views/app-views/leave/Employee/addEmployeeLeave')),
+    },
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // ==========================settings ===========================//
     {
         key: 'settings',
         path: `${APP_PREFIX_PATH}/settings/payment`,
