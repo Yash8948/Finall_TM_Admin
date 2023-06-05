@@ -292,9 +292,9 @@ const clientNavTree = [{
           submenu: []
         },
         {
-          key: 'client_recepit',
-          path: `${APP_PREFIX_PATH}/client/recepit`,
-          title: 'sidenav.client.recepit',
+          key: 'client_receipt',
+          path: `${APP_PREFIX_PATH}/client/receipt`,
+          title: 'sidenav.client.receipt',
           icon: ReconciliationOutlined ,
           breadcrumb: true,
           submenu: []

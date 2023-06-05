@@ -70,7 +70,7 @@ const Recepit = () => {
         setIsModalOpen(false);
     }
     const addProduct = () => {
-        navigate('/app/client/addrecepitform')
+        navigate('/app/client/addreceiptform')
     }
 
 
