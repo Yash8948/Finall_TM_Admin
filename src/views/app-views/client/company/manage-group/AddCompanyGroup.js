@@ -26,8 +26,8 @@ import ApiSnippets from "constants/ApiSnippet";
 import dayjs from "dayjs";
 const options = [];
 
-
 const AddCompanyGroup = () => {
+    const { Option } = Select;
     const [messageApi, contextHolder] = message.useMessage();
     const navigate = useNavigate();
     const [form] = Form.useForm();
@@ -36,11 +36,13 @@ const AddCompanyGroup = () => {
     const [send_txt_msg, setSend_txt_msg] = useState(0);
     const [send_email, setSend_email] = useState(0);
     const [btnStatus, setBtnStatus] = useState(0);
-    
+    const [checkTicket, setCheckTicket] = useState(null)
+    const [smsRadio, setSmsRadio] = useState(0)
+    const [emailRadio, setEmailRadio] = useState(0)
   const dateFormatList = ["DD/MM/YYYY"];
   function disabledDate(current) {
     // Can not select days after today and today
-    return current && current > dayjs().startOf("day");
+    return current && current < dayjs().startOf("day");
   }
 
   const successMsg = (msg) => {
@@ -75,38 +77,43 @@ const handleAddClient = async (value, e) => {
       //   // navigate('/app/client/company');
       // }         
     let ApiData = {
-        "un":value.user_name,
-        "fname":value.first_name,
-        "lname":value.last_name,
-        "email":value.email,
-        "num":"+91"+value.contact_number,
-        "active":value.active_deactive,
-        "sendemail":`${send_email}`,
-        "sendsms":`${send_txt_msg}`,
-        "bdate":value["birth_date"].format("DD-MM-YYYY"),
+        "name":value.group_name,
+        "msg":value.message,
+        "intval":value.interval,
+        "start":value["start_date"].format("DD-MM-YYYY"),
+        "file":value.companies,
+        "auto":checkTicket,
+        "sms":checkTicket !== 0 ? smsRadio: 0,
+        "email":checkTicket !== 0 ? emailRadio : 0
+
+        // "active":value.active_deactive,
+        // "sendemail":`${send_email}`,
+        // "sendsms":`${send_txt_msg}`,
+        // "bdate":value["birth_date"].format("DD-MM-YYYY"),
         // date: value["date"].format("DD-MM-YYYY"), //Add your required date format here
         // date: value["date"].format("YYYY-MM-DD HH:mm:ss")  //Add your required date format here
     };
     console.log(ApiData);
     
-    let response = await await ApiSnippets("/Add_Client", ApiData);
+    let response = await await ApiSnippets("/EditCompanyGroup", ApiData);
 
     let countObj = await response;
     
-    // console.log(countObj);
+    console.log(countObj);
     // setApiStatus(countObj.status)
     if (countObj.status === true) {
         successMsg(countObj.message)
         setTimeout(() => {
-            // form.resetFields();
+            form.resetFields();
           }, 500);
          if(btnStatus === 1){
             // console.log("btnStatus: ",btnStatus);
-            navigate('/app/client/list');
+            navigate('/app/client/manage_group');
+            
           }
-          if (btnStatus ===2) {
-            navigate('/app/client/company');
-         }
+        //   if (btnStatus ===2) {
+        //     navigate('/app/client/company');
+        //  }
           
     }else{
         // message.error(countObj.message); 
@@ -116,18 +123,21 @@ const handleAddClient = async (value, e) => {
     setLoading(false);
   };
  
-//   console.log(companiesData[0].id);
-  const hanldeSaveAndAddCompany = async () => {
-    // if (apiStatus === true) {
-    //     // console.log("object");
-    //     navigate('');
-    // }
-  } 
-  const hanldeSaveAndGoToList = async () => {
-    // if (apiStatus === true) {
-    //     // console.log("object");
-    //     // navigate('/app/client/company');
-    // }
+
+
+const intervalData = [
+    { id: 0, duration: 'Week' },
+    { id: 1, duration: 'Half-Month' },
+    { id: 2, duration: 'Month' },
+    { id: 3, duration: 'Quater' },
+    { id: 4, duration: 'Half-Year' },
+    { id: 5, duration: 'Year' },
+]
+  const hanldeCompaniesSelect = async (value) => {
+    console.log(value);
+  }
+  const handleInterval = (value) => {
+    console.log(value);
   }
   useEffect(() => {
     const getCompanies = async () => {
@@ -142,6 +152,7 @@ const handleAddClient = async (value, e) => {
   
   }, [])
   
+
   return (
     <>
       <Form layout="vertical" form={form} onFinish={handleAddClient}>
@@ -183,7 +194,7 @@ const handleAddClient = async (value, e) => {
                       <div style={{ marginBottom: 16 }}>
                       <Form.Item
                           label="companies  : "
-                          name="Companies"
+                          name="companies"
                           rules={[
                             {
                               required: true,
@@ -191,7 +202,17 @@ const handleAddClient = async (value, e) => {
                             },
                           ]}
                         >
-                        {/* <Select {...selectProps} /> */}
+                        <Select
+                            mode="multiple"
+                            onChange={hanldeCompaniesSelect}
+                        >
+                            {companiesData &&
+                                companiesData.map(item => (
+                                    <Option key={item.id} value={item.id}>
+                                        {item.name}
+                                    </Option>
+                                ))}
+                        </Select>
                     </Form.Item>
                       </div>
                     </Col>
@@ -224,7 +245,7 @@ const handleAddClient = async (value, e) => {
 										style={{ width: "100%" }}
 										placeholder="Select a Client"
 										optionFilterProp="children"
-										onChange=""
+										onChange={handleInterval}
 										// onFocus={onFocus}
 										// onBlur={onBlur}
                                         // onSelect={getuserData}
@@ -235,20 +256,20 @@ const handleAddClient = async (value, e) => {
 												.indexOf(input.toLowerCase()) >= 0
 										}
 									>
-										{/* {getAllClient &&
-											getAllClient.map((item, index) => (
-												<Option key={index} value={item.id} title={[item.mail,item.number]}>
-													{item.name}
+										{
+											intervalData.map((item, index) => (
+												<Option key={index} value={item.id} >
+													{item.duration}
 												</Option>
-											))} */}
+											))}
 									</Select>
 								</Form.Item>
 							</Col>
                         {/* date input */}
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                       <Form.Item
-                        name="birth_date"
-                        label="Birth Date : "
+                        name="start_date"
+                        label="Starting Date : "
                         rules={[
                             {
                               required: true,
@@ -269,8 +290,8 @@ const handleAddClient = async (value, e) => {
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                       <div style={{ marginBottom: 12 }}>
                         <Form.Item
-                          label="Account : "
-                          name="active_deactive"
+                          label="Auto Ticket Generate : "
+                          name="ticketgenerate"
                           rules={[
                             {
                               required: true,
@@ -278,14 +299,51 @@ const handleAddClient = async (value, e) => {
                             },
                           ]}
                         >
-                          <Radio.Group initialValues="" buttonStyle="solid">
-                            <Radio.Button name="active" value="1">Active</Radio.Button>
-                            <Radio.Button name="deactive" value="0">Deactive</Radio.Button>
+                          <Radio.Group initialValues=""  buttonStyle="solid">
+                            <Radio.Button name="active" value="1" onClick={()=> setCheckTicket(1)}>Yes</Radio.Button>
+                            <Radio.Button name="deactive" value="0" onClick={()=> setCheckTicket(0)}>No</Radio.Button>
                           </Radio.Group>
                         </Form.Item>
                       </div>
                     </Col>
-                    <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+
+                    {checkTicket === 1 && (
+                        <>
+                        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                      <div style={{ marginBottom: 12 }}>
+                        <Form.Item
+                          label="Send SMS : "
+                          name="sms"
+                          rules=""
+                        >
+                          <Radio.Group initialValues="" buttonStyle="solid">
+                            <Radio.Button name="active" value="1" onClick={()=>setSmsRadio(1)} >Yes</Radio.Button>
+                            <Radio.Button name="deactive" value="0" onClick={()=>setSmsRadio(0)} >No</Radio.Button>
+                          </Radio.Group>
+                        </Form.Item>
+                      </div>
+                    </Col> <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                      <div style={{ marginBottom: 12 }}>
+                        <Form.Item
+                          label="Send Email : "
+                          name="email"
+                          rules=""
+                        >
+                          <Radio.Group initialValues="" buttonStyle="solid">
+                            <Radio.Button name="active" value="1" onClick={()=>setEmailRadio(1)} >Yes</Radio.Button>
+                            <Radio.Button name="deactive" value="0" onClick={()=>setEmailRadio(0)} >No</Radio.Button>
+                          </Radio.Group>
+                        </Form.Item>
+                      </div>
+                    </Col>
+                    </>
+                    )} 
+
+
+
+
+
+                    <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                       <div style={{ marginBottom: 0 }}>
                         <Form.Item>
                         {contextHolder}

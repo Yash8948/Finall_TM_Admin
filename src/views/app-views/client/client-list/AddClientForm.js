@@ -12,15 +12,14 @@ import {
   Spin,
   Input,
   DatePicker,
-  InputNumber,
   Radio,
   Checkbox,
 } from "antd";
-import Flex from "components/shared-components/Flex";
-import GeneralField from "../../apps/e-commerce/ProductForm/GeneralField";
-import VariationField from "../../apps/e-commerce/ProductForm/VariationField";
-import ShippingField from "../../apps/e-commerce/ProductForm/ShippingField";
-import ProductListData from "assets/data/product-list.data.json";
+// import Flex from "components/shared-components/Flex";
+// import GeneralField from "../../apps/e-commerce/ProductForm/GeneralField";
+// import VariationField from "../../apps/e-commerce/ProductForm/VariationField";
+// import ShippingField from "../../apps/e-commerce/ProductForm/ShippingField";
+// import ProductListData from "assets/data/product-list.data.json";
 import ApiSnippets from "constants/ApiSnippet";
 import dayjs from "dayjs";
 
@@ -96,7 +95,7 @@ const handleAddClient = async (value, e) => {
     if (countObj.status === true) {
         successMsg(countObj.message)
         setTimeout(() => {
-            // form.resetFields();
+            form.resetFields();
           }, 500);
          if(btnStatus === 1){
             // console.log("btnStatus: ",btnStatus);
@@ -114,18 +113,6 @@ const handleAddClient = async (value, e) => {
     setLoading(false);
   };
   
-  const hanldeSaveAndAddCompany = async () => {
-    // if (apiStatus === true) {
-    //     // console.log("object");
-    //     navigate('');
-    // }
-  } 
-  const hanldeSaveAndGoToList = async () => {
-    // if (apiStatus === true) {
-    //     // console.log("object");
-    //     // navigate('/app/client/company');
-    // }
-  }
 
   return (
     <>
