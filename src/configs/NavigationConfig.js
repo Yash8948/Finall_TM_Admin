@@ -31,7 +31,8 @@ import {
   ProfileOutlined,
   LoginOutlined,
   HomeOutlined,
-  DollarCircleOutlined
+  DollarCircleOutlined,
+  FileProtectOutlined
 } from '@ant-design/icons';
 
 import { MdPayment } from 'react-icons/md'
@@ -110,6 +111,14 @@ const dashBoardNavTree = [{
           submenu: []
         },
       ]
+    },
+    {
+      key: 'dashboards-fileManager',
+      path: `${APP_PREFIX_PATH}/dashboards/file_manager`,
+      title: 'sidenav.dashboard.fileManager',
+      icon: FileProtectOutlined,
+      breadcrumb: true,
+      submenu: []
     },
 
   ]

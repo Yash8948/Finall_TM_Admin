@@ -5,6 +5,7 @@
 	"sidenav.dashboard.default": "Default",
 	"sidenav.dashboard.analytic": "Analytic",
 	"sidenav.dashboard.sales": "Sales",
+	"sidenav.dashboard.fileManager": "File Manager",
 	"sidenav.dashboard.task": "Task",
 	"sidenav.dashboard.task.tasklist": "Task-List",
 	"sidenav.dashboard.task.taskadd": "Add Task",

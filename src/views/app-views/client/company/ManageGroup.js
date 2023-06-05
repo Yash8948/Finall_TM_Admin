@@ -13,7 +13,7 @@ import utils from 'utils'
 const { Option } = Select
 
 
-const Company = () => {
+const ManageGroup = () => {
 	const navigate = useNavigate();
 	const [list, setList] = useState(ProductListData)
 	const [selectedRows, setSelectedRows] = useState([])
@@ -110,7 +110,7 @@ const Company = () => {
 	
 
 	return (
-		<Card title="Company List"  > 
+		<Card title="Manage Group"  > 
 			<Flex alignItems="center" className=" mb-3 __card" justifyContent="space-between" mobileFlex={false} >	
 				{/* <Flex className="mb-1" mobileFlex={false}> */}
 					<div className="mr-md-3 __div_search_box " style={{justifyContent:"start"}} >
@@ -135,15 +135,15 @@ const Company = () => {
 				{/* </Flex> */}
 					<div style={{justifyContent:"end"}}>
 						<Row gutter={24}  >
-							<Col xs={24} sm={8} md={8} lg={8} xl={8} style={{paddingLeft:"0"}} >
+							<Col xs={24} sm={24} md={24} lg={24} xl={12} style={{paddingLeft:"0"}} >
 								<Button onClick={handleAddNew} type="primary" className='__button mx-2' block >Add New</Button>
 							</Col>
-							<Col xs={24} sm={8} md={8} lg={8} xl={8} style={{paddingLeft:"0"}}>
+							<Col xs={24} sm={24} md={24} lg={24} xl={12} style={{paddingLeft:"0"}}>
 								<Button onClick={handleManageGroup} type="primary" className='__button mx-2' block >Manage Group</Button>
 							</Col>
-							<Col xs={24} sm={8} md={8} lg={8} xl={8} style={{paddingLeft:"0"}}>
-								<Button onClick={handleAddClient} type="primary" className='__button mx-2' block>Add Client</Button>
-							</Col>
+							{/* <Col xs={24} sm={8} md={8} lg={8} xl={8} style={{paddingLeft:"0"}}> */}
+								{/* <Button onClick={handleAddClient} type="primary" className='__button mx-2' block>Add Client</Button> */}
+							{/* </Col> */}
 						</Row>
 					</div>
 					{/* <div >
@@ -166,4 +166,4 @@ const Company = () => {
 	)
 }
 
-export default Company
+export default ManageGroup
