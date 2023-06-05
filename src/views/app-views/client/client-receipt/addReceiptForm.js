@@ -231,39 +231,6 @@ const AddReceiptForm = () => {
 
 
 
-    // Function to handle invoice ID selection
-    // const handleInvoiceChange = async (value) => {
-    //     setIsInvoiceFileSelected(!!value);
-    //     setinvoiceSelect(value);
-    //     console.log(value)
-    //     var amount = "";
-
-    //     if (invoiceSelect) {
-    //         setGlo_invoice_id(value);
-    //         for (let index = 0; index < value.length; index++) {
-    //             amount += value[index];
-    //             amount += ","
-    //         }
-    //         let invoice_id = {
-    //             "id": amount
-    //         }
-
-
-    //         let response = await ApiSnippets("/get_amount_by_invoice_id", invoice_id);
-    //         let data = response.data;
-    //         // console.log(response)
-    //         setPaymentAmount(data);
-    //         console.log(paymentAmount)
-
-    //         // document.getElementById(ammountfix).value = "Myvalue";
-    //         // // for (let index = 0; index < data.length; index++) {
-
-    //         // //     amount += data[index].id
-    //         // // }
-
-    //         // setPaymentData(amount);
-    //     }
-    // };
     const handleInvoiceChange = async (value) => {
         setIsInvoiceFileSelected(!!value);
         setinvoiceSelect(value);
@@ -288,8 +255,6 @@ const AddReceiptForm = () => {
             });
             setPaymentAmount(data.amount);
             console.log(paymentAmount)
-
-
 
             // document.getElementById('Amount').innerHTML = data.amount
             // document.getElementById('PayableAmount').innerHTML = data.amount
@@ -340,11 +305,8 @@ const AddReceiptForm = () => {
                             <Form.Item name="SInvoice" label="Select Invoice" rules={rules.SInvoice}>
                                 <Select
                                     disabled={!isCLnameSelected}
-
                                     mode="multiple"
                                     onChange={handleInvoiceChange}
-
-
                                 >
                                     {invoiceFile &&
                                         invoiceFile.map(item => (
@@ -352,7 +314,6 @@ const AddReceiptForm = () => {
                                                 {item.name}
                                             </Option>
                                         ))}
-
                                 </Select>
 
                             </Form.Item>

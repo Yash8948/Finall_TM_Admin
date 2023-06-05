@@ -61,6 +61,16 @@ export const protectedRoutes = [
         component: React.lazy(() => import('views/app-views/dashboards/file-manager')),
     },
     {
+        key: 'dashboard.fileManager',
+        path: `${APP_PREFIX_PATH}/dashboards/file_manager/view_dispatch_file`,
+        component: React.lazy(() => import('views/app-views/dashboards/file-manager/ViewDispatchFile')),
+    },
+    {
+        key: 'dashboard.fileManager',
+        path: `${APP_PREFIX_PATH}/dashboards/file_manager/add_file_location`,
+        component: React.lazy(() => import('views/app-views/dashboards/file-manager/ManageLocation')),
+    },
+    {
         key: 'dashboard.addfile',
         path: `${APP_PREFIX_PATH}/dashboards/file_manager/addfile`,
         component: React.lazy(() => import('views/app-views/dashboards/file-manager/AddFile')),
