@@ -17,11 +17,6 @@ import {
   Radio,
   Checkbox,
 } from "antd";
-import Flex from "components/shared-components/Flex";
-import GeneralField from "../../apps/e-commerce/ProductForm/GeneralField";
-import VariationField from "../../apps/e-commerce/ProductForm/VariationField";
-import ShippingField from "../../apps/e-commerce/ProductForm/ShippingField";
-import ProductListData from "assets/data/product-list.data.json";
 import ApiSnippets from "constants/ApiSnippet";
 import dayjs from "dayjs";
 
@@ -37,7 +32,7 @@ const AddVaultManager = () => {
   const [companyData, setCompanyData] = useState([]);
   const [clientName, setClientName] = useState(null);
   const { Option } = Select;
- 
+
 
   const successMsg = (msg) => {
 
@@ -48,7 +43,7 @@ const AddVaultManager = () => {
     messageApi.error(msg);
   };
 
-  
+
 
   const handleAddClient = async (value, e) => {
     setLoading(true);
@@ -77,10 +72,10 @@ const AddVaultManager = () => {
     if (vaultData.status === true) {
       successMsg(vaultData.message)
       setTimeout(() => {
-        form.resetFields();
+        // form.resetFields();
       }, 500);
 
-
+      navigate('/app/settings/vaultM')
     } else {
 
       errorMsg(vaultData.message)

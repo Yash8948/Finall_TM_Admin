@@ -14,10 +14,8 @@ import {
 	DatePicker,
 	Space
 } from "antd";
-import { ImageSvg } from "assets/svg/icon";
-import CustomIcon from "components/util-components/CustomIcon";
-import { LoadingOutlined } from "@ant-design/icons";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 import ApiSnippets from "../../../../../constants/ApiSnippet";
 import { useState } from "react";
 
@@ -36,6 +34,8 @@ const GeneralField = (props) => {
 	const [selectedClient, setSelectedClient] = useState(null);
 	const [glo_data_id, setGlo_data_id] = useState(null)
 	const options = [];
+
+	const navigate = useNavigate();
 
 	const [messageApi, contextHolder] = message.useMessage();
 
@@ -298,8 +298,9 @@ const GeneralField = (props) => {
 		if (AddTaskData.status === true) {
 			successMsg(AddTaskData.message)
 			setTimeout(() => {
-				form.resetFields();
+				// form.resetFields();
 			}, 500);
+			navigate('/app/dashboards/task/taskonboard')
 
 
 		} else {

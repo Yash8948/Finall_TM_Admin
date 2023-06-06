@@ -333,9 +333,9 @@ const leaveNavTree =[{
           submenu: []
         },
         { 
-          key: 'leave-employee',
-          path: `${APP_PREFIX_PATH}/leave/EmployeeLeave`,
-          title: 'sidenav.leaves.employeeleave',
+          key: 'leave-manageHoliday',
+          path: `${APP_PREFIX_PATH}/leave/manageHoliday`,
+          title: 'sidenav.leaves.manageholiday',
           icon: "",
           breadcrumb: true,
           submenu: []

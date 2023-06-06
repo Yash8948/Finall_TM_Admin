@@ -8,13 +8,13 @@ import Flex from 'components/shared-components/Flex'
 import NumberFormat from 'react-number-format';
 import ApiSnippets from 'constants/ApiSnippet';
 import utils from 'utils'
-
+import { useNavigate } from 'react-router-dom';
 const { Option } = Select
 
 
 
 
-const ProductList = () => {
+const Department = () => {
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -23,6 +23,17 @@ const ProductList = () => {
   // const showModal = () => {
   //   setIsModalOpen(true);
   // };
+  const [messageApi, contextHolder] = message.useMessage();
+  const navigate = useNavigate();
+
+  const successMsg = (msg) => {
+
+    messageApi.success(msg);
+  };
+  const errorMsg = (msg) => {
+
+    messageApi.error(msg);
+  };
   const showModal = () => {
     setOpen(true);
   };
@@ -35,28 +46,27 @@ const ProductList = () => {
     };
 
     console.log(ApiData)
-    try {
-      setLoading(true);
-      // Make API request using values.departname
-      const response = await ApiSnippets('/AddDepartment', ApiData);
-      console.log(response);
-      // Reset form fields
-     
-      // Close the modal
-      
-      if (!response.status) {
-        message.error(response.message);
-      }
-      else{
-        message.success(response.message)
-      }
-      form.resetFields();
+
+    setLoading(true);
+    // Make API request using values.departname
+    const response = await ApiSnippets('/AddDepartment', ApiData);
+    let departmentdata = await response;
+
+
+    if (departmentdata.status === true) {
+      successMsg(departmentdata.message)
+      setTimeout(() => {
+        // form.resetFields();
+      }, 500);
+
       handleCancel();
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
+
+    } else {
+
+      errorMsg(departmentdata.message)
     }
+
+    setLoading(false);
   };
 
   const handleCancel = () => {
@@ -128,7 +138,7 @@ const ProductList = () => {
           />
         </div>
       </Card>
-
+      {contextHolder}
       <Modal
         title="Add Department"
         open={open}
@@ -147,8 +157,8 @@ const ProductList = () => {
           padding: "10px",
 
         }} >
-          <Form.Item name="departname" label="Department Name"  rules={[{ required: true, message: 'Please enter the department name' }]} >
-            <Input placeholder="Department Name" name="departname"  />
+          <Form.Item name="departname" label="Department Name" rules={[{ required: true, message: 'Please enter the department name' }]} >
+            <Input placeholder="Department Name" name="departname" />
           </Form.Item>
 
         </Form>
@@ -157,4 +167,4 @@ const ProductList = () => {
   )
 }
 
-export default ProductList
+export default Department

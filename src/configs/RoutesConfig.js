@@ -149,13 +149,13 @@ export const protectedRoutes = [
     },
     {
         key: 'leave',
-        path: `${APP_PREFIX_PATH}/leave/employeeleave`,
-        component: React.lazy(() => import('views/app-views/leave/Employee/index')),
+        path: `${APP_PREFIX_PATH}/leave/manageHoliday`,
+        component: React.lazy(() => import('views/app-views/leave/ManageHoliday/index')),
     },
     {
         key: 'leave',
-        path: `${APP_PREFIX_PATH}/leave/addemployeeleave`,
-        component: React.lazy(() => import('views/app-views/leave/Employee/addEmployeeLeave')),
+        path: `${APP_PREFIX_PATH}/leave/addmanageHoliday`,
+        component: React.lazy(() => import('views/app-views/leave/ManageHoliday/manageHoliday')),
     },
    
 
@@ -179,6 +179,11 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/settings/payment`,
         component: React.lazy(() => import('views/app-views/settings/payment/index')),
     },
+    // {
+    //     key: 'settings',
+    //     path: `${APP_PREFIX_PATH}/settings/addpaymentmethod`,
+    //     component: React.lazy(() => import('views/app-views/settings/payment/addPaymentMethod')),
+    // },
     {
         key: 'settings',
         path: `${APP_PREFIX_PATH}/settings/expences`,

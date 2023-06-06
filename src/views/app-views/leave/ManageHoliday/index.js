@@ -40,8 +40,10 @@ const EmployeeLeave = () => {
     const handleDepart = () => {
         setIsModalOpen(false);
     }
-    const addProduct = () => {
-        navigate('/app/leave/addemployeeleave')
+    const manageHoliday = () => {
+
+        navigate('/app/leave/addmanageHoliday')
+
     }
 
 
@@ -91,7 +93,7 @@ const EmployeeLeave = () => {
                 <Flex alignItems="center" justifyContent="end" className='mb-2' mobileFlex={false}>
 
                     <div>
-                        <Button onClick={addProduct} type="primary" icon={<PlusCircleOutlined />} block>Add Receipt</Button>
+                        <Button onClick={manageHoliday} type="primary" icon={<PlusCircleOutlined />} block>Add New</Button>
                     </div>
                 </Flex>
                 <div className="table-responsive">
@@ -102,7 +104,7 @@ const EmployeeLeave = () => {
                 </div>
             </Card>
 
-            
+
         </>
     )
 }

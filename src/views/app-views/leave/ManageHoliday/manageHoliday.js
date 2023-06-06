@@ -22,8 +22,7 @@ import ApiSnippets from "constants/ApiSnippet";
 
 
 
-
-const AddAdminLeave = () => {
+const AddManageHoliday = () => {
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -35,7 +34,6 @@ const AddAdminLeave = () => {
   const [clientName, setClientName] = useState(null);
   const { Option } = Select;
   const dateFormatList = ["DD/MM/YYYY"];
-
 
   const successMsg = (msg) => {
 
@@ -54,7 +52,7 @@ const AddAdminLeave = () => {
   }
 
 
-  const handleAddAdminLeave = async (value, e) => {
+  const handleAddHoliday = async (value, e) => {
     setLoading(true);
     // if (state.button === 2) {
     //   console.log("state.button === 2 working");
@@ -62,30 +60,29 @@ const AddAdminLeave = () => {
     // }         
     let ApiData = {
 
-      "reason": value.reason,
-      "fdate": value.Fdate,
-      "tdate": value.Tdate,
-      "shift": value.shifts,
+      "title": value.title,
       "description": value.description,
-      "save": "save",
+      "date": value.date,
+      "show_to_users": value.switchValue1,
     };
     console.log(ApiData);
 
-    let response = await await ApiSnippets("/Edit_Admin_Leave", ApiData);
+    let response = await await ApiSnippets("/AddHoliday", ApiData);
 
-    let adminleaveData = await response;
+    let holidayData = await response;
 
 
-    if (adminleaveData.status === true) {
-      successMsg(adminleaveData.message)
+    if (holidayData.status === true) {
+      successMsg(holidayData.message)
       setTimeout(() => {
         // form.resetFields();
       }, 500);
 
-      navigate('/app/leave/adminleave')
+      navigate('/app/leave/manageHoliday')
+
     } else {
 
-      errorMsg(adminleaveData.message)
+      errorMsg(holidayData.message)
     }
 
     setLoading(false);
@@ -93,56 +90,52 @@ const AddAdminLeave = () => {
 
   return (
     <>
-      <Form layout="vertical" form={form} onFinish={handleAddAdminLeave}>
+      <Form layout="vertical" form={form} onFinish={handleAddHoliday}>
 
         <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24}>
-            <Card title="Add New Admin Leave" style={{ marginTop: 20 }}>
+            <Card title="Add New Holiday Leave" style={{ marginTop: 20 }}>
               <div className="">
                 <Spin spinning={loading}>
                   <Row gutter={12} justify="start">
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                       <Form.Item
-                        name="reason"
-                        label="Reason"
+                        name="title"
+                        label="Title"
                         rules={[
 
                           {
                             required: true,
-                            message: "Please Add Reason!",
+                            message: "Please Add Title!",
                           },
                         ]}>
-                        <Input placeholder="Enter Reason for Leave" />
+                        <Input placeholder="Enter Title for Leave" />
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                       <Form.Item
-                        label="Shift "
-                        name="shifts"
+                        name="description"
+                        label="Description"
                         rules={[
+
                           {
                             required: true,
-                            message: "Please select your any one !",
+                            message: "Please Add Description!",
                           },
                         ]}
                       >
-                        <Radio.Group initialValues="" buttonStyle="solid">
-                          <Radio.Button name="shift1" value="0">Shift 1</Radio.Button>
-                          <Radio.Button name="shift2" value="1">Shift 2</Radio.Button>
-                          <Radio.Button name="fullday" value="2">Full day</Radio.Button>
-                        </Radio.Group>
+                        <Input.TextArea rows={1} />
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                      <Form.Item label="From Date" name="Fdate" 
-                      rules={[
+                      <Form.Item label=" Date " name="date"
+                       rules={[
                         {
                           required: true,
-                          message: "Please select date !",
+                          message: "Please Add date!",
                         },
                       ]}>
                         <DatePicker
-                          // defaultValue={dayjs()}
                           format={dateFormatList}
                           disabledDate={disabledDate}
                           onChange={handleDatePicker}
@@ -151,38 +144,30 @@ const AddAdminLeave = () => {
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-
-                      <Form.Item label=" To Date" name="Tdate"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please select date !",
-                        },
-                      ]} >
-                        <DatePicker
-
-                          // defaultValue={dayjs()}
-                          format={dateFormatList}
-                          disabledDate={disabledDate}
-                          onChange={handleDatePicker}
-                          style={{ width: "100%" }}
+                      <Form.Item
+                        name="switchValue1"
+                        label="Show to User"
+                        labelCol={{ span: 8 }}
+                        wrapperCol={{ span: 16 }}
+                        style={{ marginBottom: 0 }}
+                        rules={[
+                          {
+                            required: true,
+                            message: "",
+                          },
+                        ]}
+                      >
+                        <Switch
+                          name="switchValue1"
+                          checkedChildren="Yes"
+                          unCheckedChildren="No"
+                        // defaultChecked
                         />
                       </Form.Item>
                     </Col>
                   </Row>
 
-                  <Form.Item
-                    name="description"
-                    label="Description"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please enter description!",
-                      },
-                    ]}
-                  >
-                    <Input.TextArea rows={4} />
-                  </Form.Item>
+
                   <Form.Item>
 
                     {contextHolder}
@@ -201,4 +186,4 @@ const AddAdminLeave = () => {
   );
 };
 
-export default AddAdminLeave;
+export default AddManageHoliday;
