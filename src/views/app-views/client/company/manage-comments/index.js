@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import "../../client/company/edited.css"
+import "../edited.css"
 import { Card, Table, Select, Input, Button, Badge, Menu, Modal, Row, Col } from 'antd';
 import ProductListData from "assets/data/product-list.data.json"
 import { EyeOutlined, DeleteOutlined, SearchOutlined, PlusCircleOutlined } from '@ant-design/icons';
@@ -13,24 +13,25 @@ import utils from 'utils'
 const { Option } = Select
 
 
-const ManageLocation = () => {
+const ManageComments = () => {
 	const navigate = useNavigate();
 	const [list, setList] = useState(ProductListData)
 	const [selectedRows, setSelectedRows] = useState([])
 	const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
-    const handleViewDispatchFile = () => {
+    const handleAddClient = () => {
       console.log("object");
-      navigate('/app/dashboards/file_manager/view_dispatch_file')
-    }
-    const handleManageLocation = () => {
-      navigate('/app/dashboards/file_manager/add_file_location')
+    //   navigate('/app/client/addclientform')
     }
     const handleAddNew = () => {
-      navigate('/app/dashboards/file_manager/AddFile')
+    //   console.log("object");
+      navigate('/app/client/add_comment')
 	  
     }
 	
+	const handleCompanyList = () => {
+		navigate('/app/client/company')
+	}
 	// const handleManageGroup = () => {
 	// 	navigate(`/app/apps/ecommerce/edit-product/${row.id}`)
 	// }
@@ -109,28 +110,64 @@ const ManageLocation = () => {
 	
 
 	return (
-		<Card title="Manage Location"  extra={  <Button
-      type="primary"
-      // value="0"
-      // name="save"
-      // htmlType="submit"
-      // onClick={hanldeSaveAndGoToList}
-      onClick={() =>   navigate('/app/dashboards/file_manager/add_location')}
-      style={{ width: "100%",whiteSpace: "normal" }}
-    >
-      Add Location
-    </Button>} > 
+		<Card title="Add Comment"  > 
+			<Flex alignItems="center" className=" mb-3 __card" justifyContent="space-between" mobileFlex={false} >	
+				{/* <Flex className="mb-1" mobileFlex={false}> */}
+					<div className="mr-md-3 __div_search_box " style={{justifyContent:"start"}} >
+						<Input className='__searchbox' placeholder="Search" prefix={<SearchOutlined />} onChange={e => onSearch(e)} />
+					</div>
+					{/* <div className="mb-3">
+						<Select 
+							defaultValue="All" 
+							className="w-100" 
+							style={{ minWidth: 180 }} 
+							onChange={handleShowCategory} 
+							placeholder="Category"
+						>
+							<Option value="All">All</Option>
+							{
+								categories.map(elm => (
+									<Option key={elm} value={elm}>{elm}</Option>
+								))
+							}
+						</Select>
+					</div> */}				
+				{/* </Flex> */}
+					<div style={{justifyContent:"end"}}>
+						<Row gutter={24}  >
+							<Col xs={24} sm={24} md={24} lg={24} xl={24} style={{paddingLeft:"0"}} >
+								<Button onClick={handleAddNew} type="primary" className='__button mx-2'  
+					style={{overflow:"hidden",width:"100%"}} >Add New</Button>
+							</Col>
+							{/* <Col xs={24} sm={12} md={12} lg={12} xl={12} style={{paddingLeft:"0"}}>
+								<Button onClick={handleCompanyList} type="primary" className='__button mx-2' block 
+					style={{overflow:"hidden",whiteSpace:"normal"}}  >Company List</Button>
+							</Col> */}
+							{/* <Col xs={24} sm={8} md={8} lg={8} xl={8} style={{paddingLeft:"0"}}> */}
+								{/* <Button onClick={handleAddClient} type="primary" className='__button mx-2' block>Add Client</Button> */}
+							{/* </Col> */}
+						</Row>
+					</div>
+					{/* <div >
+
+					<Button className="mx-3" type="primary" >Primary Button</Button>
+					<Button className="mx-3" type="primary">Primary Button</Button>
+					<Button className="mx-3" type="primary">Primary Button</Button>
+					</div> */}
 			
+			</Flex>
 			
 			<div className="table-responsive">
 				<Table 
+					
 					columns="" 
 					// dataSource={list} 
 					rowKey='id' 
+					style={{overflow:"hidden"}} 
 				/>
 			</div>
 		</Card>
 	)
 }
 
-export default ManageLocation
+export default ManageComments

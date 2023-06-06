@@ -71,6 +71,11 @@ export const protectedRoutes = [
         component: React.lazy(() => import('views/app-views/dashboards/file-manager/ManageLocation')),
     },
     {
+        key: 'dashboard.fileManager',
+        path: `${APP_PREFIX_PATH}/dashboards/file_manager/add_location`,
+        component: React.lazy(() => import('views/app-views/dashboards/file-manager/add-location/AddLocation')),
+    },
+    {
         key: 'dashboard.addfile',
         path: `${APP_PREFIX_PATH}/dashboards/file_manager/addfile`,
         component: React.lazy(() => import('views/app-views/dashboards/file-manager/AddFile')),
@@ -226,6 +231,16 @@ export const protectedRoutes = [
         key: 'client',
         path: `${APP_PREFIX_PATH}/client/Add_company_group`,
         component: React.lazy(() => import('views/app-views/client/company/manage-group/AddCompanyGroup')),
+    },
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/manage_comments`,
+        component: React.lazy(() => import('views/app-views/client/company/manage-comments/index')),
+    },
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/add_comment`,
+        component: React.lazy(() => import('views/app-views/client/company/manage-comments/ManageCommentsForm')),
     },
     {
         key: 'docs.documentation',

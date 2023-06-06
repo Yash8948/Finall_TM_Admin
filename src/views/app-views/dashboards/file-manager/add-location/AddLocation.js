@@ -21,7 +21,7 @@ import ApiSnippets from "constants/ApiSnippet";
 import dayjs from "dayjs";
 
 
-const AddFile = () => {
+const AddLocation = () => {
   const { Option } = Select;
  
     const [messageApi, contextHolder] = message.useMessage();
@@ -33,7 +33,7 @@ const AddFile = () => {
     const [btnStatus, setBtnStatus] = useState(0);
     const [companyData, setCompanyData] = useState([]);
     const [clientName, setClientName] = useState(null);
-    const [locationfield, setLocationfield] = useState(null)
+    
   const dateFormatList = ["DD/MM/YYYY"];
   function disabledDate(current) {
     // Can not select days after today and today
@@ -49,10 +49,6 @@ const AddFile = () => {
     messageApi.error(msg);
   };
   
-  
-
-
-
   const handleSend_txt_msg = (e) => {
     // 0 = false
     // 1 = true
@@ -83,12 +79,15 @@ const handleAddClient = async (value, e) => {
     let ApiData = {
 
 
+      
+        "txtlocname":value.location_name,
+        "txtsorttag":value.sort_code,
+        "txtminlimit":value.form_limit,
+        "txtmaxlimit":value.to_limit,
+        "btnSave":"Save"
+    
 
-      "txtfilename":value.file_name,
-      "txtlocation_num":value.file_number,
-      "Client":value.companyname,
-      "location":value.location,
-      "btnSave":"Save"
+
 
 
         // "bdate":value["birth_date"].format("DD-MM-YYYY"),
@@ -97,7 +96,7 @@ const handleAddClient = async (value, e) => {
     };
     console.log(ApiData);
     
-    let response = await await ApiSnippets("/Add_File", ApiData);
+    let response = await await ApiSnippets("/add_location", ApiData);
 
     let countObj = await response;
     
@@ -106,7 +105,8 @@ const handleAddClient = async (value, e) => {
     if (countObj.status === true) {
         successMsg(countObj.message)
         setTimeout(() => {
-          navigate('/app/dashboards/file_manager');
+          navigate('/app/dashboards/file_manager/add_file_location');
+
             form.resetFields();
           }, 500);
         //  if(btnStatus === 1){
@@ -119,24 +119,13 @@ const handleAddClient = async (value, e) => {
           
     }else{
         // message.error(countObj.message); 
-        form.resetFields(["txtfilename"]);
         errorMsg(countObj.message)
-      }
-      
-      setLoading(false);
-    };
-
-  useEffect(() => {
-
-    const getdata_file_location = async () => {
-      let response = await ApiSnippets("/getdata_file_location", null);
-      let data = response.data;
-      console.log(data);
-      setLocationfield(data)
     }
-
-
-
+      
+    setLoading(false);
+  };
+  
+  useEffect(() => {
     var company = [
     ];
     const getAllData = async () => {
@@ -156,7 +145,7 @@ const handleAddClient = async (value, e) => {
       // console.log(myObj[0].id);
       // console.log(company);
     };
-    getdata_file_location();
+
     getAllData();
 
   }, []);
@@ -175,10 +164,7 @@ const handleAddClient = async (value, e) => {
 
   return (
     <>
-      <Form layout="vertical" form={form} initialValues={{
-        companyname: "1",
-        location: "1"
-      }} onFinish={handleAddClient}>
+      <Form layout="vertical" form={form} onFinish={handleAddClient}>
         {/* <PageHeaderAlt className="border-bottom">
           <div className="container">
             <Flex
@@ -193,139 +179,98 @@ const handleAddClient = async (value, e) => {
         </PageHeaderAlt> */}
         <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24}>
-            <Card title="Add File" style={{ marginTop: 20 }} extra={<Button
-                            type="primary"
-                            value="0"
-                            name="GoToListBtn"
-                            htmlType="submit"
-                            onClick={hanldeAddCompany}
-                            style={{ width: "100%",whiteSpace: "normal" }}
-                          >
-                            Add Company
-                          </Button>}>
+            <Card title="Add Location" style={{ marginTop: 20 }} >
               <div className="">
                 <Spin spinning={loading}>
                   <Row gutter={12} justify="start">
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                       <Form.Item
-                        name="file_name"
-                        label="File name : "
+                        name="location_name"
+                        label="Location name : "
                         rules={[
-                          
                           {
                             required: true,
-                            message: "Please input your File name!",
+                            message: "Please input Location name!",
                           },
                         ]}
                       >
-                        <Input placeholder="Enter File Name" />
+                        <Input placeholder="Enter Location Name" />
                       </Form.Item>
                     </Col>
 
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                       <div style={{ marginBottom: 16 }}>
                         <Form.Item
-                          name="file_number"
-                          label="File Number : "
+                          label="Sort Code : "
+                          name="sort_code"
                           rules={[
                             {
                               required: true,
-                              message: "Please input your File Number!",
+                              message: "Please input Sort Code!",
                             },
                           ]}
                         >
-                          <Input
-                          type="NumberFormat"
-                          // addonBefore="+91"
-                            placeholder="Enter File Number"
-                            // min={1}
-                            // max={1000000000}
-                            // minLength={10}
-                            // maxLength={10}
-                            // onChange=""
-                            onKeyPress={(event) => {
-                                if (!/[0-9]/.test(event.key)) {
-                                    event.preventDefault();
-                                }
-                            }}
-                            
-                            style={{
-                              width: "100%",
-                            }}
-                          />
+                          <Input placeholder="Enter Sort Code" />
                         </Form.Item>
                       </div>
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                     <Form.Item
-                        name="companyname"
-                        label="Client Name"
+                        name="form_limit"
+                        label="Form Limit"
                         rules={[
-
                           {
                             required: true,
-                            message: "Please Select Company!",
+                            message: "Please Enter Form Limit!",
                           },
                         ]}>
-                        <Select
-                          showSearch
-                          style={{ width: "100%" }}
-                          placeholder="Select a Company"
-                          optionFilterProp="children"
-                          // onFocus={onFocus}
-                          // onBlur={onBlur}
-                          // onSearch={onSearch}
-                          filterOption={(input, option) =>
-                            option.props.children
-                              .toLowerCase()
-                              .indexOf(input.toLowerCase()) >= 0
-
-                          }
-
-                        >
-                          {companyData &&
-                            companyData.map((item, index) => (
-                              <Option key={index} value={item.id}>
-                                {item.name}
-                              </Option>
-                            ))}
-                        </Select>
+                        <Input
+                          type="NumberFormat"
+                            placeholder="Enter Form Limit"
+                            // min={1}
+                            // max={1000000000}
+                            // minLength={10}
+                            // maxLength={13}
+                            // onChange=""
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault();
+                                }
+                            }}                            
+                            style={{
+                              width: "100%",
+                            }}
+                          />
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                     <Form.Item
-                        name="location"
-                        label="Location"
+                        name="to_limit"
+                        label="To Limit"
                         rules={[
 
                           {
                             required: true,
-                            message: "Please Select location!",
+                            message: "Please Enter To Limit!",
                           },
                         ]}>
-                        <Select
-                          size="large"
-                          // initialvalues={locationfield === null ? "" : "0"}
-                          // onChange={handleChange}
-                          // showSearch
-                          // style={{ width: "100%" }}
-                          placeholder="Select a location"
-                          
-                          filterOption={(input, option) =>
-                            option.props.children
-                              .toLowerCase()
-                              .indexOf(input.toLowerCase()) >= 0
-
-                          }
-
-                        >
-                          {locationfield &&
-                            locationfield.map((item, index) => (
-                              <Option key={index} value={item.id}>
-                                {item.location} - {item.cnt} / {item.max_limit} :- ({item.min_limit} - {item.max_limit})
-                              </Option>
-                            ))}
-                        </Select>
+                        <Input
+                          type="NumberFormat"
+                            placeholder="Enter To Limit"
+                            // min={1}
+                            // max={1000000000}
+                            // minLength={10}
+                            // maxLength={13}
+                            // onChange=""
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault();
+                                }
+                            }}                            
+                            style={{
+                              width: "100%",
+                            }}
+                          />
                       </Form.Item>
                     </Col>
 
@@ -339,8 +284,8 @@ const handleAddClient = async (value, e) => {
                             value="0"
                             name="save"
                             htmlType="submit"
-                            // onClick={onReset}
-                            // onClick={() => setBtnStatus(1)}
+                            // onClick={hanldeSaveAndGoToList}
+                            onClick={() => setBtnStatus(1)}
                             style={{ width: "100%",whiteSpace: "normal" }}
                           >
                             Save
@@ -358,8 +303,8 @@ const handleAddClient = async (value, e) => {
                         <Form.Item>
                         {contextHolder}
                         <Button type="primary" danger
-
-                            onClick={() =>  navigate('/app/dashboards/file_manager')}
+    
+                            onClick={() => navigate('/app/dashboards/file_manager/add_file_location')}
                             style={{ width: "100%",whiteSpace: "normal", boxShadow:"none" }}
                         >
                             Cancel
@@ -378,4 +323,4 @@ const handleAddClient = async (value, e) => {
   );
 };
 
-export default AddFile;
+export default AddLocation;

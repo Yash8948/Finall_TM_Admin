@@ -19,9 +19,9 @@ const Company = () => {
 	const [selectedRows, setSelectedRows] = useState([])
 	const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
-    const handleAddClient = () => {
-      console.log("object");
-    //   navigate('/app/client/addclientform')
+    const handleManageComments = () => {
+      
+      navigate('/app/client/manage_comments')
     }
     const handleAddNew = () => {
     //   console.log("object");
@@ -142,7 +142,7 @@ const Company = () => {
 								<Button onClick={handleManageGroup} type="primary" className='__button mx-2' block >Manage Group</Button>
 							</Col>
 							<Col xs={24} sm={8} md={8} lg={8} xl={8} style={{paddingLeft:"0"}}>
-								<Button onClick={handleAddClient} type="primary" className='__button mx-2' block>Add Client</Button>
+								<Button onClick={handleManageComments} type="primary" className='__button mx-2 p-1' block>Manage Comments</Button>
 							</Col>
 						</Row>
 					</div>

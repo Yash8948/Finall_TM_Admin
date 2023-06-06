@@ -191,7 +191,7 @@ const handleAddClient = async (value, e) => {
     if (countObj.status === true) {
         successMsg(countObj.message)
         setTimeout(() => {
-            // form.resetFields();
+            form.resetFields();
           }, 500);
          if(btnStatus === 1){
             // console.log("btnStatus: ",btnStatus);
@@ -504,7 +504,7 @@ const handleAddClient = async (value, e) => {
                           name="contact_number"
                           rules={[
                             {
-                                max: 10,
+                                max: 13,
                                 message: "Value should only 10 digits",
                             },
                             {
@@ -520,7 +520,7 @@ const handleAddClient = async (value, e) => {
                             // min={1}
                             // max={1000000000}
                             minLength={10}
-                            maxLength={10}
+                            maxLength={13}
                             // onChange=""
                             // defaultValue={myArray[0].number}
                             onKeyPress={(event) => {
