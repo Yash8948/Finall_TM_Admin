@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, } from "react";
 import { useNavigate } from "react-router-dom";
 import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
 import {
@@ -21,7 +21,7 @@ import ApiSnippets from "constants/ApiSnippet";
 import dayjs from "dayjs";
 
 
-const AddFile = () => {
+const ManageCommentsForm = () => {
   const { Option } = Select;
  
     const [messageApi, contextHolder] = message.useMessage();
@@ -76,19 +76,13 @@ const AddFile = () => {
 
 const handleAddClient = async (value, e) => {
       setLoading(true);
-      // if (state.button === 2) {
-      //   console.log("state.button === 2 working");
-      //   // navigate('/app/client/company');
-      // }         
     let ApiData = {
 
 
+      "company":value.companyname,
+      "title":value.title,
+      "data":value.conversation
 
-      "txtfilename":value.file_name,
-      "txtlocation_num":value.file_number,
-      "Client":value.companyname,
-      "location":value.location,
-      "btnSave":"Save"
 
 
         // "bdate":value["birth_date"].format("DD-MM-YYYY"),
@@ -97,7 +91,7 @@ const handleAddClient = async (value, e) => {
     };
     console.log(ApiData);
     
-    let response = await await ApiSnippets("/Add_File", ApiData);
+    let response = await await ApiSnippets("/EditComments", ApiData);
 
     let countObj = await response;
     
@@ -107,7 +101,7 @@ const handleAddClient = async (value, e) => {
         successMsg(countObj.message)
         setTimeout(() => {
           navigate('/app/dashboards/file_manager');
-            form.resetFields();
+            // form.resetFields();
           }, 500);
         //  if(btnStatus === 1){
         //     // console.log("btnStatus: ",btnStatus);
@@ -125,21 +119,11 @@ const handleAddClient = async (value, e) => {
       
       setLoading(false);
     };
-
-  useEffect(() => {
-
-    const getdata_file_location = async () => {
-      let response = await ApiSnippets("/getdata_file_location", null);
-      let data = response.data;
-      console.log(data);
-      setLocationfield(data)
-    }
-
-
-
-    var company = [
+    
+    let company = [
     ];
     const getAllData = async () => {
+      // setLoading(true);
       let response = await ApiSnippets("/Company", null);
       let data = response.data;
       let clientName = data.map(item => item.name, item => item.id);
@@ -152,33 +136,18 @@ const handleAddClient = async (value, e) => {
         });
 
       }
+      // setLoading(false);
       setCompanyData(company)
       // console.log(myObj[0].id);
       // console.log(company);
     };
-    getdata_file_location();
+    
     getAllData();
 
-  }, []);
-  const hanldeSaveAndAddCompany = async () => {
-    // if (apiStatus === true) {
-    //     // console.log("object");
-    //     navigate('');
-    // }
-  } 
-  const hanldeSaveAndGoToList = async () => {
-    // if (apiStatus === true) {
-    //     // console.log("object");
-    //     // navigate('/app/client/company');
-    // }
-  }
-
+ 
   return (
     <>
-      <Form layout="vertical" form={form} initialValues={{
-        companyname: "1",
-        location: "1"
-      }} onFinish={handleAddClient}>
+      <Form layout="vertical" form={form} onFinish={handleAddClient}>
         {/* <PageHeaderAlt className="border-bottom">
           <div className="container">
             <Flex
@@ -193,70 +162,11 @@ const handleAddClient = async (value, e) => {
         </PageHeaderAlt> */}
         <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24}>
-            <Card title="Add File" style={{ marginTop: 20 }} extra={<Button
-                            type="primary"
-                            value="0"
-                            name="GoToListBtn"
-                            htmlType="submit"
-                            onClick={hanldeAddCompany}
-                            style={{ width: "100%",whiteSpace: "normal" }}
-                          >
-                            Add Company
-                          </Button>}>
+            <Card title="Add File" style={{ marginTop: 20 }} >
               <div className="">
                 <Spin spinning={loading}>
                   <Row gutter={12} justify="start">
-                    <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                      <Form.Item
-                        name="file_name"
-                        label="File name : "
-                        rules={[
-                          
-                          {
-                            required: true,
-                            message: "Please input your File name!",
-                          },
-                        ]}
-                      >
-                        <Input placeholder="Enter File Name" />
-                      </Form.Item>
-                    </Col>
-
-                    <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                      <div style={{ marginBottom: 16 }}>
-                        <Form.Item
-                          name="file_number"
-                          label="File Number : "
-                          rules={[
-                            {
-                              required: true,
-                              message: "Please input your File Number!",
-                            },
-                          ]}
-                        >
-                          <Input
-                          type="NumberFormat"
-                          // addonBefore="+91"
-                            placeholder="Enter File Number"
-                            // min={1}
-                            // max={1000000000}
-                            // minLength={10}
-                            // maxLength={10}
-                            // onChange=""
-                            onKeyPress={(event) => {
-                                if (!/[0-9]/.test(event.key)) {
-                                    event.preventDefault();
-                                }
-                            }}
-                            
-                            style={{
-                              width: "100%",
-                            }}
-                          />
-                        </Form.Item>
-                      </div>
-                    </Col>
-                    <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                  <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                     <Form.Item
                         name="companyname"
                         label="Client Name"
@@ -293,42 +203,40 @@ const handleAddClient = async (value, e) => {
                       </Form.Item>
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                    <Form.Item
-                        name="location"
-                        label="Location"
+                      <Form.Item
+                        name="title"
+                        label="Title : "
                         rules={[
-
+                          
                           {
                             required: true,
-                            message: "Please Select location!",
+                            message: "Please input Title!",
                           },
-                        ]}>
-                        <Select
-                          size="large"
-                          // initialvalues={locationfield === null ? "" : "0"}
-                          // onChange={handleChange}
-                          // showSearch
-                          // style={{ width: "100%" }}
-                          placeholder="Select a location"
-                          
-                          filterOption={(input, option) =>
-                            option.props.children
-                              .toLowerCase()
-                              .indexOf(input.toLowerCase()) >= 0
-
-                          }
-
-                        >
-                          {locationfield &&
-                            locationfield.map((item, index) => (
-                              <Option key={index} value={item.id}>
-                                {item.location} - {item.cnt} / {item.max_limit} :- ({item.min_limit} - {item.max_limit})
-                              </Option>
-                            ))}
-                        </Select>
+                        ]}
+                      >
+                        <Input placeholder="Enter Title" />
                       </Form.Item>
                     </Col>
 
+                    <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                      <div style={{ marginBottom: 16 }}>
+                        <Form.Item
+                          name="conversation"
+                          label="Data/Conversation : "
+                          rules={[
+                            {
+                              required: true,
+                              message: "Please input Data/Conversation!",
+                            },
+                          ]}
+                        >
+                           <Input placeholder="Enter Data/Conversation" />
+                        </Form.Item>
+                      </div>
+                    </Col>
+                    
+                    
+                    <Col xs={24} sm={12} md={12} lg={12} xl={12}></Col>
                     
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                       <div style={{ marginBottom: 0 }}>
@@ -358,8 +266,7 @@ const handleAddClient = async (value, e) => {
                         <Form.Item>
                         {contextHolder}
                         <Button type="primary" danger
-
-                            onClick={() =>  navigate('/app/dashboards/file_manager')}
+                            onClick={() =>  navigate('/app/client/manage_comments')}
                             style={{ width: "100%",whiteSpace: "normal", boxShadow:"none" }}
                         >
                             Cancel
@@ -378,4 +285,4 @@ const handleAddClient = async (value, e) => {
   );
 };
 
-export default AddFile;
+export default ManageCommentsForm;

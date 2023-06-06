@@ -136,10 +136,12 @@ const ManageGroup = () => {
 					<div style={{justifyContent:"end"}}>
 						<Row gutter={24}  >
 							<Col xs={24} sm={12} md={12} lg={12} xl={12} style={{paddingLeft:"0"}} >
-								<Button onClick={handleAddNew} type="primary" className='__button mx-2' block >Add New</Button>
+								<Button onClick={handleAddNew} type="primary" className='__button mx-2' block 
+					style={{overflow:"hidden"}} >Add New</Button>
 							</Col>
 							<Col xs={24} sm={12} md={12} lg={12} xl={12} style={{paddingLeft:"0"}}>
-								<Button onClick={handleCompanyList} type="primary" className='__button mx-2' block >Company List</Button>
+								<Button onClick={handleCompanyList} type="primary" className='__button mx-2' block 
+					style={{overflow:"hidden",whiteSpace:"normal"}}  >Company List</Button>
 							</Col>
 							{/* <Col xs={24} sm={8} md={8} lg={8} xl={8} style={{paddingLeft:"0"}}> */}
 								{/* <Button onClick={handleAddClient} type="primary" className='__button mx-2' block>Add Client</Button> */}
@@ -157,9 +159,11 @@ const ManageGroup = () => {
 			
 			<div className="table-responsive">
 				<Table 
+					
 					columns="" 
 					// dataSource={list} 
 					rowKey='id' 
+					style={{overflow:"hidden"}} 
 				/>
 			</div>
 		</Card>

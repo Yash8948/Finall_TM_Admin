@@ -101,7 +101,7 @@ const ClientList = () => {
 	
 
 	return (
-		<Card >
+		<Card title="Client List">
 			<Flex alignItems="center" justifyContent="space-between" mobileFlex={false}>
 				<Flex className="mb-1" mobileFlex={false}>
 					<div className="mr-md-3 mb-3">
