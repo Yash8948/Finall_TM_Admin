@@ -162,18 +162,6 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/leave/addemployeeleave`,
         component: React.lazy(() => import('views/app-views/leave/Employee/addEmployeeLeave')),
     },
-   
-
-
-
-
-
-
-
-
-
-
-
 
 
 
