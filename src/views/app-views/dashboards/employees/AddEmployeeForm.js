@@ -24,7 +24,7 @@ import ApiSnippets from "constants/ApiSnippet";
 import dayjs from "dayjs";
 
 
-const AddClientForm = () => {
+const AddEmployeeForm = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const navigate = useNavigate();
     const [form] = Form.useForm();
@@ -47,13 +47,16 @@ const AddClientForm = () => {
     // message.success(countObj.message);
     messageApi.error(msg);
   };
-  
+  const onReset = () => {
+    form.resetFields();
+  };
   const handleSend_txt_msg = (e) => {
     // 0 = false
     // 1 = true
     // console.log(`checked = ${e.target.checked}`);
     setSend_txt_msg(e.target.checked === true ? 1:0);
   };
+
   const handleSend_email = (e) => {
     // 0 = false
     // 1 = true
@@ -77,6 +80,7 @@ const handleAddClient = async (value, e) => {
         "lname":value.last_name,
         "email":value.email,
         "num":value.contact_number,
+        "par_num":value.alt_number,
         "active":value.active_deactive,
         "sendemail":`${send_email}`,
         "sendsms":`${send_txt_msg}`,
@@ -90,7 +94,7 @@ const handleAddClient = async (value, e) => {
 
     let countObj = await response;
     
-    // console.log(countObj);
+    console.log(countObj);
     // setApiStatus(countObj.status)
     if (countObj.status === true) {
         successMsg(countObj.message)
@@ -98,11 +102,10 @@ const handleAddClient = async (value, e) => {
             form.resetFields();
           }, 500);
          if(btnStatus === 1){
-            // console.log("btnStatus: ",btnStatus);
-            navigate('/app/client/list');
+            navigate('/app/dashboards/employees');
           }
           if (btnStatus ===2) {
-            navigate('/app/client/company');
+            navigate('/app/dashboards/employees');
          }
           
     }else{
@@ -131,7 +134,7 @@ const handleAddClient = async (value, e) => {
         </PageHeaderAlt> */}
         <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24}>
-            <Card title="Add Client" style={{ marginTop: 20 }}>
+            <Card title="Add Employee" style={{ marginTop: 20 }}>
               <div className="">
                 <Spin spinning={loading}>
                   <Row gutter={12} justify="start">
@@ -241,7 +244,45 @@ const handleAddClient = async (value, e) => {
                         >
                           <Input
                           type="NumberFormat"
-                          // addonBefore="+91"
+                        //   addonBefore="+91"
+                            placeholder="Enter Contact Number"
+                            // min={1}
+                            // max={1000000000}
+                            minLength={10}
+                            maxLength={13}
+                            // onChange=""
+                            onKeyPress={(event) => {
+                                if (!/[0-9]/.test(event.key)) {
+                                    event.preventDefault();
+                                }
+                            }}
+                            
+                            style={{
+                              width: "100%",
+                            }}
+                          />
+                        </Form.Item>
+                      </div>
+                    </Col>
+                    <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                      <div style={{ marginBottom: 16 }}>
+                        <Form.Item
+                          label="Alternate Number : "
+                          name="alt_number"
+                          rules={[
+                            {
+                                max: 13,
+                                message: "Value should only 13 digits",
+                            },
+                            {
+                              required: true,
+                              message: "Please input your Alternative Number!",
+                            },
+                          ]}
+                        >
+                          <Input
+                          type="NumberFormat"
+                        //   addonBefore="+91"
                             placeholder="Enter Contact Number"
                             // min={1}
                             // max={1000000000}
@@ -291,7 +332,8 @@ const handleAddClient = async (value, e) => {
                       </div>
                       {/* </Row> */}
                     </Col>
-                    <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                    <Col xs={24} sm={12} md={12} lg={12} xl={12}></Col>
+                    <Col xs={24} sm={8} md={8} lg={8} xl={8}>
                       <div style={{ marginBottom: 0 }}>
                         <Form.Item>
                         {contextHolder}
@@ -304,29 +346,41 @@ const handleAddClient = async (value, e) => {
                             onClick={() => setBtnStatus(1)}
                             style={{ width: "100%",whiteSpace: "normal" }}
                           >
-                            Save And Go To List
+                            Submit
                           </Button>
                         </Form.Item>
                       </div>
                     </Col>
-                    <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                    <Col xs={24} sm={8} md={8} lg={8} xl={8}>
                       <div style={{ marginBottom: 0 }}>
                         <Form.Item>
                         {contextHolder}
-                          <Button
+                        <Button htmlType="button" onClick={onReset} style={{ width: "100%",whiteSpace: "normal" }}>
+                            Reset
+                        </Button>
+                        </Form.Item>
+                      </div>
+                    </Col>
+                    <Col xs={24} sm={8} md={8} lg={8} xl={8}>
+                      <div style={{ marginBottom: 0 }}>
+                        <Form.Item>
+                        {contextHolder}
+                        <Button
+                        danger
                             type="primary"
-                            value="1"
-                            name="AddCompanyBtn"
-                            htmlType="submit"
-                            // onClick={hanldeSaveAndAddCompany}
-                            onClick={() => setBtnStatus(2)}
-                            style={{ width: "100%",whiteSpace: "normal" }}
+                            // value="0"
+                            // name="GoToListBtn"
+                            // htmlType="submit"
+                            // onClick={hanldeSaveAndGoToList}
+                            onClick={() =>    navigate('/app/dashboards/employees')}
+                            style={{ width: "100%",whiteSpace: "normal",boxShadow:"none" }}
                           >
-                            Save and Add Company
+                           Cancel
                           </Button>
                         </Form.Item>
                       </div>
                     </Col>
+                    
                   </Row>
                 </Spin>
               </div>
@@ -338,4 +392,4 @@ const handleAddClient = async (value, e) => {
   );
 };
 
-export default AddClientForm;
+export default AddEmployeeForm;

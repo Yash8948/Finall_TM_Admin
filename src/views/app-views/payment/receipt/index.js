@@ -40,7 +40,7 @@ const Recepit = () => {
         setIsModalOpen(false);
     }
     const addReceipt = () => {
-        navigate('/app/client/addreceiptform')
+        navigate('/app/payment/receipt/addreceiptform')
     }
 
 

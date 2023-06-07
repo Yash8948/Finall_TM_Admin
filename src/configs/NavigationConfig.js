@@ -32,7 +32,9 @@ import {
   LoginOutlined,
   HomeOutlined,
   DollarCircleOutlined,
-  FileProtectOutlined
+  FileProtectOutlined,
+  TeamOutlined,
+  SnippetsOutlined
 } from '@ant-design/icons';
 
 import { MdPayment } from 'react-icons/md'
@@ -117,6 +119,14 @@ const dashBoardNavTree = [{
       path: `${APP_PREFIX_PATH}/dashboards/file_manager`,
       title: 'sidenav.dashboard.fileManager',
       icon: FileProtectOutlined,
+      breadcrumb: true,
+      submenu: []
+    },
+    {
+      key: 'dashboards-employees',
+      path: `${APP_PREFIX_PATH}/dashboards/employees`,
+      title: 'sidenav.dashboard.employees',
+      icon: TeamOutlined,
       breadcrumb: true,
       submenu: []
     },
@@ -309,6 +319,55 @@ const clientNavTree = [{
         },
   ]
 }]
+const paymentNavTree = [{
+  key: 'payment',
+  path: `${APP_PREFIX_PATH}/payment`,
+  title: 'sidenav.payment',
+  icon: DollarCircleOutlined,
+  breadcrumb: true,
+  isGroupTitle: true,
+  submenu: [
+    {
+      key: 'payment-Receipt',
+      path: `${APP_PREFIX_PATH}/payment/receipt`,
+      title: 'sidenav.payment.receipt',
+      icon: DollarCircleOutlined,
+      breadcrumb: true,
+      submenu: []
+    },
+    {
+      key: 'payment-invoice',
+      path: `${APP_PREFIX_PATH}/payment/invoice`,
+      title: 'sidenav.payment.invoice',
+      icon: DotChartOutlined,
+      breadcrumb: true,
+      submenu: [
+        {
+          key: 'payment-invoicelist',
+          path: `${APP_PREFIX_PATH}/payment/invoice_list`,
+          title: 'sidenav.payment.invoice_list',
+          icon: "",
+          breadcrumb: true,
+          submenu: []
+        },
+        {
+          key: 'payment-custom_invoice',
+          path: `${APP_PREFIX_PATH}/payment/custom_invoice`,
+          title: 'sidenav.payment.custom_invoice',
+          icon: "",
+          breadcrumb: true,
+          submenu: []
+        },
+      ]
+    },
+   
+
+  ]
+}]
+
+
+
+
 const leaveNavTree =[{
   key: 'leave',
   path: `${APP_PREFIX_PATH}/leave`,
@@ -355,6 +414,69 @@ const leaveNavTree =[{
     }
 
   ]
+}]
+const reportsNavTree = [{
+  key: 'reports',
+  path: `${APP_PREFIX_PATH}/reports`,
+  title: 'sidenav.reports',
+  icon: SnippetsOutlined,
+  breadcrumb: true,
+  isGroupTitle: true,
+  submenu: [
+    {
+      key: 'settings',
+      path: `${APP_PREFIX_PATH}/reports`,
+      title: 'sidenav.reports',
+      icon: SnippetsOutlined,
+      breadcrumb: true,
+      isGroupTitle: false,
+      submenu: [
+        {
+          key: 'reports-performance',
+          path: `${APP_PREFIX_PATH}/reports/performance`,
+          title: 'sidenav.reports.performance',
+          icon: "",
+          breadcrumb: true,
+          submenu: []
+        },
+        {
+          key: 'reports-due',
+          path: `${APP_PREFIX_PATH}/reports/due_report`,
+          title: 'sidenav.reports.due',
+          icon: "",
+          breadcrumb: true,
+          submenu: []
+        },
+        {
+          key: 'reports-attendancelog',
+          path: `${APP_PREFIX_PATH}/reports/attendance_log`,
+          title: 'sidenav.reports.attendancelog',
+          icon: "",
+          breadcrumb: true,
+          submenu: []
+        },
+        {
+          key: 'reports-attendancereport',
+          path: `${APP_PREFIX_PATH}/reports/attendance_report`,
+          title: 'sidenav.reports.attendancereport',
+          icon: "",
+          breadcrumb: true,
+          submenu: []
+        },
+        {
+          key: 'reports-gst',
+          path: `${APP_PREFIX_PATH}/reports/gst_report`,
+          title: 'sidenav.reports.gst',
+          icon: "",
+          breadcrumb: true,
+          submenu: []
+        },
+      ]
+    }
+
+  ]
+
+
 }]
 const settingNavTree = [{
   key: 'settings',
@@ -434,7 +556,9 @@ const navigationConfig = [
   ...dashBoardNavTree,
   ...appsNavTree,
   ...clientNavTree,
+  ...paymentNavTree,
   ...leaveNavTree,
+  ...reportsNavTree,
   ...settingNavTree,
   ...docsNavTree,
 

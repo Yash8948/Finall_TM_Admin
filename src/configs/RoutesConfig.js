@@ -56,6 +56,16 @@ export const protectedRoutes = [
         component: React.lazy(() => import('views/app-views/dashboards/sales')),
     },
     {
+        key: 'dashboard.employees',
+        path: `${APP_PREFIX_PATH}/dashboards/employees`,
+        component: React.lazy(() => import('views/app-views/dashboards/employees/index')),
+    },
+    {
+        key: 'dashboard.employees',
+        path: `${APP_PREFIX_PATH}/dashboards/employees/add_employee`,
+        component: React.lazy(() => import('views/app-views/dashboards/employees/AddEmployeeForm')),
+    },
+    {
         key: 'dashboard.fileManager',
         path: `${APP_PREFIX_PATH}/dashboards/file_manager`,
         component: React.lazy(() => import('views/app-views/dashboards/file-manager')),
@@ -139,7 +149,30 @@ export const protectedRoutes = [
         key: 'apps.ecommerce.orders',
         path: `${APP_PREFIX_PATH}/apps/ecommerce/orders`,
         component: React.lazy(() => import('views/app-views/apps/e-commerce/orders')),
+    },
+     // ========================== Payments ===========================//
+
+     {
+        key: 'payment',
+        path: `${APP_PREFIX_PATH}/payment/receipt`,
+        component: React.lazy(() => import('views/app-views/payment/receipt/index')),
+    },
+    {
+        key: 'payment',
+        path: `${APP_PREFIX_PATH}/payment/receipt/addreceiptform`,
+        component: React.lazy(() => import('views/app-views/payment/receipt/addReceiptForm')),
+    },
+     {
+        key: 'payment',
+        path: `${APP_PREFIX_PATH}/payment/invoice_list`,
+        component: React.lazy(() => import('views/app-views/payment/invoice-list/index')),
     }, 
+     {
+        key: 'payment',
+        path: `${APP_PREFIX_PATH}/payment/custom_invoice`,
+        component: React.lazy(() => import('views/app-views/payment/custom-invoice/index')),
+    },
+
     // ==========================leave ===========================//
 
     {
@@ -168,8 +201,37 @@ export const protectedRoutes = [
         component: React.lazy(() => import('views/app-views/leave/ManageHoliday/manageHoliday')),
     },
 
-
-
+ // ========================== Reports ===========================//
+    {
+        key: 'reports',
+        path: `${APP_PREFIX_PATH}/reports/performance`,
+        component: React.lazy(() => import('views/app-views/reports/performance/index')),
+    },
+    {
+        key: 'reports',
+        path: `${APP_PREFIX_PATH}/reports/due_report`,
+        component: React.lazy(() => import('views/app-views/reports/due/index')),
+    },
+    {
+        key: 'reports',
+        path: `${APP_PREFIX_PATH}/reports/attendance_log`,
+        component: React.lazy(() => import('views/app-views/reports/attendance-log/index')),
+    },
+    {
+        key: 'reports',
+        path: `${APP_PREFIX_PATH}/reports/attendance_report`,
+        component: React.lazy(() => import('views/app-views/reports/attendance-report/index')),
+    },
+    {
+        key: 'reports',
+        path: `${APP_PREFIX_PATH}/reports/gst_report`,
+        component: React.lazy(() => import('views/app-views/reports/gst/index')),
+    },
+    {
+        key: 'reports',
+        path: `${APP_PREFIX_PATH}/reports/attendance_log/add_attendance`,
+        component: React.lazy(() => import('views/app-views/reports/attendance-log/AddAttendanceForm')),
+    },
 
     // ==========================settings ===========================//
     {
@@ -177,11 +239,6 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/settings/payment`,
         component: React.lazy(() => import('views/app-views/settings/payment/index')),
     },
-    // {
-    //     key: 'settings',
-    //     path: `${APP_PREFIX_PATH}/settings/addpaymentmethod`,
-    //     component: React.lazy(() => import('views/app-views/settings/payment/addPaymentMethod')),
-    // },
     {
         key: 'settings',
         path: `${APP_PREFIX_PATH}/settings/expences`,
@@ -233,17 +290,6 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/client/password`,
         component: React.lazy(() => import('views/app-views/client/client-password/index')),
     },
-    {
-        key: 'client',
-        path: `${APP_PREFIX_PATH}/client/receipt`,
-        component: React.lazy(() => import('views/app-views/client/client-receipt/index')),
-    },
-    {
-        key: 'client',
-        path: `${APP_PREFIX_PATH}/client/addreceiptform`,
-        component: React.lazy(() => import('views/app-views/client/client-receipt/addReceiptForm')),
-    },
-   
     {
         key: 'client',
         path: `${APP_PREFIX_PATH}/client/login_details`,

@@ -6,6 +6,7 @@
 	"sidenav.dashboard.analytic": "Analytic",
 	"sidenav.dashboard.sales": "Sales",
 	"sidenav.dashboard.fileManager": "File Manager",
+	"sidenav.dashboard.employees": "Employees",
 	"sidenav.dashboard.task": "Task",
 	"sidenav.dashboard.task.tasklist": "Task-List",
 	"sidenav.dashboard.task.taskadd": "Add Task",
@@ -31,15 +32,31 @@
 	"sidenav.client.company": "Company",
 	"sidenav.client.manual_payment": "Manual Payment",
 	"sidenav.client.password": "Password",
-	"sidenav.client.receipt": "Receipt",
 	"sidenav.client.login_details": "Login Details",
 
+
+	
+	
+	"sidenav.payment": "payment",
+	"sidenav.payment.invoice": "Invoices",
+	"sidenav.payment.receipt": "Receipt",
+	"sidenav.payment.invoice_list": "Invoice List",
+	"sidenav.payment.custom_invoice": "Custom Invoice",
 
 	"sidenav.leaves": "Leaves",
 	"sidenav.leaves.leave": "Leave",
 	"sidenav.leaves.adminleave": "Admin Leave ",
 	"sidenav.leaves.employeeleave": "Employee Leave ",
 	"sidenav.leaves.manageholiday": "Manage Holiday",
+
+
+	"sidenav.reports": "Reports",
+	"sidenav.reports.reports": "Reports",
+	"sidenav.reports.performance": "Performance",
+	"sidenav.reports.due": "Due",
+	"sidenav.reports.attendancelog": "Attendance Log",
+	"sidenav.reports.attendancereport": "Attendance Report",
+	"sidenav.reports.gst": "GST",
 	
 
 
