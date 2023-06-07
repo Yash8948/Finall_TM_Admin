@@ -302,14 +302,6 @@ const clientNavTree = [{
           submenu: []
         },
         {
-          key: 'client_receipt',
-          path: `${APP_PREFIX_PATH}/client/receipt`,
-          title: 'sidenav.client.receipt',
-          icon: ReconciliationOutlined ,
-          breadcrumb: true,
-          submenu: []
-        },
-        {
           key: 'client_login_detail',
           path: `${APP_PREFIX_PATH}/client/login_details`,
           title: 'sidenav.client.login_details',
@@ -331,7 +323,7 @@ const paymentNavTree = [{
       key: 'payment-Receipt',
       path: `${APP_PREFIX_PATH}/payment/receipt`,
       title: 'sidenav.payment.receipt',
-      icon: DollarCircleOutlined,
+      icon: ReconciliationOutlined ,
       breadcrumb: true,
       submenu: []
     },
@@ -339,7 +331,7 @@ const paymentNavTree = [{
       key: 'payment-invoice',
       path: `${APP_PREFIX_PATH}/payment/invoice`,
       title: 'sidenav.payment.invoice',
-      icon: DotChartOutlined,
+      icon: DollarCircleOutlined,
       breadcrumb: true,
       submenu: [
         {
