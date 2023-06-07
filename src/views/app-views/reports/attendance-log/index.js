@@ -136,7 +136,7 @@ const AttandanceLog = () => {
 					<div style={{justifyContent:"end"}}>
 						<Row gutter={24}  >
 							<Col xs={24} sm={24} md={24} lg={24} xl={24} style={{paddingLeft:"0"}} >
-								<Button onClick={handleAddNew} type="primary" className='__button mx-2' block >Add New Employee</Button>
+								<Button onClick={handleAddNew} type="primary" className='__button mx-2' block >Add Attendance Report</Button>
 							</Col>
 							{/* <Col xs={24} sm={8} md={8} lg={8} xl={8} style={{paddingLeft:"0"}}>
 								<Button onClick={handleManageGroup} type="primary" className='__button mx-2' block >Manage Group</Button>

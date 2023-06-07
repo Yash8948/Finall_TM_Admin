@@ -43,7 +43,7 @@ const AddAttendanceForm = () => {
   const dateFormatList = ["DD/MM/YYYY"];
   function disabledDate(current) {
     // Can not select days after today and today
-    return current && current > dayjs().startOf("day");
+    return current && current > dayjs().startOf("day"-1);
   }
 
   const successMsg = (msg) => {
@@ -111,16 +111,12 @@ const handleAddAttendance = async (value, e) => {
     if (countObj.status === true) {
         successMsg(countObj.message)
         setTimeout(() => {
-            // form.resetFields();
+            form.resetFields();
           }, 500);
-        //  if(btnStatus === 1){
-        //     // console.log("btnStatus: ",btnStatus);
-        //     navigate('/app/client/manage_group');
-            
-        //   }
-        //   if (btnStatus ===2) {
-        //     navigate('/app/client/company');
-        //  }
+         if(btnStatus === 1){
+            navigate('/app/reports/attendance_log')
+          }
+        
           
     }else{
         // message.error(countObj.message); 
@@ -170,7 +166,7 @@ const handleAddAttendance = async (value, e) => {
         </PageHeaderAlt> */}
         <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24}>
-            <Card title="Add Group" style={{ marginTop: 20 }}>
+            <Card title="Add Attendance" style={{ marginTop: 20 }}>
               <div className="">
                 <Spin spinning={loading}>
                   <Row gutter={12} justify="start">
@@ -275,7 +271,7 @@ const handleAddAttendance = async (value, e) => {
                           danger
                             type="primary"
                             // onClick={hanldeSaveAndAddCompany}
-                            // onClick={() => setBtnStatus(2)}
+                            onClick={() => navigate('/app/reports/attendance_log')}
                             style={{ width: "100%",whiteSpace: "normal",boxShadow:"none" }}
                           >
                             Cancel
