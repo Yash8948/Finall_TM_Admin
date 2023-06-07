@@ -292,6 +292,17 @@ export const protectedRoutes = [
     },
     {
         key: 'client',
+        path: `${APP_PREFIX_PATH}/client/receipt`,
+        component: React.lazy(() => import('views/app-views/client/client-receipt/index')),
+    },
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/addreceiptform`,
+        component: React.lazy(() => import('views/app-views/client/client-receipt/addReceiptForm')),
+    },
+   
+    {
+        key: 'client',
         path: `${APP_PREFIX_PATH}/client/login_details`,
         component: React.lazy(() => import('views/app-views/client/client-loginDetails/index')),
     },

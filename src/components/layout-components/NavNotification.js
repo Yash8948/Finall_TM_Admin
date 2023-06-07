@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { Badge, Avatar, List, Button, Popover } from 'antd';
-import { 
-	MailOutlined, 
-	BellOutlined, 
+import {
+	MailOutlined,
+	BellOutlined,
 	WarningOutlined,
 	CheckCircleOutlined
 } from '@ant-design/icons';
 import NavItem from './NavItem'
 import notificationData from 'assets/data/notification.data.json';
 import Flex from 'components/shared-components/Flex'
+import { useNavigate } from 'react-router-dom';
 
-const getIcon =  icon => {
+const getIcon = icon => {
 	switch (icon) {
 		case 'mail':
 			return <MailOutlined />;
@@ -22,41 +23,45 @@ const getIcon =  icon => {
 			return <MailOutlined />;
 	}
 }
-
 const getNotificationBody = list => {
 	return list.length > 0 ?
-	<List
-		size="small"
-		itemLayout="horizontal"
-		dataSource={list}
-		renderItem={item => (
-			<List.Item className="list-clickable">
-				<Flex alignItems="center">
-				<div className="pr-3">
-					{item.img? <Avatar src={`/img/avatars/${item.img}`} /> : <Avatar className={`ant-avatar-${item.type}`} icon={getIcon(item.icon)} />}
-				</div>
-				<div className="mr-3">
-					<span className="font-weight-bold text-dark">{item.name} </span>
-					<span className="text-gray-light">{item.desc}</span>
-				</div>
-				<small className="ml-auto">{item.time}</small>
-				</Flex>
-			</List.Item>
-		)}
-	/>
-	:
-	<div className="empty-notification">
-		<img src="https://gw.alipayobjects.com/zos/rmsportal/sAuJeJzSKbUmHfBQRzmZ.svg" alt="empty" />
-		<p className="mt-3">You have viewed all notifications</p>
-	</div>;
+		<List
+			size="small"
+			itemLayout="horizontal"
+			dataSource={list}
+			renderItem={item => (
+				<List.Item className="list-clickable">
+					<Flex alignItems="center">
+						<div className="pr-3">
+							{item.img ? <Avatar src={`/img/avatars/${item.img}`} /> : <Avatar className={`ant-avatar-${item.type}`} icon={getIcon(item.icon)} />}
+						</div>
+						<div className="mr-3">
+							<span className="font-weight-bold text-dark">{item.name} </span>
+							<span className="text-gray-light">{item.desc}</span>
+						</div>
+						<small className="ml-auto">{item.time}</small>
+					</Flex>
+				</List.Item>
+			)}
+		/>
+		:
+		// <div className="empty-notification">
+		// 	<img src="https://gw.alipayobjects.com/zos/rmsportal/sAuJeJzSKbUmHfBQRzmZ.svg" alt="empty"  className='justifyContent-center'/>
+		// 	<p className="mt-3">You have viewed all notifications for today</p>
+		// </div>;
+		null
 }
 
-export const NavNotification = ({mode}) => {
+export const NavNotification = ({ mode }) => {
+	const navigate = useNavigate()
 
+	const viewnotification = () => {
+		navigate('/app/notification')
+	}
 	const [data, setData] = useState(notificationData)
 
 	const notificationList = (
-		<div style={{maxWidth: 300}}>
+		<div style={{ maxWidth: 300 }}>
 			<div className="border-bottom d-flex justify-content-between align-items-center px-3 py-2">
 				<h4 className="mb-0">Notification</h4>
 				<Button className="text-primary" type="text" onClick={() => setData([])} size="small">Clear </Button>
@@ -65,24 +70,26 @@ export const NavNotification = ({mode}) => {
 				{getNotificationBody(data)}
 			</div>
 			{
-				data.length > 0 ? 
-				<div className="px-3 py-2 border-top text-center">
-					<a className="d-block" href="#/">View all</a>
-				</div>
-				:
-				null
+				data.length > 0 ?
+					<div className="px-3 py-2 border-top text-center">
+						<Button className=" w-100 " onClick={viewnotification}>View all</Button>
+					</div>
+					:
+					<div className="px-3 py-2 border-top text-center">
+						<Button className=" w-100 " onClick={viewnotification}>View all</Button>
+					</div>
 			}
 		</div>
 	);
 
 	return (
-		<Popover 
-			placement="bottomRight" 
-			title={null} 
-			content={notificationList} 
+		<Popover
+			placement="bottomRight"
+			title={null}
+			content={notificationList}
 			trigger="click"
 			overlayClassName="nav-notification"
-			overlayInnerStyle={{padding: 0}}
+			overlayInnerStyle={{ padding: 0 }}
 		>
 			<NavItem mode={mode}>
 				<Badge count={data.length}>
