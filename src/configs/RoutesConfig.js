@@ -150,9 +150,9 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/apps/ecommerce/orders`,
         component: React.lazy(() => import('views/app-views/apps/e-commerce/orders')),
     },
-     // ========================== Payments ===========================//
+    // ========================== Payments ===========================//
 
-     {
+    {
         key: 'payment',
         path: `${APP_PREFIX_PATH}/payment/receipt`,
         component: React.lazy(() => import('views/app-views/payment/receipt/index')),
@@ -162,15 +162,25 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/payment/receipt/addreceiptform`,
         component: React.lazy(() => import('views/app-views/payment/receipt/addReceiptForm')),
     },
-     {
+    {
         key: 'payment',
         path: `${APP_PREFIX_PATH}/payment/invoice_list`,
         component: React.lazy(() => import('views/app-views/payment/invoice-list/index')),
-    }, 
-     {
+    },
+    {
+        key: 'payment',
+        path: `${APP_PREFIX_PATH}/payment/addnewinvoice`,
+        component: React.lazy(() => import('views/app-views/payment/invoice-list/addnewinvoice')),
+    },
+    {
         key: 'payment',
         path: `${APP_PREFIX_PATH}/payment/custom_invoice`,
         component: React.lazy(() => import('views/app-views/payment/custom-invoice/index')),
+    },
+    {
+        key: 'payment',
+        path: `${APP_PREFIX_PATH}/payment/addcustom_invoice`,
+        component: React.lazy(() => import('views/app-views/payment/custom-invoice/addcutomInvoice')),
     },
 
     // ==========================leave ===========================//
@@ -201,7 +211,7 @@ export const protectedRoutes = [
         component: React.lazy(() => import('views/app-views/leave/ManageHoliday/manageHoliday')),
     },
 
- // ========================== Reports ===========================//
+    // ========================== Reports ===========================//
     {
         key: 'reports',
         path: `${APP_PREFIX_PATH}/reports/performance`,
@@ -290,8 +300,8 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/client/password`,
         component: React.lazy(() => import('views/app-views/client/client-password/index')),
     },
-    
-   
+
+
     {
         key: 'client',
         path: `${APP_PREFIX_PATH}/client/login_details`,
