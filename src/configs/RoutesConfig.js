@@ -140,6 +140,32 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/apps/ecommerce/orders`,
         component: React.lazy(() => import('views/app-views/apps/e-commerce/orders')),
     }, 
+    // ========================== Notification ===========================//
+
+    {
+        key: 'notification',
+        path: `${APP_PREFIX_PATH}/notification`,
+        component: React.lazy(() => import('views/app-views/notification/index')),
+    },
+    {
+        key: 'notification',
+        path: `${APP_PREFIX_PATH}/notification/sandSMS`,
+        component: React.lazy(() => import('views/app-views/notification/sandSMS')),
+    },
+    {
+        key: 'notification',
+        path: `${APP_PREFIX_PATH}/notification/sandEmail`,
+        component: React.lazy(() => import('views/app-views/notification/sandEmail')),
+    },
+    {
+        key: 'notification',
+        path: `${APP_PREFIX_PATH}/notification/dailynotification`,
+        component: React.lazy(() => import('views/app-views/notification/dailyNotification')),
+    },
+
+
+
+
     // ==========================leave ===========================//
 
     {
@@ -232,6 +258,11 @@ export const protectedRoutes = [
         key: 'client',
         path: `${APP_PREFIX_PATH}/client/password`,
         component: React.lazy(() => import('views/app-views/client/client-password/index')),
+    },
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/addnewpassword`,
+        component: React.lazy(() => import('views/app-views/client/client-password/addNewPassword')),
     },
     {
         key: 'client',
