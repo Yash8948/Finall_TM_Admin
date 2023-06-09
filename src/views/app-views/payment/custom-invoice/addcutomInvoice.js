@@ -306,7 +306,7 @@ const AddCustomInvoice = () => {
                                         </Col>
                                         <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                                             <Form.Item
-                                                label="Particular  : "
+                                                label="Particular : "
                                                 name="particular "
                                                 rules={[
                                                     {

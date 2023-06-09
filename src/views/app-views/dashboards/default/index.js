@@ -211,7 +211,7 @@ export const DefaultDashboard = () => {
   //client log table api
   const fetchData = async (value) => {
     var offset = 0;
-    
+
     setLoading(true);
     if (tableParams.pagination.current > 1) {
       offset =

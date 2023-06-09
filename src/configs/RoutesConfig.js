@@ -173,7 +173,7 @@ export const protectedRoutes = [
         component: React.lazy(() => import('views/app-views/payment/invoice-list/addnewinvoice')),
     },
     {
-        key: 'payment',
+        key: 'payment', 
         path: `${APP_PREFIX_PATH}/payment/custom_invoice`,
         component: React.lazy(() => import('views/app-views/payment/custom-invoice/index')),
     },
@@ -300,6 +300,11 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/client/password`,
         component: React.lazy(() => import('views/app-views/client/client-password/index')),
     },
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/addnewpassword`,
+        component: React.lazy(() => import('views/app-views/client/client-password/addNewPassword')),
+    },
 
 
     {
@@ -311,6 +316,11 @@ export const protectedRoutes = [
         key: 'client',
         path: `${APP_PREFIX_PATH}/client/addclientform`,
         component: React.lazy(() => import('views/app-views/client/client-list/AddClientForm')),
+    },
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/editclientform`,
+        component: React.lazy(() => import('views/app-views/client/client-list/EditClientForm')),
     },
     {
         key: 'client',
