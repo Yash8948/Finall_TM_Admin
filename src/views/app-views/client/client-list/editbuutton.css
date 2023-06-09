@@ -1,0 +1,30 @@
+.edit{
+    margin-right: 15px;
+   
+    color: white;
+    background-color: green;
+}
+.delete{
+    margin-right: 15px;
+   
+    color: white;
+    background-color: tomato;
+}
+.reset{
+    margin-right: 15px;
+   
+    color: white;
+    background-color: blue;
+}
+.view{
+    margin-right: 15px;
+   
+    color: white;
+    background-color: yellow;
+}
+.message{
+    margin-right: 15px;
+   
+    color: white;
+    background-color: skyblue;
+}
