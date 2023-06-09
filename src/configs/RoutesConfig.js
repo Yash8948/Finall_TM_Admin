@@ -169,8 +169,8 @@ export const protectedRoutes = [
     },
     {
         key: 'payment',
-        path: `${APP_PREFIX_PATH}/payment/addnewinvoice`,
-        component: React.lazy(() => import('views/app-views/payment/invoice-list/addnewinvoice')),
+        path: `${APP_PREFIX_PATH}/payment/add_invoice`,
+        component: React.lazy(() => import('views/app-views/payment/invoice-list/AddNewInvoice')),
     },
     {
         key: 'payment',

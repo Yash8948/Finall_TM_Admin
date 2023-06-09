@@ -39,7 +39,7 @@ const CustomInvoive = () => {
     const handleDepart = () => {
         setIsModalOpen(false);
     }
-    const addReceipt = () => {
+    const handlecustominvoice = () => {
         navigate('/app/payment/addcustom_invoice')
     }
 
@@ -90,7 +90,7 @@ const CustomInvoive = () => {
                 <Flex alignItems="center" justifyContent="end" className='mb-2' mobileFlex={false}>
 
                     <div>
-                        <Button onClick={addReceipt} type="primary" icon={<PlusCircleOutlined />} block>Add New</Button>
+                        <Button onClick={handlecustominvoice} type="primary" icon={<PlusCircleOutlined />} block>Add New</Button>
                     </div>
                 </Flex>
                 <div className="table-responsive">
