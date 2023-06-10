@@ -189,25 +189,7 @@ export const DefaultDashboard = () => {
     },
   });
   const [value, setValue] = useState("");
-  // const fetchDataold = () => {
-  //   setLoading(true);
-  //   fetch(`https://randomuser.me/api?${qs.stringify(getRandomuserParams(tableParams))}`)
-  //     .then((res) => res.json())
-  //     .then(({ results }) => {
-  //       setData(results);
-  //       setLoading(false);
-  //       setTableParams({
-  //         ...tableParams,
-  //         pagination: {
-  //           ...tableParams.pagination,
-  //           total: 100,
-  //           // 200 is mock data, you should read it from server
-  //           // total: data.totalCount,
-  //         },
-  //       });
-  //     });
-  //     console.log(data);
-  // };
+ 
   //client log table api
   const fetchData = async (value) => {
     var offset = 0;
@@ -503,8 +485,8 @@ export const DefaultDashboard = () => {
     <>
       <Row gutter={4}>
         {/* <Col xs={24} sm={24} md={24} lg={18}> */}
-        {/* uncomment */}
-        {/* <Row gutter={16}>
+        
+        <Row gutter={16}>
           { cardCounts && (
             <>
           <Col xs={24} sm={24} md={24} lg={24} xl={6} >
@@ -564,11 +546,11 @@ export const DefaultDashboard = () => {
           </Col>
           </>
 )}
-          </Row> */}
+          </Row>
       </Row>
 
       {/* table task lists starts*/}
-      {/* uncomment */}
+
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Card
@@ -652,8 +634,8 @@ export const DefaultDashboard = () => {
 
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={7}>
-          {/* uncomment */}
-          {/* <Card
+          
+          <Card
             title="Add Log"
             extra={<CardDropdown items={newJoinMemberOptions} />}
           >
@@ -703,7 +685,7 @@ export const DefaultDashboard = () => {
                     // defaultValue={dayjs()}
                     format={dateFormatList}
                     disabledDate={disabledDate}
-                    onChange={handleDatePicker}
+                    // onChange={handleDatePicker}
                     style={{ width: "100%" }}
                   />
                 </Form.Item>
@@ -718,10 +700,10 @@ export const DefaultDashboard = () => {
               </Form>
               </Spin>
             </div>
-          </Card> */}
+          </Card>
         </Col>
         {/* uncommet */}
-        {/* <Col xs={24} sm={24} md={24} lg={17}>
+        <Col xs={24} sm={24} md={24} lg={17}>
           <Card
             title="Client Log Data"
             extra={
@@ -780,7 +762,7 @@ export const DefaultDashboard = () => {
               style={{ overflow: "auto" }}
             />
           </Card>
-        </Col> */}
+        </Col>
       </Row>
       {/* <Table
               className="no-border-last"
@@ -791,8 +773,8 @@ export const DefaultDashboard = () => {
               pagination={false}
             /> */}
       {/* table birthday lists starts*/}
-      {/* uncomment */}
-      {/* <Row gutter={16}>
+
+      <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Card title="Birthday List" extra={<CardDropdown items={latestTransactionOption} />}>
 
@@ -809,11 +791,11 @@ export const DefaultDashboard = () => {
           </Card>
           
           </Col>
-          </Row> */}
+          </Row>
       {/* table birthday lists ends*/}
       {/* table holiday lists starts*/}
-      {/* uncomment */}
-      {/* <Row gutter={16}>
+      
+      <Row gutter={16}>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Card title="Holiday List" extra={<CardDropdown items={latestTransactionOption} />}>
 
@@ -830,7 +812,7 @@ export const DefaultDashboard = () => {
           </Card>
           
           </Col>
-          </Row> */}
+          </Row>
       {/* table birthday lists ends*/}
     </>
   );
