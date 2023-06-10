@@ -320,7 +320,7 @@ export const protectedRoutes = [
     {
         key: 'client',
         path: `${APP_PREFIX_PATH}/client/editclientform`,
-        component: React.lazy(() => import('views/app-views/client/client-list/EditClientForm')),
+        component: React.lazy(() => import('views/app-views/client/client-list/Actionbutton/EditClientForm')),
     },
     {
         key: 'client',
