@@ -13,6 +13,7 @@ import { EyeOutlined, DeleteOutlined, SearchOutlined, PlusCircleOutlined } from 
 import { MdPassword } from "react-icons/md";
 const TaskReports = () => {
 	const [list, setList] = useState(ProductListData)
+	const [userID, setUserID] = useState()
   const Navigate = useNavigate();
   
   const go = () => {
@@ -23,7 +24,15 @@ const TaskReports = () => {
 		Navigate(`/app/apps/ecommerce/edit-product/${row.id}`)
 	}
   
-  
+
+	const deleteUser = (userId) => {
+		
+		console.log(userId);
+
+		message.success({ content: `Deleted user ${userId}`, duration: 2 });
+	}
+
+
 
   const tableColumns = [
 		{
@@ -58,13 +67,13 @@ const TaskReports = () => {
 				
           <div className="text-right d-flex justify-content-center">
 						<Tooltip title="Edit">
-							<Button success type="primary" className="mr-2" icon={<EditOutlined />} onClick={() => {this.showUserProfile(elm)}} size="small"/>
+							<Button success type="primary" className="mr-2" icon={<EditOutlined />}  size="small"/>
 						</Tooltip>
 						<Tooltip title="Delete">
-							<Button danger className="mr-2" icon={<DeleteOutlined />} onClick={()=> {this.deleteUser(elm.id)}} size="small"/>
+							<Button danger className="mr-2" icon={<DeleteOutlined />} onClick={()=> deleteUser(elm.id)} size="small"/>
 						</Tooltip>
 						<Tooltip title="Reset Password">
-							<Button danger className="mr-2" icon={<MdPassword />} onClick={()=> {this.deleteUser(elm.id)}} size="small"/>
+							<Button danger className="mr-2" icon={<MdPassword />} onClick={()=> {deleteUser(elm.id)}} size="small"/>
 						</Tooltip>
 						<Tooltip title="View">
 							<Button danger className="mr-2" icon={<EyeOutlined />} onClick={()=> {this.deleteUser(elm.id)}} size="small"/>

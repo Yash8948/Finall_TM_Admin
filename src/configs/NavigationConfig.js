@@ -416,7 +416,7 @@ const reportsNavTree = [{
   isGroupTitle: true,
   submenu: [
     {
-      key: 'settings',
+      key: 'reports',
       path: `${APP_PREFIX_PATH}/reports`,
       title: 'sidenav.reports',
       icon: SnippetsOutlined,

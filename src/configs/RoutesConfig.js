@@ -66,6 +66,11 @@ export const protectedRoutes = [
         component: React.lazy(() => import('views/app-views/dashboards/employees/AddEmployeeForm')),
     },
     {
+        key: 'dashboard.employees',
+        path: `${APP_PREFIX_PATH}/dashboards/employees/add_employee/:id`,
+        component: React.lazy(() => import('views/app-views/apps/e-commerce/edit-product')),
+    },
+    {
         key: 'dashboard.fileManager',
         path: `${APP_PREFIX_PATH}/dashboards/file_manager`,
         component: React.lazy(() => import('views/app-views/dashboards/file-manager')),

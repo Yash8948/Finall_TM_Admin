@@ -74,7 +74,7 @@ const handleAddClient = async (value, e) => {
       //   // navigate('/app/client/company');
       // }         
     let ApiData = {
-
+        
         "un":value.user_name,
         "fname":value.first_name,
         "lname":value.last_name,
@@ -90,7 +90,7 @@ const handleAddClient = async (value, e) => {
     };
     console.log(ApiData);
     
-    let response = await await ApiSnippets("/Add_Client", ApiData);
+    let response = await await ApiSnippets("/Add_Employee", ApiData);
 
     let countObj = await response;
     
