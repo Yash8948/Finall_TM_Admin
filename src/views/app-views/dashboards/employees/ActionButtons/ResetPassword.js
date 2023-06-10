@@ -28,7 +28,6 @@ const ResetPassword = () => {
     const [loading, setLoading] = useState(false);
     const [send_txt_msg, setSend_txt_msg] = useState(0);
     const [send_email, setSend_email] = useState(0);
-    const [btnStatus, setBtnStatus] = useState(0);
     const [companyData, setCompanyData] = useState([]);
     const [clientName, setClientName] = useState(null);
     const { Option } = Select;

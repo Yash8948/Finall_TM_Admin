@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
 import {
   Tabs,
@@ -38,7 +38,8 @@ const AddEmployeeForm = () => {
     // Can not select days after today and today
     return current && current > dayjs().startOf("day");
   }
-
+  const {id} = useParams();
+console.log(id);
   const successMsg = (msg) => {
     // message.success(countObj.message);
     messageApi.success(msg);

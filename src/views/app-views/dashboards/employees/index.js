@@ -7,7 +7,9 @@ import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 import Card from "components/shared-components/Card";
 import Flex from 'components/shared-components/Flex'
 
-import { EyeOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EyeOutlined, DeleteOutlined, DownloadOutlined, EditOutlined, MessageOutlined } from '@ant-design/icons';
+// import { DownloadOutlined, EditOutlined, MessageOutlined } from "@ant-design/icons";
+import { MdPassword } from "react-icons/md";
 //datatable imports
 // import { Table } from 'antd';
 import { Table } from "ant-table-extensions";
@@ -56,8 +58,10 @@ const Employees = () => {
 	
 
 
-	const showUserProfile = (elm) => {
-		console.log(elm);
+	const editEmployee = (elm) => {
+		console.log(elm.ID);
+
+		navigate(`/app/dashboards/employees/edit_employee/:${elm.ID}`)
 	}
 	const deleteUser = async (userID) => {
 		console.log(userID);
@@ -71,7 +75,11 @@ const Employees = () => {
 		fetchData();
 		console.log(response);
 	}
+	const resetPassword = (elm) => {
+		console.log(elm);
 
+		navigate(`/app/dashboards/employees/reset_password/:${elm}`)
+	}
 
 
 
@@ -123,10 +131,13 @@ const Employees = () => {
 		  render: (elm) => (
 			<div className="text-right d-flex ">
 				<Tooltip title="View">
-					<Button type="primary" className="mr-2" icon={<EyeOutlined />} onClick={() => showUserProfile(elm)} size="small"/>
+					<Button type="primary" className="mx-1" icon={<EyeOutlined />} onClick={() => editEmployee(elm)} size="small"/>
 				</Tooltip>
 				<Tooltip title="Delete">
-					<Button danger icon={<DeleteOutlined />} onClick={()=> deleteUser(elm.ID)} size="small"/>
+					<Button danger className='mx-1' icon={<DeleteOutlined />} onClick={()=> deleteUser(elm.ID)} size="small"/>
+				</Tooltip>
+				<Tooltip title="Reset Password">
+					<Button danger className='mx-1' icon={<MdPassword />} onClick={()=> resetPassword(elm.ID)} size="small"/>
 				</Tooltip>
 			</div>
 		),
