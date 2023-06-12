@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { Card, Table, Select, Input, Button, Badge, Menu, Form ,Modal, Tag, Tooltip } from 'antd';
+import { Card, Select, Input, Button, Badge, Menu, Form, Modal, Tag, Tooltip } from 'antd';
+
+import { Table } from "ant-table-extensions";
+
 import { SPACER } from "constants/ThemeConstant";
 
 import ProductListData from "assets/data/product-list.data.json"
@@ -66,32 +69,43 @@ const ClientList = (props) => {
 	const viewDetails = row => {
 		// navigate(`/app/apps/ecommerce/edit-product/${row.id}`)
 	}
+	// useEffect(() => {
+	// 	if (mode === EDIT) {
+	// 		console.log('is edit')
+	// 		console.log('props', props)
+	// 		const { id } = param
+	// 		const produtId = parseInt(id)
+	// 		const productData = ProductListData.filter(product => product.id === produtId)
+	// 		const product = productData[0]
+	// 		form.setFieldsValue({
+	// 			comparePrice: 500,
+	// 			cost: 0.00,
+	// 			taxRate: 6,
+	// 			description: 'There are many variations of passages of Lorem Ipsum available.',
+	// 			category: product.category,
+	// 			name: product.name,
+	// 			price: product.price
+	// 		})
+	// 	}
+	// }, [form, mode, param, props]);
 
-	useEffect(() => {
-    	if(mode === EDIT) {
-			console.log('is edit')
-			console.log('props', props)
-			const { id } = param
-			const produtId = parseInt(id)
-			const productData = ProductListData.filter( product => product.id === produtId)
-			const product = productData[0]
-			form.setFieldsValue({
-				comparePrice: 500,
-				cost: 0.00,
-				taxRate: 6,
-				description: 'There are many variations of passages of Lorem Ipsum available.',
-				category: product.category,
-				name: product.name,
-				price: product.price
-			})
-		}
-  	}, [form, mode, param, props]);
+	const handleEdit = (elm) => {
+		console.log(elm);
 
-	const handleEdit =()=>{
-
-		navigate('/app/client/editclientform')
+		navigate(`/app/client/client_list/edit_clientform/:${elm}`)
 	}
-
+	const deleteUser = async (userID) => {
+		console.log(userID);	
+		setLoading(true)
+		let ApiData = {
+			id: userID,
+		};
+		console.log(ApiData);
+		let response = await ApiSnippets("/Delete_Client", ApiData);
+		setLoading(false)
+		fetchData();
+		console.log(response);
+	}
 
 	const columns = [
 		{
@@ -162,7 +176,7 @@ const ClientList = (props) => {
 
 				<div className="text-right d-flex justify-content-center">
 					<Tooltip title="Edit">
-						<Button className="mr-2" icon={<EditOutlined />} onClick={handleEdit} size="small" />
+						<Button className="mr-2" icon={<EditOutlined />} onClick={() => handleEdit(elm.ID)} size="small" />
 					</Tooltip>
 					<Tooltip title="Reset Password">
 						<Button className="mr-2" icon={<MdPassword />} onClick={() => { this.deleteUser(elm.id) }} size="small" />
@@ -175,7 +189,7 @@ const ClientList = (props) => {
 						<Button className="mr-2" icon={<MessageOutlined />} onClick={() => { this.deleteUser(elm.id) }} size="small" />
 					</Tooltip>
 					<Tooltip title="Delete">
-						<Button className="mr-2" icon={<DeleteOutlined />} onClick={() => { this.deleteUser(elm.id) }} size="small" />
+						<Button className="mr-2" icon={<DeleteOutlined />} onClick={() => deleteUser(elm.ID)} size="small" />
 					</Tooltip>
 
 				</div>
@@ -208,13 +222,7 @@ const ClientList = (props) => {
 		// console.log(exportBtnRef.current);
 	};
 
-	const onSearch = e => {
-		const value = e.currentTarget.value
-		const searchArray = e.currentTarget.value ? list : ProductListData
-		const data = utils.wildCardSearch(searchArray, value)
-		setList(data)
-		setSelectedRowKeys([])
-	}
+
 
 	const fetchData = async (value) => {
 		var offset = 0;
@@ -280,49 +288,54 @@ const ClientList = (props) => {
 			setData([]);
 		}
 	};
-	// const handlesearch_clientList = (value, event) => {
-	// 	setCLsearchvalue(value);
-	// 	const fetchDataOnSearch = async (value) => {
-	// 	  var offset = 0;
-	// 	  setLoading(true);
-	// 	  if (tableParams.pagination.current > 1) {
-	// 		offset =
-	// 		  (tableParams.pagination.current - 1) *
-	// 		  tableParams.pagination.pageSize;
-	// 	  }
-	// 	  let ApiData = {
-	// 		limit: tableParams.pagination.pageSize,
-	// 		offset: offset,
-	// 		search: value,
-	// 	  };
-	// 	  let response = await ApiSnippets("/ClientLogData_Dashboard", ApiData);
-	// 	  let countObj = await response.data;
-	// 	  for (let i = 0; i < countObj.length; i++) {
-	// 		// limit * currentpage - (limit -1)
-	// 		let current_page = tableParams.pagination.current;
-	// 		let page_limit = tableParams.pagination.pageSize;
-	// 		countObj[i].srno = page_limit * current_page - (page_limit - i - 1); // srno added to response thank you jigi
-	// 		countObj[i].on_date = new Date(
-	// 		  countObj[i].on_date * 1000
-	// 		).toLocaleDateString("en-GB");
-	// 	  }
-	// 	  // console.log(countObj);
-	// 	  setClientTableData(countObj);
-	// 	  // console.log(srno_array);
-	// 	  // console.log(response.count);
-	// 	  setData(response.data);
-	// 	  console.log(data);
-	// 	  // setData(PclientLogData);
-	// 	  setLoading(false);
-	// 	  setTableParams({
-	// 		...tableParams,
-	// 		pagination: {
-	// 		  ...tableParams.pagination,
-	// 		  total: response.count,
-	// 		  // total: 100,
-	// 		  // 200 is mock data, you should read it from server
-	// 		  // total: data.totalCount,
-	// 		},
+	const hanldeSearch_clientlist = (value, event) => {
+		setCLsearchvalue(value);
+		const fetchDataOnSearch = async (value) => {
+			var offset = 0;
+			setLoading(true);
+			if (tableParams.pagination.current > 1) {
+				offset =
+					(tableParams.pagination.current - 1) *
+					tableParams.pagination.pageSize;
+			}
+			let ApiData = {
+				type: 1,
+				limit: tableParams.pagination.pageSize,
+				offset: offset,
+				search: value,
+			};
+			let response = await ApiSnippets("/GetUsers", ApiData);
+			let countObj = await response.data;
+			for (let i = 0; i < countObj.length; i++) {
+				// limit * currentpage - (limit -1)
+				let current_page = tableParams.pagination.current;
+				let page_limit = tableParams.pagination.pageSize;
+				countObj[i].srno = page_limit * current_page - (page_limit - i - 1); // srno added to response thank you jigi
+				countObj[i].on_date = new Date(
+					countObj[i].on_date * 1000
+				).toLocaleDateString("en-GB");
+			}
+			// console.log(countObj);
+			// setClientTableData(countObj);
+			// console.log(srno_array);
+			// console.log(response.count);
+			setData(response.data);
+			console.log(data);
+			setLoading(false);
+			setTableParams({
+				...tableParams,
+				pagination: {
+					...tableParams.pagination,
+					total: response.count,
+					// total: 100,
+					// 200 is mock data, you should read it from server
+					// total: data.totalCount,
+				},
+			});
+		};
+		fetchDataOnSearch(value);
+	};
+
 	const latestTransactionOption = [
 		{
 			key: "Refresh",
@@ -381,19 +394,15 @@ const ClientList = (props) => {
 	// 	// console.log(typeofvalue);
 	//   };
 	return (
-		<Card title="Client List">
-			<Flex alignItems="center" justifyContent="space-between" mobileFlex={false}>
-				<Flex className="mb-1" mobileFlex={false}>
-					<div className="mr-md-3 mb-3">
-						<Input placeholder="Search"
-							prefix={<SearchOutlined />}
-							onChange={(e) => setSearchValue(e.target.value)} />
-					</div>
-					{/* <div ref={componentRefPrint}>
-						<PDFExport ref={componentRefPrint} paperSize="A4"></PDFExport>
-					</div> */}
-					<div className="mb-3">
-						{/* <Select 
+		<>
+			<Card title="Client List">
+				<Flex alignItems="center" justifyContent="space-between" mobileFlex={false}>
+					<Flex className="mb-1" mobileFlex={false}>
+						<div className="mr-md-3 mb-3">
+							<Input.Search allowClear className="__searchbox" onSearch={hanldeSearch_clientlist} style={{ width: "100%" }} />
+						</div>
+						<div className="mb-3">
+							{/* <Select 
 							defaultValue="All" 
 							className="w-100" 
 							style={{ minWidth: 180 }} 
@@ -407,21 +416,18 @@ const ClientList = (props) => {
 								))
 							}
 						</Select> */}
+						</div>
+					</Flex>
+					<div>
+						<Button onClick={handleAddClient} type="primary" icon={<PlusCircleOutlined />} block >Add Client</Button>
 					</div>
 				</Flex>
-				<div>
-					<Button onClick={handleAddClient} type="primary" icon={<PlusCircleOutlined />} block >Add Client</Button>
-				</div>
-			</Flex>
-			<div ref={componentRefPrint}>
+				{/* <div ref={componentRefPrint}> */}
 				<PDFExport ref={componentRefPrint} paperSize="A4">
-					{/* <Document>
-						<Page size="A4" style={styles.page}>
-						<View style={styles.section}> */}
 					<Table
 						//  rowSelection={rowSelection}
 						columns={columns}
-						rowKey={(record) => record.id} // id
+						rowKey={(record) => record.ID} // id
 						dataSource={data}
 						pagination={tableParams.pagination}
 						loading={loading}
@@ -430,15 +436,24 @@ const ClientList = (props) => {
 						// exportable={}
 						exportableProps={{
 							showColumnPicker: true,
-							fileName: "Task_List",
+							fileName: "Client_List",
 						}}
 						// searchableProps={{ fuzzySearch: true }}
 						style={{ overflow: "auto" }}
 					/>
 				</PDFExport>
-			</div>
-		</Card>
+				{/* </div> */}
+			</Card>
+		</>
+
 	)
 }
 
 export default ClientList
+
+
+
+
+
+
+

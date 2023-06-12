@@ -263,11 +263,6 @@ const AddReceiptForm = () => {
             console.log(document.getElementById('PayableAmount'))
         }
     };
-    // React.useEffect(() => {
-    //     form.setFieldsValue({
-    //       amount: "0",
-    //     });
-    //   }, []);
     return (
 
         <Row gutter={16}>
