@@ -1,13 +1,13 @@
 import React, {useEffect, useState, useRef, useCallback} from 'react'
 import "../../client/company/edited.css"
-import { Select, Input, Button, Badge, Menu, Row, Col, Dropdown, Tooltip } from 'antd';
+import { Select, Input, Button, Badge, Menu, Row, Col, Dropdown, Tooltip, Tag } from 'antd';
 
 import { useReactToPrint } from "react-to-print";
 import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 import Card from "components/shared-components/Card";
 import Flex from 'components/shared-components/Flex'
 
-import { EyeOutlined, DeleteOutlined, DownloadOutlined, EditOutlined, MessageOutlined } from '@ant-design/icons';
+import { EyeOutlined, DeleteOutlined, DownloadOutlined, EditOutlined, MessageOutlined, SettingOutlined } from '@ant-design/icons';
 // import { DownloadOutlined, EditOutlined, MessageOutlined } from "@ant-design/icons";
 import { MdPassword } from "react-icons/md";
 //datatable imports
@@ -59,26 +59,39 @@ const Employees = () => {
 
 
 	const editEmployee = (elm) => {
-		console.log(elm.ID);
+		// console.log(elm.ID);
 
 		navigate(`/app/dashboards/employees/edit_employee/:${elm.ID}`)
+		
 	}
 	const deleteUser = async (userID) => {
-		console.log(userID);
+		// console.log(userID);
 		setLoading(true)
 		let ApiData = {
 			id:userID,
 		};
-		console.log(ApiData);
+		// console.log(ApiData);
 		let response = await ApiSnippets("/Delete_Employee", ApiData);
 		setLoading(false)
 		fetchData();
-		console.log(response);
+		// console.log(response);
 	}
 	const resetPassword = (elm) => {
 		console.log(elm);
 
 		navigate(`/app/dashboards/employees/reset_password/:${elm}`)
+	}
+	const messageUser = (elm) => {
+		console.log(elm);
+
+		navigate(`/app/apps/chat/:${elm}`)
+		
+	}
+	const permission = (elm) => {
+		console.log(elm);
+
+		navigate(`/app/dashboards/employees/permission/:${elm}`)
+		
 	}
 
 
@@ -88,6 +101,17 @@ const Employees = () => {
 		{
 		  title: "SrNo",
 		  dataIndex: "srno",
+		  defaultSortOrder: "ascend",
+		  // sorter:(a, b) => a.id - b.id,
+		  // render: (id, record, index) => {
+		  //   ++index;
+		  //   return index;
+		  // },
+		  width: "20%",
+		},
+		{
+		  title: "ID",
+		  dataIndex: "ID",
 		  defaultSortOrder: "ascend",
 		  // sorter:(a, b) => a.id - b.id,
 		  // render: (id, record, index) => {
@@ -124,21 +148,35 @@ const Employees = () => {
 		  title: "Status",
 		  dataIndex: "active",
 		  // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
+		  render: active => (
+			<Tag className ="text-capitalize" color={active === '1'? 'cyan' : 'red'}>{active === '1' ? 'Active' : 'deactive'}</Tag>
+		),
 		},
 		{
 		  title: "Action",
 		  dataIndex: "",
 		  render: (elm) => (
 			<div className="text-right d-flex ">
+			<Button.Group>
 				<Tooltip title="View">
-					<Button type="primary" className="mx-1" icon={<EyeOutlined />} onClick={() => editEmployee(elm)} size="small"/>
+					<Button type="primary" className="mx-0" icon={<EditOutlined />} onClick={() => editEmployee(elm)} size="small"/>
 				</Tooltip>
 				<Tooltip title="Delete">
-					<Button danger className='mx-1' icon={<DeleteOutlined />} onClick={()=> deleteUser(elm.ID)} size="small"/>
+					<Button danger type='primary' className='mx-0' icon={<DeleteOutlined />} onClick={()=> deleteUser(elm.ID)} size="small" style={{boxShadow:"none"}}/>
 				</Tooltip>
 				<Tooltip title="Reset Password">
-					<Button danger className='mx-1' icon={<MdPassword />} onClick={()=> resetPassword(elm.ID)} size="small"/>
+					<Button style={{backgroundColor:"#38b94e", color:"white"}} className='mx-0' icon={<MdPassword />} onClick={()=> resetPassword(elm.ID)} size="small"/>
 				</Tooltip>
+				<Tooltip title="Permission">
+					<Button className='mx-0' icon={<SettingOutlined />} onClick={()=> permission(elm.ID)} size="small"/>
+				</Tooltip>
+				<Tooltip title="Message">
+					<Button style={{backgroundColor:"blue", color:"white"}} className='mx-0' icon={<MessageOutlined />} onClick={()=> messageUser(elm.ID)} size="small"/>
+				</Tooltip>
+				<Tooltip title="View">
+					<Button className='mx-0' icon={<EyeOutlined />} size="small"/>
+				</Tooltip>
+				</Button.Group>
 			</div>
 		),
 		  width: "20%",
@@ -176,7 +214,7 @@ const Employees = () => {
 		  offset: offset,
 		  search: value ? value: "",
 		};
-		console.log(ApiData);
+		// console.log(ApiData);
 		let response = await ApiSnippets("/GetUsers", ApiData);
 		let countObj = await response.data;
 
@@ -194,7 +232,7 @@ const Employees = () => {
 		// console.log(srno_array);
 		// console.log(response.count);
 		setData(response.data);
-		console.log(data);
+		// console.log(data);
 		// setData(PclientLogData);
 		setLoading(false);
 		setTableParams({
@@ -282,7 +320,7 @@ const Employees = () => {
 		fetchData(value);
 		// console.log("in useeffect");
 		// console.log(tLsearchalue);
-		console.log(JSON.stringify(tableParams));
+		// console.log(JSON.stringify(tableParams));
 	  }, [JSON.stringify(tableParams)]);
 	  // console.log("bare useeffect");
 	  // console.log(JSON.stringify(tableParams));
@@ -375,7 +413,7 @@ const Employees = () => {
 		  // console.log(srno_array);
 		  // console.log(response.count);
 		  setData(response.data);
-		  console.log(data);
+		//   console.log(data);
 		  setLoading(false);
 		  setTableParams({
 			...tableParams,
