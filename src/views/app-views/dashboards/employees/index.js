@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
 import "../../client/company/edited.css"
-import { Select, Input, Button, Badge, Menu, Row, Col, Dropdown, Tooltip } from 'antd';
+import { Select, Input, Button, Badge, Menu, Row, Col, Dropdown, Tooltip, Tag } from 'antd';
 
 import { useReactToPrint } from "react-to-print";
 import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 import Card from "components/shared-components/Card";
 import Flex from 'components/shared-components/Flex'
 
-import { EyeOutlined, DeleteOutlined, DownloadOutlined, EditOutlined, MessageOutlined } from '@ant-design/icons';
+import { EyeOutlined, DeleteOutlined, DownloadOutlined, EditOutlined, MessageOutlined, SettingOutlined } from '@ant-design/icons';
 // import { DownloadOutlined, EditOutlined, MessageOutlined } from "@ant-design/icons";
 import { MdPassword } from "react-icons/md";
 //datatable imports
@@ -59,26 +59,39 @@ const Employees = () => {
 
 
 	const editEmployee = (elm) => {
-		console.log(elm.ID);
+		// console.log(elm.ID);
 
 		navigate(`/app/dashboards/employees/edit_employee/:${elm.ID}`)
+		
 	}
 	const deleteUser = async (userID) => {
-		console.log(userID);
+		// console.log(userID);
 		setLoading(true)
 		let ApiData = {
 			id: userID,
 		};
-		console.log(ApiData);
+		// console.log(ApiData);
 		let response = await ApiSnippets("/Delete_Employee", ApiData);
 		setLoading(false)
 		fetchData();
-		console.log(response);
+		// console.log(response);
 	}
 	const resetPassword = (elm) => {
 		console.log(elm);
 
 		navigate(`/app/dashboards/employees/reset_password/:${elm}`)
+	}
+	const messageUser = (elm) => {
+		console.log(elm);
+
+		navigate(`/app/apps/chat/:${elm}`)
+		
+	}
+	const permission = (elm) => {
+		console.log(elm);
+
+		navigate(`/app/dashboards/employees/permission/:${elm}`)
+		
 	}
 
 
@@ -95,6 +108,17 @@ const Employees = () => {
 			//   return index;
 			// },
 			width: "20%",
+		},
+		{
+		  title: "ID",
+		  dataIndex: "ID",
+		  defaultSortOrder: "ascend",
+		  // sorter:(a, b) => a.id - b.id,
+		  // render: (id, record, index) => {
+		  //   ++index;
+		  //   return index;
+		  // },
+		  width: "20%",
 		},
 		{
 			title: "User Name",
@@ -121,27 +145,30 @@ const Employees = () => {
 			//   onFilter: (value, record) => record.address.startsWith(value),
 		},
 		{
-			title: "Status",
-			dataIndex: "active",
-			// render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
+		  title: "Status",
+		  dataIndex: "active",
+		  // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
+		  render: active => (
+			<Tag className ="text-capitalize" color={active === '1'? 'cyan' : 'red'}>{active === '1' ? 'Active' : 'deactive'}</Tag>
+		),
 		},
 		{
-			title: "Action",
-			dataIndex: "",
-			render: (elm) => (
-				<div className="text-right d-flex ">
-					<Tooltip title="View">
-						<Button type="primary" className="mx-1" icon={<EyeOutlined />} onClick={() => editEmployee(elm)} size="small" />
-					</Tooltip>
-					<Tooltip title="Delete">
-						<Button danger className='mx-1' icon={<DeleteOutlined />} onClick={() => deleteUser(elm.ID)} size="small" />
-					</Tooltip>
-					<Tooltip title="Reset Password">
-						<Button danger className='mx-1' icon={<MdPassword />} onClick={() => resetPassword(elm.ID)} size="small" />
-					</Tooltip>
-				</div>
-			),
-			width: "20%",
+		  title: "Action",
+		  dataIndex: "",
+		  render: (elm) => (
+			<div className="text-right d-flex ">
+				<Tooltip title="View">
+					<Button type="primary" className="mx-1" icon={<EyeOutlined />} onClick={() => editEmployee(elm)} size="small"/>
+				</Tooltip>
+				<Tooltip title="Delete">
+					<Button danger className='mx-1' icon={<DeleteOutlined />} onClick={()=> deleteUser(elm.ID)} size="small"/>
+				</Tooltip>
+				<Tooltip title="Reset Password">
+					<Button danger className='mx-1' icon={<MdPassword />} onClick={()=> resetPassword(elm.ID)} size="small"/>
+				</Tooltip>
+			</div>
+		),
+		  width: "20%",
 		},
 	];
 
@@ -176,7 +203,7 @@ const Employees = () => {
 			offset: offset,
 			search: value ? value : "",
 		};
-		console.log(ApiData);
+		// console.log(ApiData);
 		let response = await ApiSnippets("/GetUsers", ApiData);
 		let countObj = await response.data;
 
@@ -194,7 +221,7 @@ const Employees = () => {
 		// console.log(srno_array);
 		// console.log(response.count);
 		setData(response.data);
-		console.log(data);
+		// console.log(data);
 		// setData(PclientLogData);
 		setLoading(false);
 		setTableParams({
@@ -283,10 +310,10 @@ const Employees = () => {
 		// console.log("in useeffect");
 		// console.log(tLsearchalue);
 		console.log(JSON.stringify(tableParams));
-	}, [JSON.stringify(tableParams)]);
-	// console.log("bare useeffect");
-	// console.log(JSON.stringify(tableParams));
-	const handleTableChange = (pagination, sorter) => {
+	  }, [JSON.stringify(tableParams)]);
+	  // console.log("bare useeffect");
+	  // console.log(JSON.stringify(tableParams));
+	  const handleTableChange = (pagination, sorter) => {
 		setTableParams({
 			pagination,
 			...sorter,
@@ -346,47 +373,47 @@ const Employees = () => {
 	const hanldeSearch_tasklist = (value, event) => {
 		setTLsearchalue(value);
 		const fetchDataOnSearch = async (value) => {
-			var offset = 0;
-			setLoading(true);
-			if (tableParams.pagination.current > 1) {
-				offset =
-					(tableParams.pagination.current - 1) *
-					tableParams.pagination.pageSize;
-			}
-			let ApiData = {
-				type: 1,
-				limit: tableParams.pagination.pageSize,
-				offset: offset,
-				search: value,
-			};
-			let response = await ApiSnippets("/GetUsers", ApiData);
-			let countObj = await response.data;
-			for (let i = 0; i < countObj.length; i++) {
-				// limit * currentpage - (limit -1)
-				let current_page = tableParams.pagination.current;
-				let page_limit = tableParams.pagination.pageSize;
-				countObj[i].srno = page_limit * current_page - (page_limit - i - 1); // srno added to response thank you jigi
-				countObj[i].on_date = new Date(
-					countObj[i].on_date * 1000
-				).toLocaleDateString("en-GB");
-			}
-			// console.log(countObj);
-			// setClientTableData(countObj);
-			// console.log(srno_array);
-			// console.log(response.count);
-			setData(response.data);
-			console.log(data);
-			setLoading(false);
-			setTableParams({
-				...tableParams,
-				pagination: {
-					...tableParams.pagination,
-					total: response.count,
-					// total: 100,
-					// 200 is mock data, you should read it from server
-					// total: data.totalCount,
-				},
-			});
+		  var offset = 0;
+		  setLoading(true);
+		  if (tableParams.pagination.current > 1) {
+			offset =
+			  (tableParams.pagination.current - 1) *
+			  tableParams.pagination.pageSize;
+		  }
+		  let ApiData = {
+			type:1,
+			limit: tableParams.pagination.pageSize,
+			offset: offset,
+			search: value,
+		  };
+		  let response = await ApiSnippets("/GetUsers", ApiData);
+		  let countObj = await response.data;
+		  for (let i = 0; i < countObj.length; i++) {
+			// limit * currentpage - (limit -1)
+			let current_page = tableParams.pagination.current;
+			let page_limit = tableParams.pagination.pageSize;
+			countObj[i].srno = page_limit * current_page - (page_limit - i - 1); // srno added to response thank you jigi
+			countObj[i].on_date = new Date(
+			  countObj[i].on_date * 1000
+			).toLocaleDateString("en-GB");
+		  }
+		  // console.log(countObj);
+		  // setClientTableData(countObj);
+		  // console.log(srno_array);
+		  // console.log(response.count);
+		  setData(response.data);
+		  console.log(data);
+		  setLoading(false);
+		  setTableParams({
+			...tableParams,
+			pagination: {
+			  ...tableParams.pagination,
+			  total: response.count,
+			  // total: 100,
+			  // 200 is mock data, you should read it from server
+			  // total: data.totalCount,
+			},
+		  });
 		};
 		fetchDataOnSearch(value);
 	};

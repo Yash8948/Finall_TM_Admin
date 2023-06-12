@@ -68,12 +68,17 @@ export const protectedRoutes = [
     {
         key: 'dashboard.employees',
         path: `${APP_PREFIX_PATH}/dashboards/employees/edit_employee/:id`,
-        component: React.lazy(() => import('views/app-views/dashboards/employees/AddEmployeeForm')),
+        component: React.lazy(() => import('views/app-views/dashboards/employees/ActionButtons/EditEmployeeForm')),
     },
     {
         key: 'dashboard.employees',
         path: `${APP_PREFIX_PATH}/dashboards/employees/reset_password/:id`,
         component: React.lazy(() => import('views/app-views/dashboards/employees/ActionButtons/ResetPassword')),
+    },
+    {
+        key: 'dashboard.employees',
+        path: `${APP_PREFIX_PATH}/dashboards/employees/permission/:id`,
+        component: React.lazy(() => import('views/app-views/dashboards/employees/ActionButtons/Permission')),
     },
     {
         key: 'dashboard.fileManager',
@@ -113,6 +118,11 @@ export const protectedRoutes = [
     {
         key: 'apps.chat',
         path: `${APP_PREFIX_PATH}/apps/chat/*`,
+        component: React.lazy(() => import('views/app-views/apps/chat')),
+    },
+    {
+        key: 'apps.chatById',
+        path: `${APP_PREFIX_PATH}/apps/chat/:id`,
         component: React.lazy(() => import('views/app-views/apps/chat')),
     },
     {
