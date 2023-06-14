@@ -177,7 +177,7 @@ const handleEditClient = async (value, e) => {
 
   useEffect(() => {
     getUserByID();
-}, [textMsgDefault,sendemaildDefault])
+}, [])
 
 // console.log(textMsgDefault);
 

@@ -66,11 +66,6 @@ const AddClientForm = (props) => {
   //   console.log(send_txt_msg);
   //   console.log(send_email);
 
-  useEffect(() => {
-    getClientById();
-  }, [])
-
-
   const getClientById = async () => {
     console.log(dataID)
     let ApiData = {
@@ -86,10 +81,10 @@ const AddClientForm = (props) => {
 
       let ClientData = response.data[0];
       console.log(ClientData)
-
+      var birthDayTOdate = new Date(ClientData.birthdate * 1000).toLocaleDateString("en-GB")
       form.setFieldsValue({
         "user_name": ClientData.username,
-        // "birth_date": ClientData["birth_date"].format("DD-MM-YYYY"),
+        "birth_date": dayjs(birthDayTOdate, 'DD-MM-YYYY'),
         "first_name": ClientData.first_name,
         "last_name": ClientData.last_name,
         "email": ClientData.email,
@@ -106,43 +101,51 @@ const AddClientForm = (props) => {
 
   const handleEditClient = async (value, e) => {
     setLoading(true);
+    // if (state.button === 2) {
+    //   console.log("state.button === 2 working");
+    //   // navigate('/app/client/company');
+    // }         
+    let ApiData = {
+      "id": dataID,
+      "fname": value.first_name,
+      "lname": value.last_name,
+      "active": value.active_deactive,
+      "sendemail": `${send_email}`,
+      "sendsms": `${send_txt_msg}`,
+      "save": "save",
+      // date: value["date"].format("DD-MM-YYYY"), //Add your required date format here
+      // date: value["date"].format("YYYY-MM-DD HH:mm:ss")  //Add your required date format here
+    };
+    console.log(ApiData);
 
-    // let ApiData = {
+    let response = await ApiSnippets("/Edit_Client", ApiData);
 
-    //     "un":value.user_name,
-    //     "fname":value.first_name,
-    //     "lname":value.last_name,
-    //     "email":value.email,
-    //     "num":value.contact_number,
-    //     "active":value.active_deactive,
-    //     "sendemail":`${send_email}`,
-    //     "sendsms":`${send_txt_msg}`,
-    //     "bdate":value["birth_date"].format("DD-MM-YYYY"),
-    //     // date: value["date"].format("DD-MM-YYYY"), //Add your required date format here
-    //     // date: value["date"].format("YYYY-MM-DD HH:mm:ss")  //Add your required date format here
-    // };
-    // console.log(ApiData);
+    let countObj = await response;
 
-    // let response = await await ApiSnippets("/Add_Client", ApiData);
+    console.log(countObj);
+    // setApiStatus(countObj.status)
+    if (countObj.status === true) {
+      successMsg(countObj.message)
+      setTimeout(() => {
+        form.resetFields();
+      }, 500);
 
-    // let countObj = await response;
+      navigate('/app/client/list');
 
-    // // console.log(countObj);
-    // // setApiStatus(countObj.status)
-    // if (countObj.status === true) {
-    //     successMsg(countObj.message)
-    //     setTimeout(() => {
-    //         form.resetFields();
-    //       }, 500);
-    //    
+    } else {
+      // message.error(countObj.message); 
+      errorMsg(countObj.message)
+    }
 
-    // }else{
-    //     // message.error(countObj.message); 
-    //     errorMsg(countObj.message)
-    // }
-
-    // setLoading(false);
+    setLoading(false);
   };
+
+
+
+  useEffect(() => {
+    getClientById();
+  }, [])
+
 
 
   return (
@@ -178,7 +181,8 @@ const AddClientForm = (props) => {
                           },
                         ]}
                       >
-                        <Input placeholder="Enter User Name" />
+                        <Input readOnly
+                          placeholder="Enter User Name" />
                       </Form.Item>
                     </Col>
 
@@ -194,6 +198,7 @@ const AddClientForm = (props) => {
                         ]}
                       >
                         <DatePicker
+                          readOnly
                           initialValues={dayjs()}
                           format={dateFormatList}
                           disabledDate={disabledDate}
@@ -237,6 +242,7 @@ const AddClientForm = (props) => {
                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                       <div style={{ marginBottom: 16 }}>
                         <Form.Item
+
                           name="email"
                           label="E-mail :"
                           rules={[
@@ -250,7 +256,7 @@ const AddClientForm = (props) => {
                             },
                           ]}
                         >
-                          <Input placeholder="Enter Mail Address" />
+                          <Input readOnly placeholder="Enter Mail Address" />
                         </Form.Item>
                       </div>
                     </Col>
@@ -271,6 +277,7 @@ const AddClientForm = (props) => {
                           ]}
                         >
                           <Input
+                            readOnly
                             type="NumberFormat"
                             // addonBefore="+91"
                             placeholder="Enter Contact Number"
@@ -278,7 +285,6 @@ const AddClientForm = (props) => {
                             // max={1000000000}
                             minLength={10}
                             maxLength={13}
-                            // onChange=""
                             onKeyPress={(event) => {
                               if (!/[0-9]/.test(event.key)) {
                                 event.preventDefault();
@@ -315,12 +321,12 @@ const AddClientForm = (props) => {
                       {/* <Row xs={24} sm={12} md={12} lg={12} xl={12}> */}
 
                       <div style={{ marginTop: 0 }} className="my-1">
-                        <Checkbox  name="sendtxt"
-                        onChange={handleSend_txt_msg}>Send Text Message</Checkbox>
+                        <Checkbox name="sendtxt"
+                          onChange={handleSend_txt_msg}>Send Text Message</Checkbox>
                       </div>
                       <div style={{ marginBottom: 5 }}>
                         <Checkbox name="sendemail"
-                        onChange={handleSend_email}>Send Email</Checkbox>
+                          onChange={handleSend_email}>Send Email</Checkbox>
                       </div>
                       {/* </Row> */}
                     </Col>
