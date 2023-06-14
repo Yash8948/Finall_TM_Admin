@@ -131,6 +131,7 @@ const handleEditClient = async (value, e) => {
       //   // navigate('/app/client/company');
       // }         
     let ApiData = {
+      "save":"save",
         "id":dataID,
         "un":value.user_name,
         "fname":value.first_name,
