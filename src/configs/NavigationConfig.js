@@ -519,6 +519,14 @@ const settingNavTree = [{
           submenu: []
         },
         {
+          key: 'settings-testing',
+          path: `${APP_PREFIX_PATH}/settings/testing`,
+          title: 'sidenav.settings.testing',
+          icon: "",
+          breadcrumb: true,
+          submenu: []
+        },
+        {
           key: 'settings-depart',
           path: `${APP_PREFIX_PATH}/settings/department`,
           title: 'sidenav.settings.depart',

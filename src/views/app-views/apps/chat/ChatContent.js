@@ -14,7 +14,7 @@ const ConversationEmpty = () => (
 const ChatContent = () => {
   return (
     <Routes>
-      <Route path={`:id`} element={<Conversation />} />
+      <Route path={`:id/*`} element={<Conversation />} />
       <Route path={`/`} element={<ConversationEmpty />} />
     </Routes>
   )

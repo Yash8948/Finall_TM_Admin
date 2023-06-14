@@ -286,6 +286,11 @@ export const protectedRoutes = [
     },
     {
         key: 'settings',
+        path: `${APP_PREFIX_PATH}/settings/testing`,
+        component: React.lazy(() => import('views/app-views/settings/testing/Testing')),
+    },
+    {
+        key: 'settings',
         path: `${APP_PREFIX_PATH}/settings/department`,
         component: React.lazy(() => import('views/app-views/settings/department/index')),
     },
