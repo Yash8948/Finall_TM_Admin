@@ -330,8 +330,11 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/client/addnewpassword`,
         component: React.lazy(() => import('views/app-views/client/client-password/addNewPassword')),
     },
-
-
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/client_password/edit_password/:id`,
+        component: React.lazy(() => import('views/app-views/client/client-password/ActionButtons/EditClientPassword')),
+    },
     {
         key: 'client',
         path: `${APP_PREFIX_PATH}/client/login_details`,
@@ -344,8 +347,18 @@ export const protectedRoutes = [
     },
     {
         key: 'client',
-        path: `${APP_PREFIX_PATH}/client/client_list/edit_clientform/:id`,
+        path: `${APP_PREFIX_PATH}/client/client_list/edit_client/:id`,
         component: React.lazy(() => import('views/app-views/client/client-list/Actionbutton/EditClientForm')),
+    },
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/client_list/resetpassword/:id`,
+        component: React.lazy(() => import('views/app-views/client/client-list/Actionbutton/ClientResetPassword')),
+    },
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/client_list/view/:id`,
+        component: React.lazy(() => import('views/app-views/client/client-list/Actionbutton/ClientView')),
     },
     {
         key: 'client',

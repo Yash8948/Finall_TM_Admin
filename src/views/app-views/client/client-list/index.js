@@ -69,30 +69,23 @@ const ClientList = (props) => {
 	const viewDetails = row => {
 		// navigate(`/app/apps/ecommerce/edit-product/${row.id}`)
 	}
-	// useEffect(() => {
-	// 	if (mode === EDIT) {
-	// 		console.log('is edit')
-	// 		console.log('props', props)
-	// 		const { id } = param
-	// 		const produtId = parseInt(id)
-	// 		const productData = ProductListData.filter(product => product.id === produtId)
-	// 		const product = productData[0]
-	// 		form.setFieldsValue({
-	// 			comparePrice: 500,
-	// 			cost: 0.00,
-	// 			taxRate: 6,
-	// 			description: 'There are many variations of passages of Lorem Ipsum available.',
-	// 			category: product.category,
-	// 			name: product.name,
-	// 			price: product.price
-	// 		})
-	// 	}
-	// }, [form, mode, param, props]);
+	
+	
 
 	const handleEdit = (elm) => {
 		console.log(elm);
 
-		navigate(`/app/client/client_list/edit_clientform/:${elm}`)
+		navigate(`/app/client/client_list/edit_client/:${elm}`)
+	}
+	const handleResetPassword = (elm) => {
+		console.log(elm);
+
+		navigate(`/app/client/client_list/resetpassword/:${elm}`)
+	}
+	const handleClientView = (elm) => {
+		console.log(elm);
+
+		navigate(`/app/client/client_list/view/:${elm}`)
 	}
 	const deleteUser = async (userID) => {
 		console.log(userID);	
@@ -159,7 +152,7 @@ const ClientList = (props) => {
 			width: '20%',
 			render: (_, record) => {
 				const activeData = record.active; // Assuming `record.active` contains the active value for the current record
-				console.log(activeData)
+				// console.log(activeData)
 				if (activeData === '1') {
 					return <Tag color="blue">Active</Tag>;
 				} else {
@@ -179,10 +172,10 @@ const ClientList = (props) => {
 						<Button className="mr-2" icon={<EditOutlined />} onClick={() => handleEdit(elm.ID)} size="small" />
 					</Tooltip>
 					<Tooltip title="Reset Password">
-						<Button className="mr-2" icon={<MdPassword />} onClick={() => { this.deleteUser(elm.id) }} size="small" />
+						<Button className="mr-2" icon={<MdPassword />} onClick={() => { handleResetPassword(elm.ID) }} size="small" />
 					</Tooltip>
 					<Tooltip title="View">
-						<Button className="mr-2" icon={<EyeOutlined />} onClick={() => { this.deleteUser(elm.id) }} size="small" />
+						<Button className="mr-2" icon={<EyeOutlined />} onClick={() => { handleClientView(elm.ID) }} size="small" />
 					</Tooltip>
 
 					<Tooltip title="Message">

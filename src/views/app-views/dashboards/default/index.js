@@ -189,7 +189,7 @@ export const DefaultDashboard = () => {
     },
   });
   const [value, setValue] = useState("");
- 
+
   //client log table api
   const fetchData = async (value) => {
     var offset = 0;
@@ -485,68 +485,68 @@ export const DefaultDashboard = () => {
     <>
       <Row gutter={4}>
         {/* <Col xs={24} sm={24} md={24} lg={18}> */}
-        
-        <Row gutter={16}>
-          { cardCounts && (
-            <>
-          <Col xs={24} sm={24} md={24} lg={24} xl={6} >
-          <StatisticWidget
-            title="Today Task's"
-            value={cardCounts.tasks_count === null ? '0' : String(cardCounts.count.tasks_count)}
-            // status={elm.status}
-            // subtitle={elm.subtitle}
-           
-          />
-          </Col>
-          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-          <StatisticWidget
-            
-            title="Pending Task's"
-            value={cardCounts.count.pending_count === null ? '0' : String(cardCounts.count.pending_count)}
-          />
-          </Col> 
-          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-          <StatisticWidget
-            
-            title="Overdue Task"
-            value={cardCounts.count.total_overdue_task_count === null ? '0' : String(cardCounts.count.total_overdue_task_count)}
-          />
-          </Col>
-          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-          <StatisticWidget
-            
-            title="Tax Payable"
-            value={cardCounts.count.tax_payable_count === null ? '0' : String(cardCounts.count.tax_payable_count)}
-          />
-          </Col>
-          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-          <StatisticWidget
-            title="Query Raised"
-            value={cardCounts.count.total_query_raised_count === null ? '0' : String(cardCounts.count.total_query_raised_count)}
-          />
-          </Col>
-          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-          <StatisticWidget
-            title="On Board"
-            value={cardCounts.count.total_on_board_count === null ? '0' : String(cardCounts.count.total_on_board_count)}
-          />
-          </Col>
-          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
 
-          <StatisticWidget
-            title="Un Assigned"
-             value={cardCounts.count.unassigned_task_count === null ? '0' : String(cardCounts.count.unassigned_task_count)}
-          />
-          </Col>
-          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-          <StatisticWidget
-            title="Un Paid Task"
-             value={cardCounts.count.unpaid_task_board_count === null ? '0' : String(cardCounts.count.unpaid_task_board_count)}
-          />
-          </Col>
-          </>
-)}
-          </Row>
+        <Row gutter={16}>
+          {cardCounts && (
+            <>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6} >
+                <StatisticWidget
+                  title="Today Task's"
+                  value={cardCounts.tasks_count === null ? '0' : String(cardCounts.count.tasks_count)}
+                // status={elm.status}
+                // subtitle={elm.subtitle}
+
+                />
+              </Col>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+                <StatisticWidget
+
+                  title="Pending Task's"
+                  value={cardCounts.count.pending_count === null ? '0' : String(cardCounts.count.pending_count)}
+                />
+              </Col>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+                <StatisticWidget
+
+                  title="Overdue Task"
+                  value={cardCounts.count.total_overdue_task_count === null ? '0' : String(cardCounts.count.total_overdue_task_count)}
+                />
+              </Col>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+                <StatisticWidget
+
+                  title="Tax Payable"
+                  value={cardCounts.count.tax_payable_count === null ? '0' : String(cardCounts.count.tax_payable_count)}
+                />
+              </Col>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+                <StatisticWidget
+                  title="Query Raised"
+                  value={cardCounts.count.total_query_raised_count === null ? '0' : String(cardCounts.count.total_query_raised_count)}
+                />
+              </Col>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+                <StatisticWidget
+                  title="On Board"
+                  value={cardCounts.count.total_on_board_count === null ? '0' : String(cardCounts.count.total_on_board_count)}
+                />
+              </Col>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+
+                <StatisticWidget
+                  title="Un Assigned"
+                  value={cardCounts.count.unassigned_task_count === null ? '0' : String(cardCounts.count.unassigned_task_count)}
+                />
+              </Col>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+                <StatisticWidget
+                  title="Un Paid Task"
+                  value={cardCounts.count.unpaid_task_board_count === null ? '0' : String(cardCounts.count.unpaid_task_board_count)}
+                />
+              </Col>
+            </>
+          )}
+        </Row>
       </Row>
 
       {/* table task lists starts*/}
@@ -634,70 +634,70 @@ export const DefaultDashboard = () => {
 
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={7}>
-          
+
           <Card
             title="Add Log"
             extra={<CardDropdown items={newJoinMemberOptions} />}
           >
             <div className="mt-3">
-            <Spin spinning={loading} >
-              <Form layout="vertical" onFinish={handleAddClient} form={form} >
-                <div style={{ marginBottom: 16 }}>
-                
-                <Form.Item label="Client : " name="client" rules={[{ required: true, message: 'Please select your client!' }]}>
-                  <Select
-                    showSearch
-                    style={{ width: "100%" }}
-                    placeholder="Select a Client"
-                    optionFilterProp="children"
-                    onChange={onChange}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
-                    onSearch={onSearch}
-                    filterOption={(input, option) =>
-                      option.props.children
-                        .toLowerCase()
-                        .indexOf(input.toLowerCase()) >= 0
-                    }
-                  >
-                    {clientName &&
-                      clientName.map((item, index) => (
-                        <Option key={index} id={item.ID} value={item.ID}>
-                          {item.username}
-                        </Option>
-                      ))}
-                  </Select>
-                  </Form.Item>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                  <Form.Item label="User : " name="message" rules={[{ required: true, message: 'Please input your message!' }]}>
-                    <Input placeholder="Enter Message" />
-                  </Form.Item>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                <Form.Item label="Description : "  name="description" rules={[{ required: true, message: 'Please input your description!' }]}>
-                  <TextArea rows={4} placeholder="Enter Description" />
-                </Form.Item>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                <Form.Item label="Date : " name="date" rules={[{ required: true, message: 'Please input your date!' }]}  >
-                  <DatePicker
-                    // defaultValue={dayjs()}
-                    format={dateFormatList}
-                    disabledDate={disabledDate}
-                    // onChange={handleDatePicker}
-                    style={{ width: "100%" }}
-                  />
-                </Form.Item>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                <Form.Item>
-                  <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
-                    Submit
-                  </Button>
-                </Form.Item>
-                </div>
-              </Form>
+              <Spin spinning={loading} >
+                <Form layout="vertical" onFinish={handleAddClient} form={form} >
+                  <div style={{ marginBottom: 16 }}>
+
+                    <Form.Item label="Client : " name="client" rules={[{ required: true, message: 'Please select your client!' }]}>
+                      <Select
+                        showSearch
+                        style={{ width: "100%" }}
+                        placeholder="Select a Client"
+                        optionFilterProp="children"
+                        onChange={onChange}
+                        onFocus={onFocus}
+                        onBlur={onBlur}
+                        onSearch={onSearch}
+                        filterOption={(input, option) =>
+                          option.props.children
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        }
+                      >
+                        {clientName &&
+                          clientName.map((item, index) => (
+                            <Option key={index} id={item.ID} value={item.ID}>
+                              {item.username}
+                            </Option>
+                          ))}
+                      </Select>
+                    </Form.Item>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Form.Item label="User : " name="message" rules={[{ required: true, message: 'Please input your message!' }]}>
+                      <Input placeholder="Enter Message" />
+                    </Form.Item>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Form.Item label="Description : " name="description" rules={[{ required: true, message: 'Please input your description!' }]}>
+                      <TextArea rows={4} placeholder="Enter Description" />
+                    </Form.Item>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Form.Item label="Date : " name="date" rules={[{ required: true, message: 'Please input your date!' }]}  >
+                      <DatePicker
+                        // defaultValue={dayjs()}
+                        format={dateFormatList}
+                        disabledDate={disabledDate}
+                        // onChange={handleDatePicker}
+                        style={{ width: "100%" }}
+                      />
+                    </Form.Item>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Form.Item>
+                      <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+                        Submit
+                      </Button>
+                    </Form.Item>
+                  </div>
+                </Form>
               </Spin>
             </div>
           </Card>
@@ -756,8 +756,8 @@ export const DefaultDashboard = () => {
               pagination={tableParams.pagination}
               loading={loading}
               onChange={handleTableChange}
-              searchable={{fuzzySearch:true}}
-              exportableProps={{ showColumnPicker: true, fileName:"client_log"}}
+              searchable={{ fuzzySearch: true }}
+              exportableProps={{ showColumnPicker: true, fileName: "client_log" }}
               searchableProps={{ fuzzySearch: true }}
               style={{ overflow: "auto" }}
             />
@@ -775,44 +775,44 @@ export const DefaultDashboard = () => {
       {/* table birthday lists starts*/}
 
       <Row gutter={16}>
-          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Card title="Birthday List" extra={<CardDropdown items={latestTransactionOption} />}>
 
-          <Table
-           rowSelection={rowSelection}
-            columns={columns}
-            // rowKey={(record) => record.login.uuid}
-            dataSource={data}
-            // pagination={tableParams.pagination}
-            loading={loading}
-            onChange={handleTableChange}
-            style={{ overflow: 'auto'}}
-          />
+            <Table
+              rowSelection={rowSelection}
+              columns={columns}
+              // rowKey={(record) => record.login.uuid}
+              dataSource={data}
+              // pagination={tableParams.pagination}
+              loading={loading}
+              onChange={handleTableChange}
+              style={{ overflow: 'auto' }}
+            />
           </Card>
-          
-          </Col>
-          </Row>
+
+        </Col>
+      </Row>
       {/* table birthday lists ends*/}
       {/* table holiday lists starts*/}
-      
+
       <Row gutter={16}>
-          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
           <Card title="Holiday List" extra={<CardDropdown items={latestTransactionOption} />}>
 
-          <Table
-           rowSelection={rowSelection}
-            columns={columns}
-            // rowKey={(record) => record.login.uuid}
-            dataSource={data}
-            // pagination={tableParams.pagination}
-            loading={loading}
-            onChange={handleTableChange}
-            style={{ overflow: 'auto'}}
-          />
+            <Table
+              rowSelection={rowSelection}
+              columns={columns}
+              // rowKey={(record) => record.login.uuid}
+              dataSource={data}
+              // pagination={tableParams.pagination}
+              loading={loading}
+              onChange={handleTableChange}
+              style={{ overflow: 'auto' }}
+            />
           </Card>
-          
-          </Col>
-          </Row>
+
+        </Col>
+      </Row>
       {/* table birthday lists ends*/}
     </>
   );
