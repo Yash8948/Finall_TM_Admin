@@ -1,5 +1,19 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { Row, Col, Button, Avatar, Dropdown, Menu, Tag, Select, Input, DatePicker, Divider, Form, Spin,} from "antd";
+import {
+  Row,
+  Col,
+  Button,
+  Avatar,
+  Dropdown,
+  Menu,
+  Tag,
+  Select,
+  Input,
+  DatePicker,
+  Divider,
+  Form,
+  Spin,
+} from "antd";
 import dayjs from "dayjs";
 import { useReactToPrint } from "react-to-print";
 
@@ -44,7 +58,9 @@ import { admin_Dashboard } from "services/AllDataService";
 // import { Admin_Dashboard } from '../../../../services/AllDataService'
 import ApiSnippets from "../../../../constants/ApiSnippet";
 import { result } from "lodash";
+import HolidayList from "./comps/HolidayList";
 
+import BirthdayList from "./comps/BirthdayList";
 const { Option } = Select;
 const { TextArea } = Input;
 const dateFormatList = ["DD/MM/YYYY"];
@@ -103,7 +119,6 @@ const CardDropdown = ({ items }) => {
   );
 };
 
-
 const columns = [
   // dataIndex: 'id',
   {
@@ -115,7 +130,7 @@ const columns = [
     //   ++index;
     //   return index;
     // },
-    width: "20%",
+    width: "10%",
   },
   {
     title: "Client Name",
@@ -144,78 +159,12 @@ const columns = [
     dataIndex: "created_on",
   },
 ];
-// holiday list column
-const HolidayListColumns = [
-  // dataIndex: 'id',
-  {
-    title: "SrNo",
-    dataIndex: "srno",
-    defaultSortOrder: "ascend",
-    // sorter:(a, b) => a.id - b.id,
-    // render: (id, record, index) => {
-    //   ++index;
-    //   return index;
-    // },
-    width: "20%",
-  },
-  {
-    title: "Title",
-    dataIndex: "",
-    sorter: (a, b) => a.id - b.id,
-    width: "20%",
-  },
-  {
-    title: "Description",
-    dataIndex: "",
-    filterSearch: true,
-    onFilter: (value, record) => record.address.startsWith(value),
-  },
-  {
-    title: "Date",
-    dataIndex: "on_date",
-    // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
-    width: "20%",
-  },
-];
-
-
 
 const getRandomuserParams = (params) => ({
   results: params.pagination?.pageSize,
   page: params.pagination?.current,
   ...params,
 });
-
-
-const HolidayTableColumns = [
-  {
-    title: "SrNo",
-    dataIndex: "srno",
-    defaultSortOrder: "ascend",
-    // sorter:(a, b) => a.id - b.id,
-    width: "20%",
-  },
-  {
-    title: "Title",
-    dataIndex: "title",
-    sorter: (a, b) => a.id - b.id,
-    width: "20%",
-  },
-  {
-    title: "Description",
-    dataIndex: "description",
-    sorter: (a, b) => a.id - b.id,
-    width: "20%",
-  },
-  {
-    title: "Date",
-    dataIndex: "date",
-    // render: (date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
-    width: "20%",
-  },
-];
-
-
 
 export const DefaultDashboard = () => {
   const [visitorChartData] = useState(VisitorChartData);
@@ -227,7 +176,7 @@ export const DefaultDashboard = () => {
   const [cardCounts, setCardCounts] = useState(null);
   const [clientTableData, setClientTableData] = useState(null);
   const [clientName, setClientName] = useState(null);
-  const [holidayData, setHolidayData] = useState(null);
+
   const componentRefPrint = useRef(null);
   const exportBtnRef = useRef();
   const [tLsearchalue, setTLsearchalue] = useState(null);
@@ -243,16 +192,7 @@ export const DefaultDashboard = () => {
     },
   });
   const [value, setValue] = useState("");
-  //table holiday list
-  const [holidayListSearchValue, setHolidayListSearchValue] = useState(null);
-  const [holidayListData, setHolidayListData] = useState();
-  const [holidayTableParams, setHolidayTableParams] = useState({
-    pagination: {
-      current: 1,
-      pageSize: 10,
-    },
-  });
- 
+
   //client log table api
   const fetchData = async (value) => {
     var offset = 0;
@@ -328,7 +268,7 @@ export const DefaultDashboard = () => {
     {
       key: "Refresh",
       label: (
-        <Flex alignItems="center" gap={SPACER[2]} onClick={fetchData}>
+        <Flex alignItems="center" gap={SPACER[2]} onClick={()=>fetchData(value)}>
           <ReloadOutlined />
           <span className="ml-2">Refresh</span>
         </Flex>
@@ -424,14 +364,11 @@ export const DefaultDashboard = () => {
     const getAllData = async () => {
       let response = await ApiSnippets("/AdminDashboard", null);
       let countObj = await response.data;
-      console.log(countObj);//all data
+      console.log(countObj); //all data
       setCardCounts(countObj);
       let onlyClientData = await response.data.client;
-      let onlyHolidayData = await response.data.holiday;
       setClientName(onlyClientData);
       // console.log(onlyClientData);
-
-      setHolidayData(onlyHolidayData);
     };
 
     getAllData();
@@ -547,149 +484,101 @@ export const DefaultDashboard = () => {
     fetchDataOnSearch(value);
     // console.log(typeofvalue);
   };
-    //holiday list table api
-  const fetchHolidayTableData = async (value = null) => {
-    var offset = 0;
-
-    setLoading(true);
-    if (holidayTableParams.pagination.current > 1) {
-      offset =
-        (holidayTableParams.pagination.current - 1) * holidayTableParams.pagination.pageSize;
-    }
-    let ApiData = {
-      type: 1,
-      limit: holidayTableParams.pagination.pageSize,
-      offset: offset,
-      search: value ? value : "",
-    };
-    // console.log(ApiData);
-    let response = await ApiSnippets("/Holiday", ApiData);
-    let countObjHoliday = await response.data;
-    console.log("object");
-    console.log(countObjHoliday);
-    // console.log(countObj)
-    for (let i = 0; i < countObjHoliday.length; i++) {
-      // limit * currentpage - (limit -1)
-      let current_page = holidayTableParams.pagination.current;
-      let page_limit = holidayTableParams.pagination.pageSize;
-      countObjHoliday[i].srno =
-        page_limit * current_page - (page_limit - i - 1); // srno added to response thank you jigi
-      countObjHoliday[i].date = new Date(
-        countObjHoliday[i].date * 1000
-      ).toLocaleDateString("en-GB");
-    }
-    // console.log(countObj);
-    // setClientTableData(countObj);
-    // console.log(srno_array);
-    // console.log(response.count);
-    setHolidayListData(countObjHoliday);
-    // setHolidayListData(PclientLogData);
-    setLoading(false);
-    setHolidayTableParams({
-      ...holidayTableParams,
-      pagination: {
-        ...holidayTableParams.pagination,
-        total: response.count,
-        // total: 100,
-        // 200 is mock data, you should read it from server
-        // total: data.totalCount,
-      },
-    });
-  };
-
-
-
-  useEffect(() => {
-    let value = holidayListSearchValue;
-    fetchHolidayTableData(value);
-    // console.log(JSON.stringify(holidayTableParams));
-  }, [JSON.stringify(holidayTableParams)]);
-  const handleHolidayTableChange = (pagination, sorter) => {
-    setHolidayTableParams({
-      pagination,
-      ...sorter,
-    });
-
-    // `dataSource` is useless since `pageSize` changed
-    if (pagination.pageSize !== holidayTableParams.pagination?.pageSize) {
-      setHolidayListData([]);
-    }
-  };
-
-
-  // holiday list data started
-  
-  // holiday list data ended
-
-
-
 
   // console.log(cardCounts.client);
   return (
     <>
       <Row gutter={4}>
         {/* <Col xs={24} sm={24} md={24} lg={18}> */}
-        
-        <Row gutter={16}>
-          { cardCounts && (
-            <>
-          <Col xs={24} sm={24} md={24} lg={24} xl={6} >
-          <StatisticWidget
-            title="Today Task's"
-            value={cardCounts.tasks_count === null ? '0' : String(cardCounts.count.tasks_count)}
-            // status={elm.status}
-            // subtitle={elm.subtitle}
-           
-          />
-          </Col>
-          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-          <StatisticWidget
-            title="Pending Task's"
-            value={cardCounts.count.pending_count === null ? '0' : String(cardCounts.count.pending_count)}
-          />
-          </Col> 
-          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-          <StatisticWidget
-            
-            title="Overdue Task"
-            value={cardCounts.count.total_overdue_task_count === null ? '0' : String(cardCounts.count.total_overdue_task_count)}
-          />
-          </Col>
-          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-          <StatisticWidget
-            
-            title="Tax Payable"
-            value={cardCounts.count.tax_payable_count === null ? '0' : String(cardCounts.count.tax_payable_count)}
-          />
-          </Col>
-          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-          <StatisticWidget
-            title="Query Raised"
-            value={cardCounts.count.total_query_raised_count === null ? '0' : String(cardCounts.count.total_query_raised_count)}
-          />
-          </Col>
-          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-          <StatisticWidget
-            title="On Board"
-            value={cardCounts.count.total_on_board_count === null ? '0' : String(cardCounts.count.total_on_board_count)}
-          />
-          </Col>
-          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
 
-          <StatisticWidget
-            title="Un Assigned"
-             value={cardCounts.count.unassigned_task_count === null ? '0' : String(cardCounts.count.unassigned_task_count)}
-          />
-          </Col>
-          <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-          <StatisticWidget
-            title="Un Paid Task"
-             value={cardCounts.count.unpaid_task_board_count === null ? '0' : String(cardCounts.count.unpaid_task_board_count)}
-          />
-          </Col>
-          </>
-)}
-          </Row>
+        <Row gutter={16}>
+          {cardCounts && (
+            <>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+                <StatisticWidget
+                  title="Today Task's"
+                  value={
+                    cardCounts.tasks_count === null
+                      ? "0"
+                      : String(cardCounts.count.tasks_count)
+                  }
+                  // status={elm.status}
+                  // subtitle={elm.subtitle}
+                />
+              </Col>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+                <StatisticWidget
+                  title="Pending Task's"
+                  value={
+                    cardCounts.count.pending_count === null
+                      ? "0"
+                      : String(cardCounts.count.pending_count)
+                  }
+                />
+              </Col>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+                <StatisticWidget
+                  title="Overdue Task"
+                  value={
+                    cardCounts.count.total_overdue_task_count === null
+                      ? "0"
+                      : String(cardCounts.count.total_overdue_task_count)
+                  }
+                />
+              </Col>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+                <StatisticWidget
+                  title="Tax Payable"
+                  value={
+                    cardCounts.count.tax_payable_count === null
+                      ? "0"
+                      : String(cardCounts.count.tax_payable_count)
+                  }
+                />
+              </Col>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+                <StatisticWidget
+                  title="Query Raised"
+                  value={
+                    cardCounts.count.total_query_raised_count === null
+                      ? "0"
+                      : String(cardCounts.count.total_query_raised_count)
+                  }
+                />
+              </Col>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+                <StatisticWidget
+                  title="On Board"
+                  value={
+                    cardCounts.count.total_on_board_count === null
+                      ? "0"
+                      : String(cardCounts.count.total_on_board_count)
+                  }
+                />
+              </Col>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+                <StatisticWidget
+                  title="Un Assigned"
+                  value={
+                    cardCounts.count.unassigned_task_count === null
+                      ? "0"
+                      : String(cardCounts.count.unassigned_task_count)
+                  }
+                />
+              </Col>
+              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
+                <StatisticWidget
+                  title="Un Paid Task"
+                  value={
+                    cardCounts.count.unpaid_task_board_count === null
+                      ? "0"
+                      : String(cardCounts.count.unpaid_task_board_count)
+                  }
+                />
+              </Col>
+            </>
+          )}
+        </Row>
       </Row>
 
       {/* table task lists starts*/}
@@ -777,70 +666,105 @@ export const DefaultDashboard = () => {
 
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={7}>
-          
           <Card
             title="Add Log"
             extra={<CardDropdown items={newJoinMemberOptions} />}
           >
             <div className="mt-3">
-            <Spin spinning={loading} >
-              <Form layout="vertical" onFinish={handleAddClient} form={form} >
-                <div style={{ marginBottom: 16 }}>
-                
-                <Form.Item label="Client : " name="client" rules={[{ required: true, message: 'Please select your client!' }]}>
-                  <Select
-                    showSearch
-                    style={{ width: "100%" }}
-                    placeholder="Select a Client"
-                    optionFilterProp="children"
-                    onChange={onChange}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
-                    onSearch={onSearch}
-                    filterOption={(input, option) =>
-                      option.props.children
-                        .toLowerCase()
-                        .indexOf(input.toLowerCase()) >= 0
-                    }
-                  >
-                    {clientName &&
-                      clientName.map((item, index) => (
-                        <Option key={index} id={item.ID} value={item.ID}>
-                          {item.username}
-                        </Option>
-                      ))}
-                  </Select>
-                  </Form.Item>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                  <Form.Item label="User : " name="message" rules={[{ required: true, message: 'Please input your message!' }]}>
-                    <Input placeholder="Enter Message" />
-                  </Form.Item>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                <Form.Item label="Description : "  name="description" rules={[{ required: true, message: 'Please input your description!' }]}>
-                  <TextArea rows={4} placeholder="Enter Description" />
-                </Form.Item>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                <Form.Item label="Date : " name="date" rules={[{ required: true, message: 'Please input your date!' }]}  >
-                  <DatePicker
-                    // defaultValue={dayjs()}
-                    format={dateFormatList}
-                    disabledDate={disabledDate}
-                    // onChange={handleDatePicker}
-                    style={{ width: "100%" }}
-                  />
-                </Form.Item>
-                </div>
-                <div style={{ marginBottom: 16 }}>
-                <Form.Item>
-                  <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
-                    Submit
-                  </Button>
-                </Form.Item>
-                </div>
-              </Form>
+              <Spin spinning={loading}>
+                <Form layout="vertical" onFinish={handleAddClient} form={form}>
+                  <div style={{ marginBottom: 16 }}>
+                    <Form.Item
+                      label="Client : "
+                      name="client"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select your client!",
+                        },
+                      ]}
+                    >
+                      <Select
+                        showSearch
+                        style={{ width: "100%" }}
+                        placeholder="Select a Client"
+                        optionFilterProp="children"
+                        onChange={onChange}
+                        onFocus={onFocus}
+                        onBlur={onBlur}
+                        onSearch={onSearch}
+                        filterOption={(input, option) =>
+                          option.props.children
+                            .toLowerCase()
+                            .indexOf(input.toLowerCase()) >= 0
+                        }
+                      >
+                        {clientName &&
+                          clientName.map((item, index) => (
+                            <Option key={index} id={item.ID} value={item.ID}>
+                              {item.username}
+                            </Option>
+                          ))}
+                      </Select>
+                    </Form.Item>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Form.Item
+                      label="User : "
+                      name="message"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your message!",
+                        },
+                      ]}
+                    >
+                      <Input placeholder="Enter Message" />
+                    </Form.Item>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Form.Item
+                      label="Description : "
+                      name="description"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your description!",
+                        },
+                      ]}
+                    >
+                      <TextArea rows={4} placeholder="Enter Description" />
+                    </Form.Item>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Form.Item
+                      label="Date : "
+                      name="date"
+                      rules={[
+                        { required: true, message: "Please input your date!" },
+                      ]}
+                    >
+                      <DatePicker
+                        // defaultValue={dayjs()}
+                        format={dateFormatList}
+                        disabledDate={disabledDate}
+                        // onChange={handleDatePicker}
+                        style={{ width: "100%" }}
+                      />
+                    </Form.Item>
+                  </div>
+                  <div style={{ marginBottom: 16 }}>
+                    <Form.Item>
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        style={{ width: "100%" }}
+                      >
+                        Submit
+                      </Button>
+                    </Form.Item>
+                  </div>
+                </Form>
               </Spin>
             </div>
           </Card>
@@ -899,8 +823,11 @@ export const DefaultDashboard = () => {
               pagination={tableParams.pagination}
               loading={loading}
               onChange={handleTableChange}
-              searchable={{fuzzySearch:true}}
-              exportableProps={{ showColumnPicker: true, fileName:"client_log"}}
+              searchable={{ fuzzySearch: true }}
+              exportableProps={{
+                showColumnPicker: true,
+                fileName: "client_log",
+              }}
               searchableProps={{ fuzzySearch: true }}
               style={{ overflow: "auto" }}
             />
@@ -915,49 +842,9 @@ export const DefaultDashboard = () => {
               style={{ overflow: 'auto'}}
               pagination={false}
             /> */}
-      {/* table birthday lists starts*/}
 
-      <Row gutter={16}>
-          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <Card title="Birthday List" extra={<CardDropdown items={latestTransactionOption} />}>
-
-          <Table
-          //  rowSelection={rowSelection}
-            columns={columns}
-            // rowKey={(record) => record.login.uuid}
-            dataSource={data}
-            // pagination={tableParams.pagination}
-            loading={loading}
-            onChange={handleTableChange}
-            style={{ overflow: 'auto'}}
-          />
-          </Card>
-          
-          </Col>
-          </Row>
-      {/* table birthday lists ends*/}
-      {/* table holiday lists starts*/}
-      <Row gutter={16}>
-        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <Card title="Holiday List">
-           {/* <Input.Search allowClear className="__searchbox" onSearch={hanldeSearch_holidayList} style={{width:"100%"}}/> */}
-              <Table
-                columns={HolidayTableColumns}
-                rowKey={(record) => record.id} // id
-                dataSource={holidayListData}
-                pagination={holidayTableParams.pagination}
-                loading={loading}
-                onChange={handleHolidayTableChange}
-                exportableProps={{
-                  showColumnPicker: true,
-                  fileName: "holiday_List",
-                }}
-                style={{ overflow: "auto" }}
-              />
-          </Card>
-        </Col>
-      </Row>
-      {/* table birthday lists ends*/}
+      <BirthdayList />
+      <HolidayList />
     </>
   );
 };

@@ -32,7 +32,7 @@ import {
 } from "@ant-design/icons";
 
 // import { Admin_Dashboard } from '../../../../services/AllDataService'
-import ApiSnippets from "../../../../constants/ApiSnippet";
+import ApiSnippets from "../../../../../constants/ApiSnippet";
 
 const HolidayTableColumns = [
   {
