@@ -22,8 +22,11 @@ import {
 // import ProductListData from "assets/data/product-list.data.json";
 import ApiSnippets from "constants/ApiSnippet";
 import dayjs from "dayjs";
+import { slice } from "lodash";
 
-
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 const EditEmployeeForm = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const navigate = useNavigate();
@@ -34,9 +37,10 @@ const EditEmployeeForm = () => {
     const [send_txt_msg, setSend_txt_msg] = useState(0);
     const [send_email, setSend_email] = useState(0);
     const [btnStatus, setBtnStatus] = useState(0);
-    const [sendemaildDefault, setSendemaildDefault] = useState()
-    const [textMsgDefault, setTextMsgDefault] = useState();
-    // console.log(textMsgDefault);
+    const [sendemaildDefault, setSendemaildDefault] = useState(false);
+    const [textMsgDefault, setTextMsgDefault] = useState(false);
+    console.log("sendemaildDefault", sendemaildDefault);
+    console.log("textMsgDefault",textMsgDefault);
     // var SendemaildDefault;
     // var TextMsgDefault;
   const dateFormatList = ["DD/MM/YYYY"];
@@ -62,33 +66,28 @@ const EditEmployeeForm = () => {
         let empData = countObj.data[0]; 
         // console.log(data.employee);
         
-// console.log(empData.send_email);
+        // console.log(empData.send_email);
         var birthDayTOdate = new Date(empData.birthdate * 1000).toLocaleDateString("en-GB")
         // console.log(birthDayTOdate);
             
         form.setFieldsValue({
-
             user_name:empData.username,
             first_name:empData.first_name,
             last_name:empData.last_name,
             email:empData.email,
             contact_number:empData.contact_number,
             birth_date:dayjs(birthDayTOdate, 'DD-MM-YYYY'),
-            // birth_date:birthDayTOdate,
             // alt_number:,
             active_deactive:empData.active,
-            sendemail:empData.send_email === "1" ? setSendemaildDefault(true) : setSendemaildDefault(false),
-            textmsg:empData.send_sms === "1" ? setTextMsgDefault(true) : setTextMsgDefault(false)
-            // textmsg:true
-
-
-        })
-        console.log(textMsgDefault);
-        console.log(sendemaildDefault);
-
-    }
-    //   });
-
+            sendemail:empData.send_email === "1" ? true : false,
+            // sendemail: true,
+            textmsg:empData.send_sms === "1" ? true : false ,
+            // checkboxGroup:empData.send_sms === "1" && "textmsg"
+          })
+          console.log(typeof(empData.send_email));
+        }
+        // console.log(textMsgDefault);
+        // console.log(sendemaildDefault);
   }
 
 
@@ -131,7 +130,7 @@ const handleEditClient = async (value, e) => {
       //   // navigate('/app/client/company');
       // }         
     let ApiData = {
-      "save":"save",
+        "save":"save",
         "id":dataID,
         "un":value.user_name,
         "fname":value.first_name,
@@ -178,17 +177,12 @@ const handleEditClient = async (value, e) => {
 
   useEffect(() => {
     getUserByID();
-}, [textMsgDefault,sendemaildDefault])
-
-// console.log(textMsgDefault);
-
+  }, [])
+  
   return (
     <>  
       <Form layout="vertical" form={form} onFinish={handleEditClient}
-      initialValues={{
-        sendemail: true,
-        textmsg:textMsgDefault
-      }}
+      initialValues={{}}
       
 
        >
@@ -346,10 +340,10 @@ const handleEditClient = async (value, e) => {
                                 max: 13,
                                 message: "Value should only 13 digits",
                             },
-                            {
-                              required: true,
-                              message: "Please input your Alternative Number!",
-                            },
+                            // {
+                            //   required: true,
+                            //   message: "Please input your Alternative Number!",
+                            // },
                           ]}
                         >
                           <Input
@@ -384,8 +378,7 @@ const handleEditClient = async (value, e) => {
                               required: true,
                               message: "Please select your any one !",
                             },
-                          ]}
-                        >
+                          ]}>
                           <Radio.Group initialValues="" buttonStyle="solid">
                             <Radio.Button name="active" value="1">Active</Radio.Button>
                             <Radio.Button name="deactive" value="0">Deactive</Radio.Button>
@@ -395,16 +388,25 @@ const handleEditClient = async (value, e) => {
                     </Col>
                     <Col xs={24} sm={12} md={12} lg={12} xl={12} className="my-2">
                       {/* <Row xs={24} sm={12} md={12} lg={12} xl={12}> */}
-
-                      <div style={{ marginTop: 0 }} className="my-1">
-                        <Checkbox name="textmsg" value="textmsg" onChange={handleSend_txt_msg}>Send Text Message</Checkbox>
-                      </div>
-                       <div style={{ marginBottom: 5 }}>
-                        <Checkbox name="sendemail" value="sendemail" onChange={handleSend_email}>Send Email</Checkbox>
-                      </div>
-                      {/* </Row> */}
+                      {/* {sendemaildDefault && textMsgDefault === "Default" &&}  defaultValue={[sendemaildDefault,textMsgDefault]} */}
+                      {/* <Checkbox.Group name="checkboxGroup" > */}
+                      {/* sendemaildDefault,textMsgDefault */}
+                      <Form.Item name="textmsg" valuePropName="checked">
+                        {/* <div style={{ marginTop: 0 }} className="my-1"> */}
+                          <Checkbox onChange={handleSend_txt_msg}>Send Text Message</Checkbox>
+                        {/* </div> */}
+                      </Form.Item>
                     </Col>
-                    <Col xs={24} sm={12} md={12} lg={12} xl={12}></Col>
+                    <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                      <Form.Item name="sendemail" valuePropName="checked">
+                        {/* <div style={{ marginBottom: 5 }}> */}
+                          <Checkbox  onChange={handleSend_email}>Send Email</Checkbox>
+                        {/* </div> */}
+                      </Form.Item>
+                    </Col>
+                      {/* </Checkbox.Group> */}
+                      {/* </Row> */}
+                    {/* <Col xs={24} sm={12} md={12} lg={12} xl={12}></Col> */}
                     <Col xs={24} sm={8} md={8} lg={8} xl={8}>
                       <div style={{ marginBottom: 0 }}>
                         <Form.Item>

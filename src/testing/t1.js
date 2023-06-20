@@ -96,7 +96,7 @@ const CardDropdown = ({ items }) => {
 //     dataIndex: "created_on",
 //   },
 // ];
-const HolidayTableColumns = [
+const columns = [
   // dataIndex: 'id',
   {
     title: "SrNo",
@@ -285,7 +285,7 @@ export const SMSConfig = () => {
   }, [JSON.stringify(tableParams)]);
   // console.log("bare useeffect");
   // console.log(JSON.stringify(tableParams));
-  const handleHolidayTableChange = (pagination, sorter) => {
+  const handleTableChange = (pagination, sorter) => {
     setTableParams({
       pagination,
       ...sorter,
@@ -373,7 +373,7 @@ export const SMSConfig = () => {
       // console.log(srno_array);
       // console.log(response.count);
       setHolidayListData(countObjHolidaySr);
-      console.log(holidayListData);
+      console.log(data);
       setLoading(false);
       setTableParams({
         ...tableParams,
@@ -441,12 +441,12 @@ export const SMSConfig = () => {
               <PDFExport ref={componentRefPrint} paperSize="A4">
                 <Table
                   //  rowSelection={rowSelection}
-                  columns={HolidayTableColumns}
+                  columns={columns}
                   rowKey={(record) => record.id} // id
                   dataSource={holidayListData}
                   pagination={tableParams.pagination}
                   loading={loading}
-                  onChange={handleHolidayTableChange}
+                  onChange={handleTableChange}
                   // searchable={{fuzzySearch:true}}
                   // exportable={}
                   exportableProps={{

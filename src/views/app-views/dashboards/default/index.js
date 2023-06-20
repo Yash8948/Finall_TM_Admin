@@ -1,19 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import {
-  Row,
-  Col,
-  Button,
-  Avatar,
-  Dropdown,
-  Menu,
-  Tag,
-  Select,
-  Input,
-  DatePicker,
-  Divider,
-  Form,
-  Spin,
-} from "antd";
+import { Row, Col, Button, Avatar, Dropdown, Menu, Tag, Select, Input, DatePicker, Divider, Form, Spin,} from "antd";
 import dayjs from "dayjs";
 import { useReactToPrint } from "react-to-print";
 
@@ -158,11 +144,78 @@ const columns = [
     dataIndex: "created_on",
   },
 ];
+// holiday list column
+const HolidayListColumns = [
+  // dataIndex: 'id',
+  {
+    title: "SrNo",
+    dataIndex: "srno",
+    defaultSortOrder: "ascend",
+    // sorter:(a, b) => a.id - b.id,
+    // render: (id, record, index) => {
+    //   ++index;
+    //   return index;
+    // },
+    width: "20%",
+  },
+  {
+    title: "Title",
+    dataIndex: "",
+    sorter: (a, b) => a.id - b.id,
+    width: "20%",
+  },
+  {
+    title: "Description",
+    dataIndex: "",
+    filterSearch: true,
+    onFilter: (value, record) => record.address.startsWith(value),
+  },
+  {
+    title: "Date",
+    dataIndex: "on_date",
+    // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
+    width: "20%",
+  },
+];
+
+
+
 const getRandomuserParams = (params) => ({
   results: params.pagination?.pageSize,
   page: params.pagination?.current,
   ...params,
 });
+
+
+const HolidayTableColumns = [
+  {
+    title: "SrNo",
+    dataIndex: "srno",
+    defaultSortOrder: "ascend",
+    // sorter:(a, b) => a.id - b.id,
+    width: "20%",
+  },
+  {
+    title: "Title",
+    dataIndex: "title",
+    sorter: (a, b) => a.id - b.id,
+    width: "20%",
+  },
+  {
+    title: "Description",
+    dataIndex: "description",
+    sorter: (a, b) => a.id - b.id,
+    width: "20%",
+  },
+  {
+    title: "Date",
+    dataIndex: "date",
+    // render: (date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
+    width: "20%",
+  },
+];
+
+
 
 export const DefaultDashboard = () => {
   const [visitorChartData] = useState(VisitorChartData);
@@ -174,6 +227,7 @@ export const DefaultDashboard = () => {
   const [cardCounts, setCardCounts] = useState(null);
   const [clientTableData, setClientTableData] = useState(null);
   const [clientName, setClientName] = useState(null);
+  const [holidayData, setHolidayData] = useState(null);
   const componentRefPrint = useRef(null);
   const exportBtnRef = useRef();
   const [tLsearchalue, setTLsearchalue] = useState(null);
@@ -189,6 +243,15 @@ export const DefaultDashboard = () => {
     },
   });
   const [value, setValue] = useState("");
+  //table holiday list
+  const [holidayListSearchValue, setHolidayListSearchValue] = useState(null);
+  const [holidayListData, setHolidayListData] = useState();
+  const [holidayTableParams, setHolidayTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: 10,
+    },
+  });
  
   //client log table api
   const fetchData = async (value) => {
@@ -204,7 +267,7 @@ export const DefaultDashboard = () => {
       offset: offset,
       search: value && value,
     };
-    console.log(value);
+    // console.log(value);
     let response = await ApiSnippets("/ClientLogData_Dashboard", ApiData);
     let countObj = await response.data;
     for (let i = 0; i < countObj.length; i++) {
@@ -361,9 +424,14 @@ export const DefaultDashboard = () => {
     const getAllData = async () => {
       let response = await ApiSnippets("/AdminDashboard", null);
       let countObj = await response.data;
+      console.log(countObj);//all data
       setCardCounts(countObj);
       let onlyClientData = await response.data.client;
+      let onlyHolidayData = await response.data.holiday;
       setClientName(onlyClientData);
+      // console.log(onlyClientData);
+
+      setHolidayData(onlyHolidayData);
     };
 
     getAllData();
@@ -377,9 +445,9 @@ export const DefaultDashboard = () => {
     selectedRowKeys,
     onChange: onSelectChange,
     selections: [
-      Table.SELECTION_ALL,
-      Table.SELECTION_INVERT,
-      Table.SELECTION_NONE,
+      // Table.SELECTION_ALL,
+      // Table.SELECTION_INVERT,
+      // Table.SELECTION_NONE,
       {
         key: "odd",
         text: "Select Odd Row",
@@ -423,7 +491,7 @@ export const DefaultDashboard = () => {
     let response = await ApiSnippets("/AddClientLog", ApiData);
     // let countObj = await response;
     fetchData();
-    console.log(ApiData);
+    // console.log(ApiData);
     setLoading(true);
     setTimeout(() => {
       form.resetFields();
@@ -479,6 +547,82 @@ export const DefaultDashboard = () => {
     fetchDataOnSearch(value);
     // console.log(typeofvalue);
   };
+    //holiday list table api
+  const fetchHolidayTableData = async (value = null) => {
+    var offset = 0;
+
+    setLoading(true);
+    if (holidayTableParams.pagination.current > 1) {
+      offset =
+        (holidayTableParams.pagination.current - 1) * holidayTableParams.pagination.pageSize;
+    }
+    let ApiData = {
+      type: 1,
+      limit: holidayTableParams.pagination.pageSize,
+      offset: offset,
+      search: value ? value : "",
+    };
+    // console.log(ApiData);
+    let response = await ApiSnippets("/Holiday", ApiData);
+    let countObjHoliday = await response.data;
+    console.log("object");
+    console.log(countObjHoliday);
+    // console.log(countObj)
+    for (let i = 0; i < countObjHoliday.length; i++) {
+      // limit * currentpage - (limit -1)
+      let current_page = holidayTableParams.pagination.current;
+      let page_limit = holidayTableParams.pagination.pageSize;
+      countObjHoliday[i].srno =
+        page_limit * current_page - (page_limit - i - 1); // srno added to response thank you jigi
+      countObjHoliday[i].date = new Date(
+        countObjHoliday[i].date * 1000
+      ).toLocaleDateString("en-GB");
+    }
+    // console.log(countObj);
+    // setClientTableData(countObj);
+    // console.log(srno_array);
+    // console.log(response.count);
+    setHolidayListData(countObjHoliday);
+    // setHolidayListData(PclientLogData);
+    setLoading(false);
+    setHolidayTableParams({
+      ...holidayTableParams,
+      pagination: {
+        ...holidayTableParams.pagination,
+        total: response.count,
+        // total: 100,
+        // 200 is mock data, you should read it from server
+        // total: data.totalCount,
+      },
+    });
+  };
+
+
+
+  useEffect(() => {
+    let value = holidayListSearchValue;
+    fetchHolidayTableData(value);
+    // console.log(JSON.stringify(holidayTableParams));
+  }, [JSON.stringify(holidayTableParams)]);
+  const handleHolidayTableChange = (pagination, sorter) => {
+    setHolidayTableParams({
+      pagination,
+      ...sorter,
+    });
+
+    // `dataSource` is useless since `pageSize` changed
+    if (pagination.pageSize !== holidayTableParams.pagination?.pageSize) {
+      setHolidayListData([]);
+    }
+  };
+
+
+  // holiday list data started
+  
+  // holiday list data ended
+
+
+
 
   // console.log(cardCounts.client);
   return (
@@ -500,7 +644,6 @@ export const DefaultDashboard = () => {
           </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={6}>
           <StatisticWidget
-            
             title="Pending Task's"
             value={cardCounts.count.pending_count === null ? '0' : String(cardCounts.count.pending_count)}
           />
@@ -779,7 +922,7 @@ export const DefaultDashboard = () => {
           <Card title="Birthday List" extra={<CardDropdown items={latestTransactionOption} />}>
 
           <Table
-           rowSelection={rowSelection}
+          //  rowSelection={rowSelection}
             columns={columns}
             // rowKey={(record) => record.login.uuid}
             dataSource={data}
@@ -794,53 +937,29 @@ export const DefaultDashboard = () => {
           </Row>
       {/* table birthday lists ends*/}
       {/* table holiday lists starts*/}
-      
       <Row gutter={16}>
-          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <Card title="Holiday List" extra={<CardDropdown items={latestTransactionOption} />}>
-
-          <Table
-           rowSelection={rowSelection}
-            columns={columns}
-            // rowKey={(record) => record.login.uuid}
-            dataSource={data}
-            // pagination={tableParams.pagination}
-            loading={loading}
-            onChange={handleTableChange}
-            style={{ overflow: 'auto'}}
-          />
+        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+          <Card title="Holiday List">
+           {/* <Input.Search allowClear className="__searchbox" onSearch={hanldeSearch_holidayList} style={{width:"100%"}}/> */}
+              <Table
+                columns={HolidayTableColumns}
+                rowKey={(record) => record.id} // id
+                dataSource={holidayListData}
+                pagination={holidayTableParams.pagination}
+                loading={loading}
+                onChange={handleHolidayTableChange}
+                exportableProps={{
+                  showColumnPicker: true,
+                  fileName: "holiday_List",
+                }}
+                style={{ overflow: "auto" }}
+              />
           </Card>
-          
-          </Col>
-          </Row>
+        </Col>
+      </Row>
       {/* table birthday lists ends*/}
     </>
   );
 };
 
 export default DefaultDashboard;
-
-//----------------------------------------------------------------TASK CARDS DYNAMIC
-// const [items, setItems] = useState([])
-//PUT INDISE THE USEEFFECT HOOK
-// setItems(Object.keys(response.data.cards).map((key) => [key, response.data.cards[key]]))
-// {
-//   items.map((item) => {
-//    const key = item[0];
-//    const value = String(item[1].length);
-
-//    {/* console.log("Key:",typeof key);
-//    console.log("Value:", typeof value); */}
-
-//    return (
-//      <Col xs={24} sm={24} md={24} lg={24} xl={6} key={key}>
-//        <StatisticWidget
-//          title={key}
-//          value={value}
-//          // status={elm.status}
-//          // subtitle={elm.subtitle}
-//        />
-//      </Col>
-//    );
-//  })
-// }  
