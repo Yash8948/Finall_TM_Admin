@@ -368,8 +368,8 @@ export const DefaultDashboard = () => {
       setCardCounts(countObj);
       let onlyClientData = await response.data.client;
       setClientName(onlyClientData);
-      // console.log(onlyClientData);
     };
+    console.log(cardCounts);
 
     getAllData();
   }, []);
