@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PageHeaderAlt from 'components/layout-components/PageHeaderAlt'
-import { Input, Row, Col, Card, Collapse } from 'antd';
+import { Input, Row, Col, Card, Collapse, Tooltip, Button, Tag } from 'antd';
 import { SearchOutlined, RightOutlined } from '@ant-design/icons';
 import { faqCategories, faqList } from './TestingData';
 import StatisticWidget from "../../../../components/shared-components/StatisticWidget";
@@ -8,143 +8,19 @@ import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import PropTypes from "prop-types";
 import ApiSnippets from 'constants/ApiSnippet';
 import { Table } from "ant-table-extensions";
+import { json } from 'd3-fetch';
+import { EyeOutlined, DeleteOutlined, CloseCircleOutlined, DownloadOutlined, EditOutlined, MessageOutlined, SettingOutlined } from '@ant-design/icons';
+import { MdPassword } from "react-icons/md";
 const { Panel } = Collapse;
 
-const Today_TaskColumn = [
-  // dataIndex: 'id',
-  {
-    title: "SrNo",
-    dataIndex: "srno",
-    defaultSortOrder: "ascend",
-    // sorter:(a, b) => a.id - b.id,
-    // render: (id, record, index) => {
-    //   ++index;
-    //   return index;
-    // },
-    width: "10%",
-  },
-  {
-    title: "Client Name",
-    dataIndex: "client",
-    sorter: (a, b) => a.id - b.id,
-    width: "20%",
-  },
-  {
-    title: "Message",
-    dataIndex: "message",
-    filterSearch: true,
-    onFilter: (value, record) => record.address.startsWith(value),
-  },
-  {
-    title: "Description",
-    dataIndex: "description",
-  },
-  {
-    title: "Date",
-    dataIndex: "on_date",
-    // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
-    width: "20%",
-  },
-  {
-    title: "Created On",
-    dataIndex: "created_on",
-  },
-];
-const Pending_TaskColumn = [
-  // dataIndex: 'id',
-  {
-    title: "SrNo",
-    dataIndex: "srno",
-    defaultSortOrder: "ascend",
-    // sorter:(a, b) => a.id - b.id,
-    // render: (id, record, index) => {
-    //   ++index;
-    //   return index;
-    // },
-    width: "10%",
-  },
-  {
-    title: "Task Name",
-    dataIndex: "title",
-    sorter: (a, b) => a.id - b.id,
-    width: "20%",
-  },
-  {
-    title: "Ticket ID",
-    dataIndex: "ticket_id",
-    filterSearch: true,
-    onFilter: (value, record) => record.address.startsWith(value),
-  },
-  {
-    title: "Client Name",
-    dataIndex: "client_name",
-  },
-  {
-    title: "Employee Name",
-    dataIndex: "employee_name",
-  },
-  {
-    title: "Dead Line Date",
-    dataIndex: "cdeadline_date",
-    // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
-    width: "20%",
-  },
-  {
-    title: "Status",
-    dataIndex: "",
-  },
-  {
-    title: "Action",
-    dataIndex: "",
-  },
-];
-const overDue_TaskColumn = [
-  {
-    title: "SrNo",
-    dataIndex: "srno",
-    defaultSortOrder: "ascend",
-    // sorter:(a, b) => a.id - b.id,
-    // render: (id, record, index) => {
-    //   ++index;
-    //   return index;
-    // },
-    width: "10%",
-  },
-  {
-    title: "Task Name",
-    dataIndex: "elm.title",
-    sorter: (a, b) => a.id - b.id,
-    width: "20%",
-  },
-  {
-    title: "Ticket ID",
-    dataIndex: "ticket_id",
-    filterSearch: true,
-    onFilter: (value, record) => record.address.startsWith(value),
-  },
-  {
-    title: "Client Name",
-    dataIndex: "client_name",
-  },
-  {
-    title: "Employee Name",
-    dataIndex: "employee_name",
-  },
-  {
-    title: "Dead Line Date",
-    dataIndex: "cdeadline_date",
-    // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
-    width: "20%",
-  },
-  {
-    title: "Status",
-    dataIndex: "cstatus",
-  },
-  {
-    title: "Action",
-    dataIndex: "",
-  },
-];
+
+
+
+
+
+
+
+
 
 
 
@@ -198,18 +74,31 @@ const Testing = ({ title, value, status, subtitle, prefix }) => {
     })
     const { curentCategory } = curaentCategory;
 
-    
-    
 
-    useEffect( () => {
-      // const GetCardsData = async () => {
-      //   let response = await ApiSnippets("/AdminDashboard");
-      //   var countObjData = await response.data.count;
-      //   setCards_data(countObjData);
-      //   console.log(countObjData);
+
+    const deleteUser = async (userID) => {
+      console.log(userID);
+      // setLoading(true)
+      // let ApiData = {
+      //   id:userID,
       // };
-      // GetCardsData();
+      // // console.log(ApiData);
+      // let response = await ApiSnippets("/Delete_Employee", ApiData);
+      // setLoading(false)
+      // fetchData();
+      // console.log(response);
+    }
+    const editEmployee = (elm) => {
+      console.log(elm.ID);
+  
+      // navigate(`/app/dashboards/employees/edit_employee/:${elm.ID}`)
+      
+    }
 
+
+    
+    
+    useEffect( () => {
 
       let myHeaders = new Headers();
       myHeaders.append("Xtoken", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4");
@@ -228,62 +117,545 @@ const Testing = ({ title, value, status, subtitle, prefix }) => {
               key: "today_tasks",
               title: "Today Task's",
               value: `${result.data.count.tasks_count}`,
-              columnName:{Today_TaskColumn},
+              
               alldata:[{
-                columnName:{Today_TaskColumn},
+                id:1,
+                // columnName:{Today_TaskColumn},
+                columnName: [
+                {
+                  title: "SrNo",
+                  dataIndex: "srno",
+                  defaultSortOrder: "ascend",
+                  // sorter:(a, b) => a.id - b.id,
+                  render: (id, record, index) => {
+                    ++index;
+                    return index;
+                  },
+                  width: "10%",
+                },
+                {
+                  title: "Client Name",
+                  dataIndex: "client",
+                  sorter: (a, b) => a.id - b.id,
+                  width: "20%",
+                },
+                {
+                  title: "Message",
+                  dataIndex: "message",
+                  filterSearch: true,
+                  onFilter: (value, record) => record.address.startsWith(value),
+                },
+                {
+                  title: "Description",
+                  dataIndex: "description",
+                },
+                {
+                  title: "Date",
+                  dataIndex: "on_date",
+                  // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
+                  width: "20%",
+                },
+                {
+                  title: "Created On",
+                  dataIndex: "created_on",
+                }],
                 data:result.data.card_data.tasks
               }]
-
             },
             {
               // key: "pending_tasks",
               key: "pending_tasks",
               title: "Pending Task's",
               value: `${result.data.count.pending_count}`,
-              columnName:{Pending_TaskColumn},
-              data:result.data.card_data.pending
-            },
-            {
-              key: "overdue_tasks",
-              title: "Overdue Task",
-              value: `${result.data.count.total_overdue_task_count}`,
-              columnName:{overDue_TaskColumn},
-              data:result.data.card_data.total_overdue_task
+              // data:result.data.card_data.pending
+              alldata:[{
+                id:2,
+                columnName:[
+                  // dataIndex: 'id',
+                  {
+                    title: "SrNo",
+                    dataIndex: "srno",
+                    defaultSortOrder: "ascend",
+                    // sorter:(a, b) => a.id - b.id,
+                    render: (id, record, index) => {
+                      ++index;
+                      return index;
+                    },
+                    width: "10%",
+                  },
+                  {
+                    title: "Task Name",
+                    dataIndex: "title",
+                    // sorter: (a, b) => a.id - b.id,
+                    width: "15%",
+                  },
+                  {
+                    title: "Ticket ID",
+                    dataIndex: "ticket_id",
+                    width: "10%",   
+                  },
+                  {
+                    title: "Client Name",
+                    dataIndex: "client_name",
+                  },
+                  {
+                    title: "Employee Name",
+                    dataIndex: "employee_name",
+                  },
+                  {
+                    title: "Dead Line Date",
+                    dataIndex: "cdeadline_date",
+                    // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
+                    width: "15%",
+                  },
+                  {
+                    title: "Status",
+                    dataIndex: "cstatus",
+                    render: (on_status) => on_status+"%"
+                  },
+                  {
+                    title: "Action",
+                    dataIndex: "",
+                    render: (elm) => (
+                    <div className="text-right d-flex ">
+                      <Button.Group>
+                        <Tooltip title="View">
+                          <Button type="primary" className='mx-0' icon={<EyeOutlined />} size="small" style={{boxShadow:"none"}}/>
+                        </Tooltip>
+                        </Button.Group>
+                      </div>
+                    )
+                  },
+                ],
+                data:result.data.card_data.pending
+              }]
             },
             {
               key: "tax_payable_tasks",
               title: "Tax Payable",
               value: `${result.data.count.tax_payable_count}`,
-              columnName:{},
-              data:result.data.card_data.tax_payable  
+              // data:result.data.card_data.tax_payable  
+              alldata:[{
+                id:2,
+                columnName:[
+                  // dataIndex: 'id',
+                  {
+                    title: "SrNo",
+                    dataIndex: "srno",
+                    defaultSortOrder: "ascend",
+                    // sorter:(a, b) => a.id - b.id,
+                    render: (id, record, index) => {
+                      ++index;
+                      return index;
+                    },
+                    width: "10%",
+                  },
+                  {
+                    title: "Task Name",
+                    dataIndex: "title",
+                    // sorter: (a, b) => a.id - b.id,
+                    width: "15%",
+                  },
+                  {
+                    title: "Ticket ID",
+                    dataIndex: "ticket_id",
+                    width: "10%",   
+                  },
+                  {
+                    title: "Client Name",
+                    dataIndex: "client_name",
+                  },
+                  {
+                    title: "Employee Name",
+                    dataIndex: "employee_name",
+                  },
+                  {
+                    title: "Dead Line Date",
+                    dataIndex: "cdeadline_date",
+                    // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
+                    width: "15%",
+                  },
+                  {
+                    title: "Status",
+                    dataIndex: "cstatus",
+                    render: (on_status) => on_status+"%"
+                  },
+                  {
+                    title: "Action",
+                    dataIndex: "",
+                  },
+                ],
+                data:result.data.card_data.tax_payable
+              }]
+            },
+            {
+              key: "overdue_tasks",
+              title: "Overdue Task",
+              value: `${result.data.count.total_overdue_task_count}`,
+              alldata:[{
+                id:2,
+                columnName:[
+                  // dataIndex: 'id',
+                  {
+                    title: "SrNo",
+                    dataIndex: "srno",
+                    defaultSortOrder: "ascend",
+                    // sorter:(a, b) => a.id - b.id,
+                    render: (id, record, index) => {
+                      ++index;
+                      return index;
+                    },
+                    width: "10%",
+                  },
+                  {
+                    title: "Task Name",
+                    dataIndex: "title",
+                    // sorter: (a, b) => a.id - b.id,
+                    width: "15%",
+                  },
+                  {
+                    title: "Ticket ID",
+                    dataIndex: "ticket_id",
+                    width: "10%",   
+                  },
+                  {
+                    title: "Client Name",
+                    dataIndex: "client_name",
+                  },
+                  {
+                    title: "Employee Name",
+                    dataIndex: "employee_name",
+                  },
+                  {
+                    title: "Dead Line Date",
+                    dataIndex: "cdeadline_date",
+                    // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
+                    width: "15%",
+                  },
+                  {
+                    title: "Status",
+                    dataIndex: "cstatus",
+                    render: (on_status) => on_status+"%"
+                  },
+                  {
+                    title: "Action",
+                    dataIndex: "",
+                    render: (elm) => (
+                      <div className="text-right d-flex ">
+                        <Button.Group>
+                          <Tooltip title="View">
+                            <Button type="primary" className='mx-0' icon={<EyeOutlined />} size="small" style={{boxShadow:"none"}}/>
+                          </Tooltip>
+                          </Button.Group>
+                        </div>
+                      )
+                  },
+                ],
+                data:result.data.card_data.total_overdue_task
+              }]
+
             },
             {
               key: "query_raised_tasks",
               title: "Query Raised",
               value: `${result.data.count.total_query_raised_count}`,
-              columnName:{},
-              data:result.data.card_data.total_query_raised  
+              // data:result.data.card_data.total_query_raised  
+              alldata:[{
+                id:2,
+                columnName:[
+                  // dataIndex: 'id',
+                  {
+                    title: "SrNo",
+                    dataIndex: "srno",
+                    defaultSortOrder: "ascend",
+                    // sorter:(a, b) => a.id - b.id,
+                    render: (id, record, index) => {
+                      ++index;
+                      return index;
+                    },
+                    width: "10%",
+                  },
+                  {
+                    title: "Task Name",
+                    dataIndex: "title",
+                    // sorter: (a, b) => a.id - b.id,
+                    width: "15%",
+                  },
+                  {
+                    title: "Ticket ID",
+                    dataIndex: "ticket_id",
+                    width: "10%",   
+                  },
+                  {
+                    title: "Client Name",
+                    dataIndex: "client_name",
+                  },
+                  {
+                    title: "Employee Name",
+                    dataIndex: "employee_name",
+                  },
+                  {
+                    title: "Dead Line Date",
+                    dataIndex: "cdeadline_date",
+                    // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
+                    width: "15%",
+                  },
+                  {
+                    title: "Status",
+                    dataIndex: "cstatus",
+                    render: (on_status) => on_status+"%"
+                  },
+                  {
+                    title: "Action",
+                    dataIndex: "",
+                  },
+                ],
+                data:result.data.card_data.total_query_raised
+              }]
+              
             },
             {
               key: "on_board_tasks",
               title: "On Board",
               value: `${result.data.count.total_on_board_count}`,
-              columnName:{},
-              data:result.data.card_data.total_on_board
+              alldata:[{
+                id:2,
+                columnName:[
+                  // dataIndex: 'id',
+                  {
+                    title: "SrNo",
+                    dataIndex: "srno",
+                    defaultSortOrder: "ascend",
+                    // sorter:(a, b) => a.id - b.id,
+                    render: (id, record, index) => {
+                      ++index;
+                      return index;
+                    },
+                    width: "5%",
+                  },
+                  {
+                    title: "Task Name",
+                    dataIndex: "title",
+                    // sorter: (a, b) => a.id - b.id,
+                    width: "15%",
+                  },
+                  {
+                    title: "Ticket ID",
+                    dataIndex: "ticket_id",
+                    width: "10%",   
+                  },
+                  {
+                    title: "Client Name",
+                    dataIndex: "client_name",
+                  },
+                  {
+                    title: "Employee Name",
+                    dataIndex: "employee_name",
+                  },
+                  {
+                    title: "Department",
+                    dataIndex: "department_name",
+                  },
+                  {
+                    title: "Dead Line Date",
+                    dataIndex: "deadline_date",
+                    // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
+                    width: "10%",
+                  },
+                  {
+                    title: "Closing Date",
+                    dataIndex: "deadline_date",
+                    // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
+                    width: "10%",
+                  },
+                  {
+                    title: "Status",
+                    dataIndex: "statusname",
+                    render: active => (
+                      <Tag className ="text-capitalize" color={active !== 'Un-assigned'? 'cyan' : 'red'}>{active !== 'Un-assigned' ? 'Open' : 'Un-assigned'}</Tag>
+                    ),
+                  },
+                  {
+                    title: "Action",
+                    dataIndex: "",
+                    render: (elm) => (
+                      <div className="text-right d-flex ">
+                      <Button.Group>
+                        <Tooltip title="View">
+                          <Button type="primary" className='mx-0' icon={<EyeOutlined />} size="small" style={{boxShadow:"none"}}/>
+                        </Tooltip>
+                        <Tooltip title="Edit">
+                          <Button style={{backgroundColor:"#38b94e", color:"white"}} className="mx-0" icon={<EditOutlined />} onClick={() => editEmployee(elm)} size="small"/>
+                        </Tooltip>
+                        <Tooltip title="Delete">
+                          <Button danger type='primary' className='mx-0' icon={<DeleteOutlined />} onClick={()=> deleteUser(elm.ticket_id)} size="small" style={{boxShadow:"none"}}/>
+                        </Tooltip>
+                        <Tooltip title="Close Ticket">
+                          <Button type="primary" className='mx-0' icon={<CloseCircleOutlined />} onClick={()=> deleteUser(elm.ticket_id)} size="small" style={{boxShadow:"none"}}/>
+                        </Tooltip>
+                        {/* <Tooltip title="Reset Password">
+                          <Button style={{backgroundColor:"#38b94e", color:"white"}} className='mx-0' icon={<MdPassword />} onClick={()=> resetPassword(elm.ID)} size="small"/>
+                        </Tooltip> */}
+                        {/* <Tooltip title="Permission">
+                          <Button className='mx-0' icon={<SettingOutlined />} onClick={()=> permission(elm.ID)} size="small"/>
+                        </Tooltip> */}
+                        {/* <Tooltip title="Message">
+                          <Button style={{backgroundColor:"blue", color:"white"}} className='mx-0' icon={<MessageOutlined />} onClick={()=> messageUser(elm.ID)} size="small"/>
+                        </Tooltip> */}
+                        </Button.Group>
+                      </div>
+                    ),
+                  },
+                ],
+                data:result.data.card_data.total_on_board
+              }]
+
             },
             {
               key: "un_assigned_tasks",
               title: "Un Assigned",
               value: `${result.data.count.unassigned_task_count}`,
               columnName:{},
-              data:result.data.card_data.unassigned_task
+              // data:result.data.card_data.unassigned_task
+              alldata:[{
+                id:2,
+                columnName:[
+                  // dataIndex: 'id',
+                  {
+                    title: "SrNo",
+                    dataIndex: "srno",
+                    defaultSortOrder: "ascend",
+                    // sorter:(a, b) => a.id - b.id,
+                    render: (id, record, index) => {
+                      ++index;
+                      return index;
+                    },
+                    width: "5%",
+                  },
+                  {
+                    title: "Task Name",
+                    dataIndex: "title",
+                    // sorter: (a, b) => a.id - b.id,
+                    width: "15%",
+                  },
+                  {
+                    title: "Ticket ID",
+                    dataIndex: "ticket_id",
+                    width: "10%",   
+                  },
+                  {
+                    title: "Client Name",
+                    dataIndex: "client_name",
+                  },
+                  {
+                    title: "Department",
+                    dataIndex: "department_name",
+                  },
+                  {
+                    title: "DeadLine Date",
+                    dataIndex: "deadline_date",
+                    // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
+                    width: "15%",
+                  },
+                  {
+                    title: "Status",
+                    dataIndex: "statusname",
+                    // render: (on_status) => on_status+"%"
+                    render: active => (
+                      <Tag className ="text-capitalize" color={active !== 'Un-assigned'? 'cyan' : 'red'}>{active !== 'Un-assigned' ? 'Assigned' : 'Un-assigned'}</Tag>
+                    ),
+                  },
+                  {
+                    title: "Action",
+                    dataIndex: "",
+                    render: (elm) => (
+                      <div className="text-right d-flex ">
+                      <Button.Group>
+                        <Tooltip title="View">
+                          <Button className='mx-0' icon={<EyeOutlined />} size="small"/>
+                        </Tooltip>
+                        <Tooltip title="View">
+                          <Button type="primary" className="mx-0" icon={<EditOutlined />} onClick={() => editEmployee(elm)} size="small"/>
+                        </Tooltip>
+                        <Tooltip title="Delete">
+                          <Button danger type='primary' className='mx-0' icon={<DeleteOutlined />} onClick={()=> deleteUser(elm.ticket_id)} size="small" style={{boxShadow:"none"}}/>
+                        </Tooltip>
+                        {/* <Tooltip title="Reset Password">
+                          <Button style={{backgroundColor:"#38b94e", color:"white"}} className='mx-0' icon={<MdPassword />} onClick={()=> resetPassword(elm.ID)} size="small"/>
+                        </Tooltip> */}
+                        {/* <Tooltip title="Permission">
+                          <Button className='mx-0' icon={<SettingOutlined />} onClick={()=> permission(elm.ID)} size="small"/>
+                        </Tooltip> */}
+                        {/* <Tooltip title="Message">
+                          <Button style={{backgroundColor:"blue", color:"white"}} className='mx-0' icon={<MessageOutlined />} onClick={()=> messageUser(elm.ID)} size="small"/>
+                        </Tooltip> */}
+                        </Button.Group>
+                      </div>
+                    ),
+                  },
+                ],
+                data:result.data.card_data.unassigned_task
+              }]
+
             },
             {
               key: "un_paid_tasks",
               title: "Un Paid Task",
               value: `${result.data.count.unpaid_task_board_count}`,
               columnName:{},
-              data:result.data.card_data.unpaid_task_board
+              // data:result.data.card_data.unpaid_task_board
+              alldata:[{
+                id:2,
+                columnName:[
+                  // dataIndex: 'id',
+                  {
+                    title: "SrNo",
+                    dataIndex: "srno",
+                    defaultSortOrder: "ascend",
+                    // sorter:(a, b) => a.id - b.id,
+                    render: (id, record, index) => {
+                      ++index;
+                      return index;
+                    },
+                    width: "10%",
+                  },
+                  {
+                    title: "Task Name",
+                    dataIndex: "title",
+                    // sorter: (a, b) => a.id - b.id,
+                    width: "15%",
+                  },
+                  {
+                    title: "Ticket ID",
+                    dataIndex: "ticket_id",
+                    width: "10%",   
+                  },
+                  {
+                    title: "Client Name",
+                    dataIndex: "client_name",
+                  },
+                  {
+                    title: "Employee Name",
+                    dataIndex: "employee_name",
+                  },
+                  {
+                    title: "Dead Line Date",
+                    dataIndex: "cdeadline_date",
+                    // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
+                    width: "15%",
+                  },
+                  {
+                    title: "Status",
+                    dataIndex: "cstatus",
+                    render: (on_status) => on_status+"%"
+                  },
+                  {
+                    title: "Action",
+                    dataIndex: "",
+                  },
+                ],
+                data:result.data.card_data.unpaid_task_board
+              }]
             },
           ])
         )
@@ -379,27 +751,25 @@ const Testing = ({ title, value, status, subtitle, prefix }) => {
         </Collapse> */}
         
           {/* <p key={index}>{elm.data.title}</p> */}
-        {cards_data && cardsDataOnly.filter( elm => elm.key === curentCategory)[0].alldata.map( (elm,index) => (
-          <Table
-            key={index}
-            // rowSelection={rowSelection}
-            // columns={elm[0].columnName}
-            // rowKey={(record) => record.id} // id
-            // dataSource={elm[0].data}
-            // pagination={tableParams.pagination}
-            loading={loading}
-            // onChange={handleTableChange}
-            // searchable={{fuzzySearch:true}}
-            // exportable={}
-            exportableProps={{
-              showColumnPicker: true,
-              fileName: "Task_List",
-            }}
-            // searchableProps={{ fuzzySearch: true }}
-            style={{ overflow: "auto" }}
-          />
-        ))}
-
+         
+            {/* alert(JSON.stringify(elm.columnName)) */}
+          {cards_data && cardsDataOnly.filter( elm => elm.key === curentCategory)[0].alldata.map( (elm,index) => (
+            
+  
+            <Table
+              key={elm.id}
+              columns={elm.columnName}
+              rowKey={(record) => record.id} // id
+              dataSource={elm.data}
+              loading={loading}
+              exportableProps={{
+                showColumnPicker: true,
+                fileName: "Task_List",
+              }}
+             
+              style={{ overflow: "auto" }}
+            />
+          ))}
 
 
         

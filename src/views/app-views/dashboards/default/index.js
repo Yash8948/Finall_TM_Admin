@@ -159,7 +159,6 @@ const columns = [
     dataIndex: "created_on",
   },
 ];
-
 const getRandomuserParams = (params) => ({
   results: params.pagination?.pageSize,
   page: params.pagination?.current,
