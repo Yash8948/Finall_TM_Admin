@@ -19,12 +19,12 @@ import { useReactToPrint } from "react-to-print";
 
 import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 
-import StatisticWidget from "components/shared-components/StatisticWidget";
-import ChartWidget from "components/shared-components/ChartWidget";
-import AvatarStatus from "components/shared-components/AvatarStatus";
-import GoalWidget from "components/shared-components/GoalWidget";
+// import StatisticWidget from "components/shared-components/StatisticWidget";
+// import ChartWidget from "components/shared-components/ChartWidget";
+// import AvatarStatus from "components/shared-components/AvatarStatus";
+// import GoalWidget from "components/shared-components/GoalWidget";
 import Card from "components/shared-components/Card";
-import BoardCards from "components/shared-components/BoardCards";
+// import BoardCards from "components/shared-components/BoardCards";
 import Flex from "components/shared-components/Flex";
 //datatable imports
 // import { Table } from 'antd';
@@ -61,6 +61,7 @@ import { result } from "lodash";
 import HolidayList from "./comps/HolidayList";
 
 import BirthdayList from "./comps/BirthdayList";
+import CardsNTables from "./comps/CardsNTables";
 const { Option } = Select;
 const { TextArea } = Input;
 const dateFormatList = ["DD/MM/YYYY"];
@@ -487,148 +488,7 @@ export const DefaultDashboard = () => {
   // console.log(cardCounts.client);
   return (
     <>
-      <Row gutter={4}>
-        {/* <Col xs={24} sm={24} md={24} lg={18}> */}
-
-        <Row gutter={16}>
-          {cardCounts && (
-            <>
-              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-                <StatisticWidget
-                  title="Today Task's"
-                  value={
-                    cardCounts.tasks_count === null
-                      ? "0"
-                      : String(cardCounts.count.tasks_count)
-                  }
-                  // status={elm.status}
-                  // subtitle={elm.subtitle}
-                />
-              </Col>
-              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-                <StatisticWidget
-                  title="Pending Task's"
-                  value={
-                    cardCounts.count.pending_count === null
-                      ? "0"
-                      : String(cardCounts.count.pending_count)
-                  }
-                />
-              </Col>
-              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-                <StatisticWidget
-                  title="Overdue Task"
-                  value={
-                    cardCounts.count.total_overdue_task_count === null
-                      ? "0"
-                      : String(cardCounts.count.total_overdue_task_count)
-                  }
-                />
-              </Col>
-              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-                <StatisticWidget
-                  title="Tax Payable"
-                  value={
-                    cardCounts.count.tax_payable_count === null
-                      ? "0"
-                      : String(cardCounts.count.tax_payable_count)
-                  }
-                />
-              </Col>
-              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-                <StatisticWidget
-                  title="Query Raised"
-                  value={
-                    cardCounts.count.total_query_raised_count === null
-                      ? "0"
-                      : String(cardCounts.count.total_query_raised_count)
-                  }
-                />
-              </Col>
-              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-                <StatisticWidget
-                  title="On Board"
-                  value={
-                    cardCounts.count.total_on_board_count === null
-                      ? "0"
-                      : String(cardCounts.count.total_on_board_count)
-                  }
-                />
-              </Col>
-              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-                <StatisticWidget
-                  title="Un Assigned"
-                  value={
-                    cardCounts.count.unassigned_task_count === null
-                      ? "0"
-                      : String(cardCounts.count.unassigned_task_count)
-                  }
-                />
-              </Col>
-              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-                <StatisticWidget
-                  title="Un Paid Task"
-                  value={
-                    cardCounts.count.unpaid_task_board_count === null
-                      ? "0"
-                      : String(cardCounts.count.unpaid_task_board_count)
-                  }
-                />
-              </Col>
-            </>
-          )}
-        </Row>
-      </Row>
-
-      {/* table task lists starts*/}
-
-      <Row gutter={16}>
-        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <Card
-            title="Task List"
-            extra={
-              <>
-                {/* <div className="example"> */}
-                <Input.Search
-                  allowClear
-                  className="mx-3"
-                  onSearch={hanldeSearch_tasklist}
-                />
-                {/* </div> */}
-                <CardDropdown items={latestTransactionOption} />
-              </>
-            }
-          >
-            <div ref={componentRefPrint}>
-              <PDFExport ref={componentRefPrint} paperSize="A4">
-                {/* <Document>
-          <Page size="A4" style={styles.page}>
-          <View style={styles.section}> */}
-                <Table
-                  //  rowSelection={rowSelection}
-                  columns={columns}
-                  rowKey={(record) => record.id} // id
-                  dataSource={data}
-                  pagination={tableParams.pagination}
-                  loading={loading}
-                  onChange={handleTableChange}
-                  // searchable={{fuzzySearch:true}}
-                  // exportable={}
-                  exportableProps={{
-                    showColumnPicker: true,
-                    fileName: "Task_List",
-                  }}
-                  // searchableProps={{ fuzzySearch: true }}
-                  style={{ overflow: "auto" }}
-                />
-              </PDFExport>
-              {/* </View>
-          </Page>
-          </Document> */}
-            </div>
-          </Card>
-        </Col>
-      </Row>
+    <CardsNTables />
       {/* table task lists ends*/}
       {/* <Row gutter={16}>
             <Col span={24}>
