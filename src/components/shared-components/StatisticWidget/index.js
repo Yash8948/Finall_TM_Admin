@@ -3,13 +3,14 @@ import BoardCards from 'components/shared-components/BoardCards';
 import PropTypes from "prop-types";
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { useEffect,useState } from 'react';
+import { Card } from 'antd';
 
 
 const StatisticWidget = ({ title, value, status, subtitle, prefix }) => {
 	
 	return (
 		<div onClick={()=>console.log("working") }>
-		<BoardCards >
+		<Card hoverable >
 			{title && <h4 className="mb-0">{title}</h4>}
 			<div  className={`${prefix? 'd-flex': ''} ${title ? 'mt-3':''}`}>
 				{prefix ? <div className="mr-2">{prefix}</div> : null}
@@ -29,7 +30,7 @@ const StatisticWidget = ({ title, value, status, subtitle, prefix }) => {
 					{subtitle && <div className="text-gray-light mt-1">{subtitle}</div>}
 				</div>
 			</div>
-		</BoardCards>
+		</Card>
 		</div>
 	)
 }

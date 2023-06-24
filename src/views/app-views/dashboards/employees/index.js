@@ -55,8 +55,6 @@ const Employees = () => {
       navigate('/app/dashboards/employees/add_employee') 
     }
 	
-	
-
 
 	const editEmployee = (elm) => {
 		// console.log(elm.ID);
@@ -101,12 +99,11 @@ const Employees = () => {
 		{
 		  title: "SrNo",
 		  dataIndex: "srno",
+		// key:"index",
 		  defaultSortOrder: "ascend",
 		  // sorter:(a, b) => a.id - b.id,
-		  // render: (id, record, index) => {
-		  //   ++index;
-		  //   return index;
-		  // },
+		//   WORKING
+		// render:(value, item, index) => (tableParams.pagination.current - 1) * 10 + index+1,
 		  width: "20%",
 		},
 		{
@@ -195,7 +192,9 @@ const Employees = () => {
 	  const [tableParams, setTableParams] = useState({
 		pagination: {
 		  current: 1,
-		  pageSize: 10,
+		  pageSize:10,
+		//   pageSizeOptions: ['10', '20', '30'],
+		//   showSizeChanger: true,
 		},
 	  });
 	 

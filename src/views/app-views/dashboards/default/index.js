@@ -19,12 +19,12 @@ import { useReactToPrint } from "react-to-print";
 
 import { PDFExport, savePDF } from "@progress/kendo-react-pdf";
 
-import StatisticWidget from "components/shared-components/StatisticWidget";
-import ChartWidget from "components/shared-components/ChartWidget";
-import AvatarStatus from "components/shared-components/AvatarStatus";
-import GoalWidget from "components/shared-components/GoalWidget";
+// import StatisticWidget from "components/shared-components/StatisticWidget";
+// import ChartWidget from "components/shared-components/ChartWidget";
+// import AvatarStatus from "components/shared-components/AvatarStatus";
+// import GoalWidget from "components/shared-components/GoalWidget";
 import Card from "components/shared-components/Card";
-import BoardCards from "components/shared-components/BoardCards";
+// import BoardCards from "components/shared-components/BoardCards";
 import Flex from "components/shared-components/Flex";
 //datatable imports
 // import { Table } from 'antd';
@@ -58,7 +58,10 @@ import { admin_Dashboard } from "services/AllDataService";
 // import { Admin_Dashboard } from '../../../../services/AllDataService'
 import ApiSnippets from "../../../../constants/ApiSnippet";
 import { result } from "lodash";
+import HolidayList from "./comps/HolidayList";
 
+import BirthdayList from "./comps/BirthdayList";
+import CardsNTables from "./comps/CardsNTables";
 const { Option } = Select;
 const { TextArea } = Input;
 const dateFormatList = ["DD/MM/YYYY"];
@@ -117,7 +120,6 @@ const CardDropdown = ({ items }) => {
   );
 };
 
-
 const columns = [
   // dataIndex: 'id',
   {
@@ -129,7 +131,7 @@ const columns = [
     //   ++index;
     //   return index;
     // },
-    width: "20%",
+    width: "10%",
   },
   {
     title: "Client Name",
@@ -174,6 +176,7 @@ export const DefaultDashboard = () => {
   const [cardCounts, setCardCounts] = useState(null);
   const [clientTableData, setClientTableData] = useState(null);
   const [clientName, setClientName] = useState(null);
+
   const componentRefPrint = useRef(null);
   const exportBtnRef = useRef();
   const [tLsearchalue, setTLsearchalue] = useState(null);
@@ -204,7 +207,7 @@ export const DefaultDashboard = () => {
       offset: offset,
       search: value && value,
     };
-    console.log(value);
+    // console.log(value);
     let response = await ApiSnippets("/ClientLogData_Dashboard", ApiData);
     let countObj = await response.data;
     for (let i = 0; i < countObj.length; i++) {
@@ -265,7 +268,7 @@ export const DefaultDashboard = () => {
     {
       key: "Refresh",
       label: (
-        <Flex alignItems="center" gap={SPACER[2]} onClick={fetchData}>
+        <Flex alignItems="center" gap={SPACER[2]} onClick={()=>fetchData(value)}>
           <ReloadOutlined />
           <span className="ml-2">Refresh</span>
         </Flex>
@@ -361,10 +364,12 @@ export const DefaultDashboard = () => {
     const getAllData = async () => {
       let response = await ApiSnippets("/AdminDashboard", null);
       let countObj = await response.data;
+      console.log(countObj); //all data
       setCardCounts(countObj);
       let onlyClientData = await response.data.client;
       setClientName(onlyClientData);
     };
+    console.log(cardCounts);
 
     getAllData();
   }, []);
@@ -377,9 +382,9 @@ export const DefaultDashboard = () => {
     selectedRowKeys,
     onChange: onSelectChange,
     selections: [
-      Table.SELECTION_ALL,
-      Table.SELECTION_INVERT,
-      Table.SELECTION_NONE,
+      // Table.SELECTION_ALL,
+      // Table.SELECTION_INVERT,
+      // Table.SELECTION_NONE,
       {
         key: "odd",
         text: "Select Odd Row",
@@ -423,7 +428,7 @@ export const DefaultDashboard = () => {
     let response = await ApiSnippets("/AddClientLog", ApiData);
     // let countObj = await response;
     fetchData();
-    console.log(ApiData);
+    // console.log(ApiData);
     setLoading(true);
     setTimeout(() => {
       form.resetFields();
@@ -483,121 +488,7 @@ export const DefaultDashboard = () => {
   // console.log(cardCounts.client);
   return (
     <>
-      <Row gutter={4}>
-        {/* <Col xs={24} sm={24} md={24} lg={18}> */}
-
-        <Row gutter={16}>
-          {cardCounts && (
-            <>
-              <Col xs={24} sm={24} md={24} lg={24} xl={6} >
-                <StatisticWidget
-                  title="Today Task's"
-                  value={cardCounts.tasks_count === null ? '0' : String(cardCounts.count.tasks_count)}
-                // status={elm.status}
-                // subtitle={elm.subtitle}
-
-                />
-              </Col>
-              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-                <StatisticWidget
-
-                  title="Pending Task's"
-                  value={cardCounts.count.pending_count === null ? '0' : String(cardCounts.count.pending_count)}
-                />
-              </Col>
-              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-                <StatisticWidget
-
-                  title="Overdue Task"
-                  value={cardCounts.count.total_overdue_task_count === null ? '0' : String(cardCounts.count.total_overdue_task_count)}
-                />
-              </Col>
-              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-                <StatisticWidget
-
-                  title="Tax Payable"
-                  value={cardCounts.count.tax_payable_count === null ? '0' : String(cardCounts.count.tax_payable_count)}
-                />
-              </Col>
-              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-                <StatisticWidget
-                  title="Query Raised"
-                  value={cardCounts.count.total_query_raised_count === null ? '0' : String(cardCounts.count.total_query_raised_count)}
-                />
-              </Col>
-              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-                <StatisticWidget
-                  title="On Board"
-                  value={cardCounts.count.total_on_board_count === null ? '0' : String(cardCounts.count.total_on_board_count)}
-                />
-              </Col>
-              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-
-                <StatisticWidget
-                  title="Un Assigned"
-                  value={cardCounts.count.unassigned_task_count === null ? '0' : String(cardCounts.count.unassigned_task_count)}
-                />
-              </Col>
-              <Col xs={24} sm={24} md={24} lg={24} xl={6}>
-                <StatisticWidget
-                  title="Un Paid Task"
-                  value={cardCounts.count.unpaid_task_board_count === null ? '0' : String(cardCounts.count.unpaid_task_board_count)}
-                />
-              </Col>
-            </>
-          )}
-        </Row>
-      </Row>
-
-      {/* table task lists starts*/}
-
-      <Row gutter={16}>
-        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <Card
-            title="Task List"
-            extra={
-              <>
-                {/* <div className="example"> */}
-                <Input.Search
-                  allowClear
-                  className="mx-3"
-                  onSearch={hanldeSearch_tasklist}
-                />
-                {/* </div> */}
-                <CardDropdown items={latestTransactionOption} />
-              </>
-            }
-          >
-            <div ref={componentRefPrint}>
-              <PDFExport ref={componentRefPrint} paperSize="A4">
-                {/* <Document>
-          <Page size="A4" style={styles.page}>
-          <View style={styles.section}> */}
-                <Table
-                  //  rowSelection={rowSelection}
-                  columns={columns}
-                  rowKey={(record) => record.id} // id
-                  dataSource={data}
-                  pagination={tableParams.pagination}
-                  loading={loading}
-                  onChange={handleTableChange}
-                  // searchable={{fuzzySearch:true}}
-                  // exportable={}
-                  exportableProps={{
-                    showColumnPicker: true,
-                    fileName: "Task_List",
-                  }}
-                  // searchableProps={{ fuzzySearch: true }}
-                  style={{ overflow: "auto" }}
-                />
-              </PDFExport>
-              {/* </View>
-          </Page>
-          </Document> */}
-            </div>
-          </Card>
-        </Col>
-      </Row>
+    <CardsNTables />
       {/* table task lists ends*/}
       {/* <Row gutter={16}>
             <Col span={24}>
@@ -634,17 +525,24 @@ export const DefaultDashboard = () => {
 
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={7}>
-
           <Card
             title="Add Log"
             extra={<CardDropdown items={newJoinMemberOptions} />}
           >
             <div className="mt-3">
-              <Spin spinning={loading} >
-                <Form layout="vertical" onFinish={handleAddClient} form={form} >
+              <Spin spinning={loading}>
+                <Form layout="vertical" onFinish={handleAddClient} form={form}>
                   <div style={{ marginBottom: 16 }}>
-
-                    <Form.Item label="Client : " name="client" rules={[{ required: true, message: 'Please select your client!' }]}>
+                    <Form.Item
+                      label="Client : "
+                      name="client"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select your client!",
+                        },
+                      ]}
+                    >
                       <Select
                         showSearch
                         style={{ width: "100%" }}
@@ -670,17 +568,41 @@ export const DefaultDashboard = () => {
                     </Form.Item>
                   </div>
                   <div style={{ marginBottom: 16 }}>
-                    <Form.Item label="User : " name="message" rules={[{ required: true, message: 'Please input your message!' }]}>
+                    <Form.Item
+                      label="User : "
+                      name="message"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your message!",
+                        },
+                      ]}
+                    >
                       <Input placeholder="Enter Message" />
                     </Form.Item>
                   </div>
                   <div style={{ marginBottom: 16 }}>
-                    <Form.Item label="Description : " name="description" rules={[{ required: true, message: 'Please input your description!' }]}>
+                    <Form.Item
+                      label="Description : "
+                      name="description"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input your description!",
+                        },
+                      ]}
+                    >
                       <TextArea rows={4} placeholder="Enter Description" />
                     </Form.Item>
                   </div>
                   <div style={{ marginBottom: 16 }}>
-                    <Form.Item label="Date : " name="date" rules={[{ required: true, message: 'Please input your date!' }]}  >
+                    <Form.Item
+                      label="Date : "
+                      name="date"
+                      rules={[
+                        { required: true, message: "Please input your date!" },
+                      ]}
+                    >
                       <DatePicker
                         // defaultValue={dayjs()}
                         format={dateFormatList}
@@ -692,7 +614,11 @@ export const DefaultDashboard = () => {
                   </div>
                   <div style={{ marginBottom: 16 }}>
                     <Form.Item>
-                      <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        style={{ width: "100%" }}
+                      >
                         Submit
                       </Button>
                     </Form.Item>
@@ -757,7 +683,10 @@ export const DefaultDashboard = () => {
               loading={loading}
               onChange={handleTableChange}
               searchable={{ fuzzySearch: true }}
-              exportableProps={{ showColumnPicker: true, fileName: "client_log" }}
+              exportableProps={{
+                showColumnPicker: true,
+                fileName: "client_log",
+              }}
               searchableProps={{ fuzzySearch: true }}
               style={{ overflow: "auto" }}
             />
@@ -772,75 +701,11 @@ export const DefaultDashboard = () => {
               style={{ overflow: 'auto'}}
               pagination={false}
             /> */}
-      {/* table birthday lists starts*/}
 
-      <Row gutter={16}>
-        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <Card title="Birthday List" extra={<CardDropdown items={latestTransactionOption} />}>
-
-            <Table
-              rowSelection={rowSelection}
-              columns={columns}
-              // rowKey={(record) => record.login.uuid}
-              dataSource={data}
-              // pagination={tableParams.pagination}
-              loading={loading}
-              onChange={handleTableChange}
-              style={{ overflow: 'auto' }}
-            />
-          </Card>
-
-        </Col>
-      </Row>
-      {/* table birthday lists ends*/}
-      {/* table holiday lists starts*/}
-
-      <Row gutter={16}>
-        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-          <Card title="Holiday List" extra={<CardDropdown items={latestTransactionOption} />}>
-
-            <Table
-              rowSelection={rowSelection}
-              columns={columns}
-              // rowKey={(record) => record.login.uuid}
-              dataSource={data}
-              // pagination={tableParams.pagination}
-              loading={loading}
-              onChange={handleTableChange}
-              style={{ overflow: 'auto' }}
-            />
-          </Card>
-
-        </Col>
-      </Row>
-      {/* table birthday lists ends*/}
+      <BirthdayList />
+      <HolidayList />
     </>
   );
 };
 
 export default DefaultDashboard;
-
-//----------------------------------------------------------------TASK CARDS DYNAMIC
-// const [items, setItems] = useState([])
-//PUT INDISE THE USEEFFECT HOOK
-// setItems(Object.keys(response.data.cards).map((key) => [key, response.data.cards[key]]))
-// {
-//   items.map((item) => {
-//    const key = item[0];
-//    const value = String(item[1].length);
-
-//    {/* console.log("Key:",typeof key);
-//    console.log("Value:", typeof value); */}
-
-//    return (
-//      <Col xs={24} sm={24} md={24} lg={24} xl={6} key={key}>
-//        <StatisticWidget
-//          title={key}
-//          value={value}
-//          // status={elm.status}
-//          // subtitle={elm.subtitle}
-//        />
-//      </Col>
-//    );
-//  })
-// }  
