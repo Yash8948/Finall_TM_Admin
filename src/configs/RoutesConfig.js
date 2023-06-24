@@ -362,6 +362,21 @@ export const protectedRoutes = [
     },
     {
         key: 'client',
+        path: `${APP_PREFIX_PATH}/client/client_list/view/edit_client_log/:id`,
+        component: React.lazy(() => import('views/app-views/client/client-list/Actionbutton/ClientViewActionButtons/EditClientLog')),
+    },
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/client_list/view/edit_client_invoice/:id`,
+        component: React.lazy(() => import('views/app-views/client/client-list/Actionbutton/ClientViewActionButtons/EditClientInvoice')),
+    },
+    {
+        key: 'client',
+        path: `${APP_PREFIX_PATH}/client/client_list/view/view_client_invoice/:id`,
+        component: React.lazy(() => import('views/app-views/client/client-list/Actionbutton/ClientViewActionButtons/ViewClientInvoice')),
+    },
+    {
+        key: 'client',
         path: `${APP_PREFIX_PATH}/client/addadmin_company`,
         component: React.lazy(() => import('views/app-views/client/company/AddAdminCo')),
     },

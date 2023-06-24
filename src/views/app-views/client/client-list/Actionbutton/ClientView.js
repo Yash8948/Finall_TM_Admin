@@ -16,6 +16,7 @@ import {
     Spin,
     Tabs,
     message,
+    Tooltip,
     Table
 } from 'antd';
 import { Icon } from 'components/util-components/Icon'
@@ -26,6 +27,10 @@ import ApiSnippets from 'constants/ApiSnippet';
 import {
     GlobalOutlined,
     MailOutlined,
+    DeleteOutlined,
+    EditOutlined,
+    EyeOutlined,
+    MessageOutlined,
     HomeOutlined,
     PhoneOutlined
 } from '@ant-design/icons';
@@ -41,8 +46,10 @@ import dayjs from "dayjs";
 
 
 const ClientView = (props) => {
-    const [cLsearchvalue, setCLsearchvalue] = useState(null);
 
+
+    const [cLsearchvalue, setCLsearchvalue] = useState(null);
+    const navigate = useNavigate();
     const avatarSize = 150;
     const { id } = useParams();
     const dataID = id.slice(1, id.length);
@@ -99,7 +106,7 @@ const ClientView = (props) => {
 
     useEffect(() => {
         getClientById();
-    }, [])
+    }, []);
 
 
 
@@ -129,9 +136,52 @@ const ClientView = (props) => {
 
         setLoading(false);
     };
+
+    const handleEditLog = (elm) => {
+        console.log(elm);
+
+        navigate(`/app/client/client_list/view/edit_client_log/:${elm}`)
+    }
+    const deleteLog = async (userID) => {
+        // e.StopPropagation();
+        console.log(userID);
+        setLoading(false)
+        let ApiData = {
+            id: userID,
+            "delete": "delete"
+        };
+        console.log(ApiData);
+        let response = await ApiSnippets("/EditClientLog", ApiData);
+        setLoading(false)
+        fetchData();
+        console.log(response);
+    }
+    const handleEditInvoice = (elm) => {
+        console.log(elm);
+
+        navigate(`/app/client/client_list/view/edit_client_invoice/:${elm}`)
+    }
+    const deleteInvoice = async (userID) => {
+        console.log(userID);
+        setLoading(true)
+        let ApiData = {
+            id: userID,
+        };
+        console.log(ApiData);
+        let response = await ApiSnippets("/delete_client_password", ApiData);
+        setLoading(false)
+        fetchData();
+        console.log(response);
+    }
+    const handleInvoiceView = (elm) => {
+        console.log(elm);
+
+        navigate(`/app/client/client_list/view/view_client_invoice/:${elm}`)
+    }
     const logData = [
         // dataIndex: 'id',
         {
+            key: "log1",
             title: "SrNo",
             dataIndex: "srno",
             defaultSortOrder: "ascend",
@@ -140,10 +190,11 @@ const ClientView = (props) => {
             //   ++index;
             //   return index;
             // },
-            width: "20%",
+            width: "10%",
             align: "center",
         },
         {
+            key: "log2",
             title: "Client Name",
             dataIndex: "client",
             sorter: (a, b) => a.id - b.id,
@@ -160,6 +211,7 @@ const ClientView = (props) => {
 
         },
         {
+            key: "log3",
             title: "Description",
             dataIndex: "description",
             width: "20%",
@@ -167,6 +219,7 @@ const ClientView = (props) => {
 
         },
         {
+            key: "log4",
             title: "Date",
             dataIndex: "on_date",
             // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
@@ -174,6 +227,7 @@ const ClientView = (props) => {
             align: "center",
         },
         {
+            key: "log5",
             title: "Created On",
             dataIndex: "created_on",
             width: "20%",
@@ -181,16 +235,35 @@ const ClientView = (props) => {
 
         },
         {
+            key: "log6",
             title: "Actions",
             dataIndex: "action",
             width: "20%",
             align: "center",
+            render: (_, elm) => (
+
+                <div className="text-right d-flex justify-content-center">
+                    <Tooltip title="Edit">
+                        <Button className="mr-2" icon={<EditOutlined />}
+                            onClick={() => handleEditLog(elm.id)}
+                            size="small" />
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                        <Button className="mr-2" icon={<DeleteOutlined />}
+                            onClick={(e) => deleteLog(elm.id, e)}
+                            size="small" />
+                    </Tooltip>
+
+                </div>
+
+            )
 
         },
     ];
     const LoginData = [
         // dataIndex: 'id',
         {
+            key: "login1",
             title: "SrNo",
             dataIndex: "srno",
             defaultSortOrder: "ascend",
@@ -203,6 +276,7 @@ const ClientView = (props) => {
             align: "center",
         },
         {
+            key: "login2",
             title: "Name",
             dataIndex: "user_name",
             sorter: (a, b) => a.id - b.id,
@@ -210,6 +284,7 @@ const ClientView = (props) => {
             align: "center",
         },
         {
+            key: "login3",
             title: "Log In",
             dataIndex: "login_time",
             filterSearch: true,
@@ -219,6 +294,7 @@ const ClientView = (props) => {
 
         },
         {
+            key: "login4",
             title: "Log Out",
             dataIndex: "logout_time",
             width: "20%",
@@ -227,8 +303,9 @@ const ClientView = (props) => {
         },
     ];
     const ticketsdata = [
-        // dataIndex: 'id',
+
         {
+            key: "ticket1",
             title: "SrNo",
             dataIndex: "srno",
             defaultSortOrder: "ascend",
@@ -241,6 +318,7 @@ const ClientView = (props) => {
             align: "center",
         },
         {
+            key: "ticket2",
             title: "Name",
             dataIndex: "title",
             sorter: (a, b) => a.id - b.id,
@@ -248,6 +326,7 @@ const ClientView = (props) => {
             align: "center",
         },
         {
+            key: "ticket3",
             title: "Starting Date",
             dataIndex: "starting_date",
             // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
@@ -255,6 +334,7 @@ const ClientView = (props) => {
             align: "center",
         },
         {
+            key: "ticket4",
             title: "Description",
             dataIndex: "description",
             width: "20%",
@@ -262,6 +342,7 @@ const ClientView = (props) => {
 
         },
         {
+            key: "ticket5",
             title: "Amount",
             dataIndex: "amount",
             width: "20%",
@@ -269,16 +350,46 @@ const ClientView = (props) => {
 
         },
         {
+            key: "ticket6",
             title: "status",
             dataIndex: "status",
             width: "20%",
             align: "center",
+            render: (_, record) => {
+                const activeData = record.status; // Assuming `record.active` contains the active value for the current record
+                // console.log(activeData)
+                if (activeData === '0') {
+                    return <Tag color="red">unassigned</Tag>;
+                }
+                else if (activeData === '1') {
+                    return <Tag color="blue">Inactive</Tag>;
+                }
+                else if (activeData === '2') {
+                    return <Tag color="yellow">In Progress</Tag>;
+                }
+                else if (activeData === '3') {
+                    return <Tag color="red">query Raised</Tag>;
+                }
+                else if (activeData === '4') {
+                    return <Tag color="blue">completed</Tag>;
+                }
+                else if (activeData === '5') {
+                    return <Tag color="green">completed & reviewed</Tag>;
+                }
+                else if (activeData === '6') {
+                    return <Tag color="yellow">InvoiceRaised</Tag>;
+                }
+                else if (activeData === '7') {
+                    return <Tag color="green">Paid</Tag>;
+                }
+            }
 
         },
     ];
     const invoicedata = [
-        // dataIndex: 'id',
+        
         {
+            key: "invoice1",
             title: "SrNo",
             dataIndex: "srno",
             defaultSortOrder: "ascend",
@@ -291,15 +402,18 @@ const ClientView = (props) => {
             align: "center",
         },
         {
+            key: "invoice2",
             title: "Invoice Number",
             dataIndex: "invoice_no",
             filterSearch: true,
             onFilter: (value, record) => record.address.startsWith(value),
             width: "20%",
             align: "center",
+            render: (text) => `Invoice No. ${text}`
 
         },
         {
+            key: "invoice3",
             title: "Client Name",
             dataIndex: "company",
             sorter: (a, b) => a.id - b.id,
@@ -307,6 +421,7 @@ const ClientView = (props) => {
             align: "center",
         },
         {
+            key: "invoice4",
             title: "Amount",
             dataIndex: "total",
             // render: (on_date) => new Date(on_date * 1000).toLocaleDateString("en-GB"),
@@ -314,6 +429,7 @@ const ClientView = (props) => {
             align: "center",
         },
         {
+            key: "invoice5",
             title: "Details",
             dataIndex: "other_details",
             width: "20%",
@@ -321,17 +437,82 @@ const ClientView = (props) => {
 
         },
         {
+            key: "invoice6",
             title: "Actions",
             dataIndex: "action",
             width: "20%",
             align: "center",
+            render: (_, elm) => {
+                const invoicePaymentData = elm.payment_id;
+                const customData = elm.custom_invoice;
+                console.log(invoicePaymentData)
+                console.log(customData)
+                if (invoicePaymentData == 1) {
+                    return (
+
+                        <div className="text-right d-flex justify-content-center">
+                            <Tooltip title="view">
+                                <Button className="mr-2" icon={<EyeOutlined />}
+                                    onClick={() => handleInvoiceView(elm.id)}
+                                    size="small" />
+                            </Tooltip>
+                            {/* <Tooltip title="Message">
+                                <Button className="mr-2" icon={<MessageOutlined />}
+                                    // onClick={() => handleMessage(elm.id)} 
+                                    size="small" />
+                            </Tooltip> */}
+                        </div>
+                    );
+                }
+                if (invoicePaymentData == 0 && customData == 1) {
+                    return (
+
+                        <div className="text-right d-flex justify-content-center">
+                            <Tooltip title="view">
+                                <Button className="mr-2" icon={<EyeOutlined />}
+                                    onClick={() => handleInvoiceView(elm.id)}
+                                    size="small" />
+                            </Tooltip>
+                            <Tooltip title="Edit">
+                                <Button className="mr-2" icon={<EditOutlined />}
+                                    onClick={() => handleEditInvoice(elm.id)}
+                                    size="small" />
+                            </Tooltip>
+                            <Tooltip title="Message">
+                                <Button className="mr-2" icon={<MessageOutlined />}
+                                    // onClick={() => handleMessage(elm.id)} 
+                                    size="small" />
+                            </Tooltip>
+                        </div>
+                    );
+                }
+                else if (invoicePaymentData == 0) {
+                    return (
+                        <div className="text-right d-flex justify-content-center">
+                            <Tooltip title="view">
+                                <Button className="mr-2" icon={<EyeOutlined />}
+                                    onClick={() => handleInvoiceView(elm.id)}
+                                    size="small" />
+                            </Tooltip>
+                            <Tooltip title="Message">
+                                <Button className="mr-2" icon={<MessageOutlined />}
+                                    // onClick={() => handleMessage(elm.id)} 
+                                    size="small" />
+                            </Tooltip>
+                        </div>
+                    )
+                }
+
+
+            }
+
 
         },
     ];
     const fetchData = async (value) => {
         var offset = 0;
 
-        setLoading(true);
+        // setLoading(true);
         if (tableParams.pagination.current > 1) {
             offset =
                 (tableParams.pagination.current - 1) * tableParams.pagination.pageSize;
@@ -375,7 +556,7 @@ const ClientView = (props) => {
 
     useEffect(() => {
         fetchData();
-    }, [])
+    }, []);
     const loginfetchData = async (value) => {
         var offset = 0;
 
@@ -400,6 +581,7 @@ const ClientView = (props) => {
             countObj[i].on_date = new Date(
                 countObj[i].on_date * 1000
             ).toLocaleDateString("en-GB");
+            countObj[i].logout_time = dayjs(countObj[i].logout_time * 1000).format("h:mm:ss A");
         }
         // console.log(countObj);
         setClientTableData(countObj);
@@ -422,7 +604,7 @@ const ClientView = (props) => {
     };
     useEffect(() => {
         loginfetchData();
-    }, [])
+    }, []);
     const ticketfetchData = async (value) => {
         var offset = 0;
 
@@ -439,6 +621,13 @@ const ClientView = (props) => {
         console.log(ApiData);
         let response = await ApiSnippets("/LoadClientTicketDetail", ApiData);
         let countObj = await response.data;
+        let activeData = []; // Array to store the active values
+
+        for (let i = 0; i < countObj.length; i++) {
+            let active = countObj[i].status;
+            activeData.push(active); // Push the active value into the array
+        }
+        console.log(activeData)
         for (let i = 0; i < countObj.length; i++) {
             // limit * currentpage - (limit -1)
             let current_page = tableParams.pagination.current;
@@ -469,7 +658,7 @@ const ClientView = (props) => {
     };
     useEffect(() => {
         ticketfetchData();
-    }, [])
+    }, []);
     const invoicefetchData = async (value) => {
         var offset = 0;
 
@@ -486,6 +675,19 @@ const ClientView = (props) => {
         console.log(ApiData);
         let response = await ApiSnippets("/LoadInvoiceList", ApiData);
         let countObj = await response.data;
+
+        let invoicePaymentData = []; // Array to store the active values
+        let customData = []; // Array to store the active values
+
+        for (let i = 0; i < countObj.length; i++) {
+            let paymentData = countObj[i].payment_id;
+            invoicePaymentData.push(paymentData); // Push the active value into the array
+        }
+        for (let i = 0; i < countObj.length; i++) {
+            let customInvoice = countObj[i].custom_invoice;
+            customData.push(customInvoice); // Push the active value into the array
+        }
+        console.log(invoicePaymentData)
         for (let i = 0; i < countObj.length; i++) {
             // limit * currentpage - (limit -1)
             let current_page = tableParams.pagination.current;
@@ -517,7 +719,7 @@ const ClientView = (props) => {
 
     useEffect(() => {
         invoicefetchData();
-    }, [])
+    }, []);
     const BasicTabs = () => (
         <Tabs defaultActiveKey="1">
             <Tabs.TabPane tab="Log Details" key="1">
@@ -525,6 +727,7 @@ const ClientView = (props) => {
                     columns={logData}
                     dataSource={data}
                     style={{ overflow: "auto" }}
+                    loading={loading}
 
                 />
             </Tabs.TabPane>
@@ -603,15 +806,6 @@ const ClientView = (props) => {
                                                 <span className="font-weight-semibold">{viewData.contact_number}</span>
                                             </Col>
                                         </Row>
-                                        {/* <Row className="mb-2">
-                                            <Col xs={12} sm={12} md={9}>
-                                                <Icon type={GlobalOutlined} className="text-primary font-size-md" />
-                                                <span className="text-muted ml-2">Website:</span>
-                                            </Col>
-                                            <Col xs={12} sm={12} md={15}>
-                                                <span className="font-weight-semibold">ellarbae.io</span>
-                                            </Col>
-                                        </Row> */}
                                     </Col>
                                 </Row>
                             </div>
