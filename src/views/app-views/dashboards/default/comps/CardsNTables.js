@@ -848,7 +848,7 @@ const CardsNTables = ({ title, value, status, subtitle, prefix }) => {
       {/* FOR LEFT AND RIGHT SIDE SPACES LIKE BOOTSTRAP className="container my-4" */}
         <Row gutter={16}>
           {cardsDataOnly.map((elm, index) => (
-            <Col xs={24} sm={24} md={12} key={index}>
+            <Col xs={24} sm={24} md={12} lg={6} key={index}>
               <Card
                 hoverable
                 onClick={() => {
@@ -902,7 +902,7 @@ const CardsNTables = ({ title, value, status, subtitle, prefix }) => {
               .alldata.map((elm, index) =>
                 elm.title ? (
                   <div key={index}>
-                    <b>{elm.title} List</b>
+                    <h4>{elm.title} List</h4>
                     <Divider />
                     <Table
                       key={elm.id}

@@ -99,11 +99,12 @@ const Employees = () => {
 		{
 		  title: "SrNo",
 		  dataIndex: "srno",
-		// key:"index",
+		//   dataIndex: "ID",//test
 		  defaultSortOrder: "ascend",
+		  key:"index",
 		  // sorter:(a, b) => a.id - b.id,
 		//   WORKING
-		// render:(value, item, index) => (tableParams.pagination.current - 1) * 10 + index+1,
+		// render:( value, item, index) => (tableParams.pagination.current - 1) * 10 + index+1  ,
 		  width: "20%",
 		},
 		{
@@ -595,4 +596,4 @@ const Employees = () => {
 	)
 }
 
-export default Employees
+export default Employees
