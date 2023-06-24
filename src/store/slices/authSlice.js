@@ -2,6 +2,9 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { AUTH_TOKEN,USER_EMAIL,USER_NAME,USER_AVATAR, USER_TYPE } from 'constants/AuthConstant';
 import AuthService from 'services/AuthService';
 import Swal from 'sweetalert2'
+
+
+
 export const initialState = {
 	loading: false,
 	message: '',

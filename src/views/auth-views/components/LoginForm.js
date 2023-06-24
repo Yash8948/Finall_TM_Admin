@@ -54,7 +54,7 @@ export const LoginForm = (props) => {
   const onLogin = (values) => {
     showLoading();
     signIn(values);
-    // console.log(values);
+    console.log(values);
   };
 
   // const onGoogleLogin = () => {
@@ -160,7 +160,7 @@ export const LoginForm = (props) => {
               {showForgetPassword && (
                 <span
                   onClick={() => onForgetPasswordClick}
-                  className="cursor-pointer font-size-sm font-weight-normal text-muted"
+                  className="cursor-pointer font-size-sm font-weight-normal  text-muted"
                 >
                   Forget Password?
                 </span>
